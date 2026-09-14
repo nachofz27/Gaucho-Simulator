@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Gaucho Simulator</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        html, body {
+            background-color: #FAF2E6 !important;
+            background: #FAF2E6 !important;
+        }
+    </style>
+</head>
+<body>
+    <div id="game-container">
+ <audio id="bg-music" loop preload="auto">
+    <source src="musique.mp3" type="audio/mpeg">
+</audio>
+        <!-- ==========================================
+             ÉCRAN 1 : MENU PRINCIPAL (NETTOYÉ)
+             ========================================== -->
+        <section id="screen-menu" class="screen active">
+            <button id="btn-sound-menu" class="btn-sound-toggle" title="Couper / Activer la musique">🔊</button>
+            <div class="menu-content">
+                <h1 class="game-title">GAUCHO SIMULATOR</h1>
+                <p class="subtitle">Road to 2027</p>
+                
+                <div class="menu-buttons">
+                    <button id="btn-start" class="btn-primary">Lancer une campagne</button>
+                    <button id="btn-collection" class="btn-secondary">📖 Collection des Camarades</button>
+                    <button id="btn-menu-leaderboard" class="btn-secondary">🏆 Panthéon des Luttes</button>
+                    <button id="btn-about" class="btn-secondary">📜 À propos / Règles</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==========================================
+             ÉCRAN : RÈGLES DU JEU & À PROPOS
+             ========================================== -->
+        <section id="screen-about" class="screen">
+            <button id="btn-about-back" class="btn-back-corner">⬅ Menu</button>
+            <button id="btn-sound-about" class="btn-sound-toggle btn-corner-sound" title="Couper / Activer la musique">🔊</button>
+            
+            <div class="about-container">
+                <header class="about-header">
+                    <h2>📜 Règles du Jeu & Manifeste</h2>
+                    <p class="subtitle">Guide de survie politique — De la cellule de base jusqu'à l'Élysée</p>
+                </header>
+
+                <div class="about-content-scroll">
+                    <!-- SECTION 1 : OBJECTIF -->
+                    <article class="about-section">
+                        <h3>🚩 L'Objectif de la Campagne</h3>
+                        <p>
+                            Tu incarnes un profil militant propulsé dans la course vers mai 2027. Ton but : traverser <strong>24 tours bimensuels</strong> de rentrée sociale, de polémiques médiatiques et de luttes de terrain sans t'épuiser, pour culminer lors de <strong>La Grande Marche Populaire Finale</strong>.
+                        </p>
+                    </article>
+
+                    <!-- SECTION 2 : LES 5 RESSOURCES -->
+                    <article class="about-section">
+                        <h3>⚡ Les 5 Jauges Stratégiques</h3>
+                        <ul class="about-rules-list">
+                            <li>
+                                <strong>⚡ Énergie (0 - 100%) :</strong> Ton capital vital. Chaque action coup d'éclat coûte de l'énergie. Si la jauge atteint <strong>0%</strong>, c'est le <em>Burn-out militant</em> immédiat : la campagne s'arrête net.
+                            </li>
+                            <li>
+                                <strong>📜 Crédibilité (0 - 100%) :</strong> Ton sérieux idéologique perçu par l'opinion. Elle conditionne directement tes chances de succès lors des grands débats et sert de multiplicateur décisif pour le score final.
+                            </li>
+                            <li>
+                                <strong>💶 Trésor de Guerre (€) :</strong> Les fonds de caisse de solidarité et dons de campagne. Nécessaires pour financer le ralliement d'alliés majeurs au Tour 24 et booster la logistique des cortèges.
+                            </li>
+                            <li>
+                                <strong>🔥 Tension Médiatique (0 - 100%) :</strong> Le niveau de conflictualité et de provocation. Plus elle monte, plus les médias te ciblent. Franchir certains seuils déclenche automatiquement un <em>Débat d'Arène obligatoire</em> !
+                            </li>
+                            <li>
+                                <strong>👥 Abonnés (Feed X) :</strong> La caisse de résonance numérique. Elle fait grimper ton palier de notoriété nationale et décuple l'affluence du cortège final.
+                            </li>
+                        </ul>
+                    </article>
+
+                    <!-- SECTION 3 : LES DÉBATS D'ARÈNE -->
+                    <article class="about-section">
+                        <h3>🎙️ Les Débats d'Arène (Clashs)</h3>
+                        <p>
+                            Quand la Tension franchit des paliers critiques (12%, 30%, 55%, 80%, 100%), tu es sommé d'affronter un contradicteur dans un duel rhétorique :
+                        </p>
+                        <ul class="about-rules-list">
+                            <li><strong>Palier 1 (Faculté) :</strong> Face aux militants masculinistes et réacs en salle de cours.</li>
+                            <li><strong>Palier 2 (Live TikTok) :</strong> Face aux influenceurs libéraux et adeptes de Dubaï.</li>
+                            <li><strong>Palier 3 (Tribune Universitaire) :</strong> Face aux académiciens et grands clercs réactionnaires.</li>
+                            <li><strong>Palier 4 (Studio Radio) :</strong> Face aux éditorialistes néolibéraux des matinales.</li>
+                            <li><strong>Palier 5 (Prime Time TV) :</strong> Face au candidat du bloc bourgeois en direct national.</li>
+                        </ul>
+                        <p class="about-tip">
+                            💡 <em>Chaque riposte a un pourcentage de succès basé sur ta Crédibilité. Une victoire pulvérise l'adversaire ; un échec te discrédite lourdement.</em>
+                        </p>
+                    </article>
+
+                    <!-- SECTION 4 : PHASES SPÉCIALES & VICTOIRE -->
+                    <article class="about-section">
+                        <h3>📦 Le Sprint Final (Tours 20 à 24)</h3>
+                        <ul class="about-rules-list">
+                            <li>
+                                <strong>Tour 20 (Soirée Électorale) :</strong> Ton score caché détermine ta qualification historique au second tour présidentiel.
+                            </li>
+                            <li>
+                                <strong>Tour 24 (Ralliement des Alliés) :</strong> Investis ton trésor pour débloquer un Allié clé. Si son combat correspond à ton archétype (<em>Synergie Parfaite</em>), son bonus d'affluence est doublé !
+                            </li>
+                            <li>
+                                <strong>Épilogue (La Grande Marche) :</strong> Le décompte final fusionne ta crédibilité, tes fonds restants, tes abonnés et tes soutiens pour estimer la marée populaire. Ton nom est ensuite gravé au <strong>Panthéon des Luttes</strong>.
+                            </li>
+                        </ul>
+                    </article>
+                </div>
+
+                <div class="about-footer-action">
+                    <button id="btn-about-close" class="btn-primary">J'ai compris, à la lutte ! 🚩</button>
+                </div>
+            </div>
+        </section>
+        <!-- ==========================================
+             ÉCRAN 2 : CHOIX DU MILITANT (20 PROFILS)
+             ========================================== -->
+        <section id="screen-character" class="screen">
+    <button id="btn-character-back" class="btn-back-corner">⬅ Menu</button>
+    <button id="btn-sound-character" class="btn-sound-toggle" title="Couper / Activer la musique">🔊</button>
+    <h2>Choisis ton profil militant</h2>
+    <p class="subtitle">Ton archétype orientera tes forces tout au long de la campagne.</p>
+            <div id="character-selection" class="cards-grid">
+                <button class="char-card" data-type="influenceur">
+                    <span class="char-icon">📱</span>
+                    <h3>L'Influenceur.euse TikTok</h3>
+                    <p>Génération punchline & formats courts</p>
+                </button>
+                <button class="char-card" data-type="syndicaliste">
+                    <span class="char-icon">📢</span>
+                    <h3>Le/La Syndicaliste CGT</h3>
+                    <p>Merguez, sono saturée & grève générale</p>
+                </button>
+                <button class="char-card" data-type="intello">
+                    <span class="char-icon">📚</span>
+                    <h3>L'Intello Normalien.ne</h3>
+                    <p>Déconstruction, fiches de lecture & Bourdieu</p>
+                </button>
+                <button class="char-card" data-type="zadiste">
+                    <span class="char-icon">🚜</span>
+                    <h3>Le/La ZADiste</h3>
+                    <p>Cabanes perchées, mégabassines & sabotage écolo</p>
+                </button>
+                <button class="char-card" data-type="etudiant_bloqueur">
+                    <span class="char-icon">🪧</span>
+                    <h3>L'Étudiant.e Bloqueur.se</h3>
+                    <p>AG de 8 heures, chaises empilées & tracts froissés</p>
+                </button>
+                <button class="char-card" data-type="feministe">
+                    <span class="char-icon">🟣</span>
+                    <h3>La Féministe Intersectionnelle</h3>
+                    <p>Marches de nuit, collage d'affiches & sororité</p>
+                </button>
+                <button class="char-card" data-type="queer">
+                    <span class="char-icon">🏳️‍🌈</span>
+                    <h3>Le/La Queer Radical.e</h3>
+                    <p>Paillettes, anti-pinkwashing & cortège de tête</p>
+                </button>
+                <button class="char-card" data-type="avocat">
+                    <span class="char-icon">⚖️</span>
+                    <h3>L'Avocat.e Engagé.e</h3>
+                    <p>Recours d'urgence, permanences & Conseil d'État</p>
+                </button>
+                <button class="char-card" data-type="anticolonial">
+                    <span class="char-icon">✊🏾</span>
+                    <h3>Le/La Militant.e Anticolonial.e</h3>
+                    <p>Droit international, émancipation & boycott</p>
+                </button>
+                <button class="char-card" data-type="soignant">
+                    <span class="char-icon">🏥</span>
+                    <h3>L'Infirmier.ère en Colère</h3>
+                    <p>Urgences en sous-effectif & blouses taguées</p>
+                </button>
+                <button class="char-card" data-type="podcasteur">
+                    <span class="char-icon">🎧</span>
+                    <h3>Le/La Podcasteur.se</h3>
+                    <p>Micro-cravate, Patreon & débats de 3h</p>
+                </button>
+                <button class="char-card" data-type="black_bloc">
+                    <span class="char-icon">🏴</span>
+                    <h3>L'Autonome</h3>
+                    <p>K-Way noir, pavé & solidarité de garde à vue</p>
+                </button>
+                <button class="char-card" data-type="intermittent">
+                    <span class="char-icon">🎭</span>
+                    <h3>L'Intermittent.e</h3>
+                    <p>Théâtre de rue, occupations & précarité</p>
+                </button>
+                <button class="char-card" data-type="antispeciste">
+                    <span class="char-icon">🥦</span>
+                    <h3>L'Antispéciste</h3>
+                    <p>Sanctuaires animaux & blocage d'abattoirs</p>
+                </button>
+                <button class="char-card" data-type="cycliste">
+                    <span class="char-icon">🚲</span>
+                    <h3>Le/La Cycliste Vélo-Taf</h3>
+                    <p>Pistes cyclables sauvages & vélorutions</p>
+                </button>
+                <button class="char-card" data-type="journaliste">
+                    <span class="char-icon">🗞️</span>
+                    <h3>Le/La Journaliste Indé</h3>
+                    <p>Enquêtes de terrain & lanceurs d'alerte</p>
+                </button>
+                <button class="char-card" data-type="boulanger">
+                    <span class="char-icon">🥖</span>
+                    <h3>Le/La Boulanger.ère en Coop</h3>
+                    <p>Pain au levain & cantines de lutte</p>
+                </button>
+                <button class="char-card" data-type="hacker">
+                    <span class="char-icon">💻</span>
+                    <h3>Le/La Hacker Hacktiviste</h3>
+                    <p>Open-source, leaks & chiffrement</p>
+                </button>
+                <button class="char-card" data-type="attache_parlementaire">
+                    <span class="char-icon">🏛️</span>
+                    <h3>L'Attaché.e Parlementaire</h3>
+                    <p>Amendements à minuit & café froid</p>
+                </button>
+                <button class="char-card" data-type="batucada">
+                    <span class="char-icon">🥁</span>
+                    <h3>Le/La Batucada</h3>
+                    <p>Rythme de manif infatigable & sifflet strident</p>
+                </button>
+            </div>
+        </section>
+
+        <!-- ==========================================
+             ÉCRAN 3 : INTERFACE DE JEU PRINCIPALE (NETTOYÉE)
+             ========================================== -->
+        <section id="screen-game" class="screen">
+           <!-- HEADER ALLÉGÉ (Sans followers, statut bien calé) -->
+            <header class="game-header">
+                <div class="header-left">
+                    <span id="current-date" class="date-tag-large">Septembre 2026</span>
+                </div>
+                
+                <div class="stats-bar-group" style="display: flex; gap: 12px; align-items: center;">
+                    <!-- 1. BUDGET -->
+                    <div class="stat-pill-compact" title="Trésor de Guerre">
+                        <span class="stat-icon">💶</span>
+                        <span id="stat-budget" class="stat-num">1 000 €</span>
+                    </div>
+
+                    <!-- 2. ÉNERGIE -->
+                    <div class="stat-pill-compact" title="Énergie militante">
+                        <div class="energy-mini-top">
+                            <span class="stat-icon">⚡</span>
+                            <span id="stat-energy-text" class="stat-num">100%</span>
+                        </div>
+                        <div class="tension-bar-track-mini" style="width: 45px; background: rgba(0,0,0,0.1); height: 5px; border-radius: 3px; overflow: hidden; margin-top: 3px;">
+                            <div id="stat-energy-fill" style="width: 100%; height: 100%; background-color: #22c55e;"></div>
+                        </div>
+                    </div>
+
+                    <!-- 3. CRÉDIBILITÉ -->
+                    <div class="stat-pill-compact" title="Crédibilité politique">
+                        <span class="stat-icon">📜</span>
+                        <span id="stat-credibility" class="stat-num" style="font-weight: 800;">50%</span>
+                    </div>
+
+                    <!-- 4. TENSION 🔥 -->
+                    <div class="stat-pill-compact stat-tension-compact" title="Tension médiatique & Provocation">
+                        <div class="energy-mini-top">
+                            <span class="stat-icon">🔥</span>
+                            <span id="stat-tension-text" class="stat-num">0%</span>
+                        </div>
+                        <div class="tension-bar-track-mini" style="width: 45px; background: rgba(0,0,0,0.1); height: 5px; border-radius: 3px; overflow: hidden; margin-top: 3px;">
+                            <div id="stat-tension-fill" class="tension-bar-fill-mini" style="width: 0%; height: 100%; background-color: #f59e0b;"></div>
+                        </div>
+                    </div>
+    </div>
+
+    <!-- BOUTON SON CALÉ ENTRE LES STATS ET LE STATUT -->
+    <button id="btn-sound-game" class="btn-sound-toggle" title="Couper / Activer la musique">🔊</button>
+
+    <div class="header-right" style="flex-shrink: 0;">
+        <span id="live-militant-tier" class="tier-tag-live">🪧 Cellule Locale</span>
+    </div>
+</header>
+
+            <main class="event-zone">
+                <!-- COLONNE GAUCHE -->
+                <div class="event-left-col">
+                    <!-- Carte d'événement -->
+                    <div id="event-card" class="card theme-default">
+                        <div class="event-meta-header">
+                            <span id="event-theme-badge" class="badge-event-theme">🏛️ Politique Générale</span>
+                            <span id="event-character-tag" class="tag-character-clickable" title="Voir la fiche du personnage">👤 Intervenant</span>
+                        </div>
+                        <h2 id="event-title">Titre de l'événement</h2>
+                        <p id="event-description">Description de la situation et du dilemme politique...</p>
+                    </div>
+                    
+                    <!-- Boutons de choix -->
+                    <div id="choices-container" class="choices-zone"></div>
+
+                    <!-- Boutique de tirage de pack (Tour 24) -->
+                    <div id="pack-opening-zone" style="display: none;" class="pack-zone">
+                        <h2 class="pack-zone-title">📦 Ralliement pour la Grande Marche Finale</h2>
+                        <p class="pack-zone-desc">Investis ton trésor de guerre pour obtenir le soutien d'une figure majeure lors du rassemblement final.</p>
+
+                        <div class="packs-container">
+                            <div class="pack-card" id="btn-pack-standard">
+                                <div class="pack-icon">📢</div>
+                                <h3>Pack Appel Populaire</h3>
+                                <p class="pack-sub">Allié garanti de ton palier de notoriété actuel.</p>
+                                <div class="pack-price">150 €</div>
+                                <button class="btn-buy-pack" id="buy-pack-1">Ouvrir ce Pack</button>
+                            </div>
+
+                            <div class="pack-card pack-premium" id="btn-pack-premium">
+                                <div class="pack-icon">⭐</div>
+                                <h3>Pack Ralliement Thématique</h3>
+                                <p class="pack-sub">Allié garanti de ta propre famille politique (Palier 1 à 5 possible !).</p>
+                                <div class="pack-price">600 €</div>
+                                <button class="btn-buy-pack btn-buy-premium" id="buy-pack-2">Ouvrir ce Pack</button>
+                            </div>
+                        </div>
+
+                        <div id="ally-card-revealed" style="display: none;" class="revealed-ally-box">
+                            <span id="ally-rarity-badge" class="badge-rarity">Rareté</span>
+                            <h3 id="ally-name">Nom de l'Allié</h3>
+                            <div id="ally-role" class="ally-role-text">Rôle / Titre</div>
+                            <p id="ally-bio" class="ally-bio-text">Bio de l'allié...</p>
+                            <div id="ally-bonus-display" class="ally-bonus-tag">+0% à la manif</div>
+                            <div id="ally-synergy-tag" class="synergy-tag" style="display: none;">✨ SYNERGIE PARFAITE (+100% sur le bonus) !</div>
+                            <button id="btn-continue-march" class="btn-primary" style="margin-top: 15px;">En route pour la Grande Marche 🚩</button>
+                        </div>
+                    </div>
+                </div>
+
+               
+                <!-- COLONNE DROITE : Feed X avec Compteur de Followers Intégré -->
+                <aside id="social-feed-panel" class="social-panel">
+                    <div class="social-header" style="display: flex; justify-content: space-between; align-items: center; gap: 8px;">
+                        <span class="social-title">🔴 En direct</span>
+                        
+                        <!-- COMPTEUR DE FOLLOWERS BIEN VISIBLE EN HAUT À DROITE DU FEED -->
+                        <div class="stat-followers-social" style="background: rgba(29, 155, 240, 0.12); border: 1px solid rgba(29, 155, 240, 0.3); color: #0284c7; padding: 4px 10px; border-radius: 9999px; font-size: 0.85rem; font-weight: 800; display: flex; align-items: center; gap: 5px;">
+                            <span>👥</span>
+                            <span id="stat-followers">5 000 followers</span>
+                        </div>
+
+                        <button id="btn-close-feed" class="btn-close-mobile">&times;</button>
+                    </div>
+                    <div id="tweets-container" class="tweets-stream"></div>
+                </aside>
+
+                <button id="btn-toggle-feed-mobile" class="btn-floating-feed">
+    <span>📱 Feed X</span>
+    <span id="feed-notif-count" class="feed-badge-pill" style="display: none;">0</span>
+</button>
+            </main>
+        </section>
+
+        <!-- ==========================================
+             ÉCRAN 4 : RÉSULTAT DU CHOIX
+             ========================================== -->
+        <section id="screen-result" class="screen">
+            <div class="result-card">
+                <h2>Conséquences</h2>
+                <p id="result-text">Voici ce qu'il s'est passé...</p>
+                <ul id="result-impacts" class="impact-list"></ul>
+                <button id="btn-next-turn" class="btn-primary">Tour suivant</button>
+            </div>
+        </section>
+<!-- ==========================================
+             NOUVEL ÉCRAN : LE FACE-À-FACE / DÉBAT PLATEAU
+             ========================================== -->
+        <section id="screen-debate" class="screen">
+            <div class="debate-container card">
+                <div class="event-meta-header">
+                    <span id="debate-arena-badge" class="badge-event-theme">📺 Plateau Télévisé</span>
+                    <span id="debate-tier-tag" class="tag-character-clickable">Niveau de Clash</span>
+                </div>
+                <h2 id="debate-title">Titre du Débat</h2>
+                <div class="debate-adversary-box">
+                    <div class="adversary-avatar">🎙️</div>
+                    <div class="adversary-info">
+                        <h3 id="debate-opponent-name">Nom du Contradicteur</h3>
+                        <p id="debate-opponent-desc">Rôle / Menace</p>
+                    </div>
+                </div>
+                <p id="debate-desc" class="debate-context-text">Description du piège médiatique...</p>
+                <div class="debate-odds-box">
+                    <span>Tes chances de victoire (Crédibilité) :</span>
+                    <strong id="debate-odds-val">50%</strong>
+                </div>
+                <div class="choices-zone">
+                    <button id="btn-start-duel" class="btn-primary">Entrer dans l'arène 🎙️💥</button>
+                </div>
+            </div>
+        </section>
+      <!-- ==========================================
+             ÉCRAN : LOGISTIQUE DU CORTÈGE (SHOP MANIF)
+             ========================================== -->
+        <section id="screen-logistics" class="screen">
+            <button id="btn-sound-logistics" class="btn-sound-toggle btn-corner-sound" title="Couper / Activer la musique">🔊</button>
+            <div class="logistics-container">
+                <header class="logistics-header">
+                    <h2>📦 Logistique & Matériel de Lutte</h2>
+                    <p class="subtitle">Investis ton trésor restant pour blinder le cortège final.</p>
+                    <div class="logistics-budget-bar">
+                        <span>Trésor de campagne disponible :</span>
+                        <strong id="logistics-budget-val">0 €</strong>
+                    </div>
+                </header>
+
+                <!-- Grille des achats d'équipements -->
+                <div class="logistics-grid" id="logistics-items-grid"></div>
+
+                <div class="logistics-footer">
+                    <button id="btn-launch-final-march" class="btn-primary btn-large-fire">
+                        Lancer la Grande Marche Populaire 🚩➔
+                    </button>
+                </div>
+            </div>
+        </section>
+        <!-- ==========================================
+             ÉCRAN DE FIN : BILAN DE LA GRANDE MARCHE
+             ========================================== -->
+        <section id="screen-end" class="screen">
+            <div class="end-compact-container">
+                <header class="end-header">
+                    <span class="end-pre-tag">ÉPILOGUE DE CAMPAGNE — MAI 2027</span>
+                    <h1 class="end-main-title">🚩 La Grande Marche Populaire</h1>
+                    <div id="final-march-verdict" class="end-verdict-pill">Rassemblement Historique</div>
+                </header>
+
+                <!-- SCORE CENTRAL : BANNER AFFLUENCE -->
+                <div class="end-score-hero">
+                    <div class="score-hero-label">Affluence Totale Estimée</div>
+                    <div id="final-march-count" class="score-hero-number">0</div>
+                    <div class="score-hero-sub">participants mobilisés à travers tout le pays</div>
+                </div>
+
+                <!-- GRILLE DES 4 DONNÉES CLÉS COMPACTES -->
+                <div class="end-stats-dashboard">
+                    <div class="dash-card">
+                        <div class="dash-header">
+                            <span class="dash-icon">👤</span>
+                            <span class="dash-label">Archétype</span>
+                        </div>
+                        <div id="recap-archetype" class="dash-value">—</div>
+                    </div>
+
+                    <div class="dash-card">
+                        <div class="dash-header">
+                            <span class="dash-icon">🎖️</span>
+                            <span class="dash-label">Rang Militant</span>
+                        </div>
+                        <div id="recap-status" class="dash-value">—</div>
+                    </div>
+
+                    <div class="dash-card nemesis-theme">
+    <div class="dash-header">
+        <span class="dash-icon">⚔️</span>
+        <span class="dash-label">Grand Adversaire</span>
+    </div>
+    <div id="recap-nemesis" class="dash-value">—</div>
+</div>
+                    <div class="dash-card ally-theme">
+                        <div class="dash-header">
+                            <span class="dash-icon">⭐</span>
+                            <span class="dash-label">Allié Clé</span>
+                        </div>
+                        <div id="recap-ally" class="dash-value">—</div>
+                    </div>
+                </div>
+
+                <!-- FORMULAIRE D'ENREGISTREMENT AU PANTHÉON -->
+                <div class="save-box end-save-row">
+                    <input type="text" id="player-name" placeholder="Ton pseudo de lutte..." maxlength="20" class="input-save-compact">
+                    <button id="btn-save-score" class="btn-save-compact">Graver au Panthéon 📜</button>
+                </div>
+
+                <!-- ACTIONS DU BAS -->
+                <div class="end-footer-actions">
+    <button id="btn-restart" class="btn-action-ghost">🔄 Rejouer</button>
+    <button id="btn-end-to-collection" class="btn-action-ghost">📖 Collection</button>
+    <button id="btn-end-to-menu" class="btn-action-ghost">🏠 Menu Principal</button>
+</div>
+            </div>
+        </section>
+
+        <!-- ==========================================
+             ÉCRAN 6 : ALBUM DE COLLECTION
+             ========================================== -->
+        <section id="screen-collection" class="screen">
+    <button id="btn-collection-back" class="btn-back-corner">⬅ Menu</button>
+    <button id="btn-sound-collection" class="btn-sound-toggle btn-corner-sound" title="Couper / Activer la musique">🔊</button>
+    
+    <div class="collection-container">
+        <header class="collection-header">
+            <h2>Collection des Camarades</h2>
+            <p id="collection-count-text" class="subtitle-collection">Débloqués : 0 / 0</p>
+        </header>
+
+        <!-- Filtres thématiques colorés par palier -->
+        <div class="collection-filters">
+            <button class="filter-btn active" data-tier="all">Tous</button>
+            <button class="filter-btn filter-t1" data-tier="1">Terrain</button>
+            <button class="filter-btn filter-t2" data-tier="2">Cadres</button>
+            <button class="filter-btn filter-t3" data-tier="3">Reconnus</button>
+            <button class="filter-btn filter-t4" data-tier="4">Poids Lourds</button>
+            <button class="filter-btn filter-t5" data-tier="5">Historiques</button>
+        </div>
+
+        <!-- Grille des cartes -->
+        <div class="collection-grid" id="collection-grid"></div>
+    </div>
+
+    <!-- Modale pop-up détaillée au clic sur une carte débloquée -->
+    <div id="ally-modal-overlay" class="modal-overlay" style="display: none;">
+        <div class="modal-card" id="ally-modal-content">
+            <button id="btn-close-modal" class="btn-close-corner">✕</button>
+            <div id="modal-body"></div>
+        </div>
+    </div>
+</section>
+
+      
+     <!-- ==========================================
+             ÉCRAN : CLASSEMENT
+             ========================================== -->
+        <section id="screen-leaderboard" class="screen">
+            <div class="leaderboard-full-wrapper">
+                <header class="leaderboard-header-top">
+                    <h2>Classement</h2>
+                    <div class="leaderboard-tabs">
+                        <button id="tab-national-scores" class="btn-tab active">🌐 National</button>
+                        <button id="tab-local-scores" class="btn-tab">📱 Cet Appareil</button>
+                    </div>
+                    <p class="subtitle" id="leaderboard-subtitle">Les 50 plus grandes mobilisations de France.</p>
+                </header>
+
+                <div class="leaderboard-scroll-area">
+                    <table class="leaderboard-table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Militant</th>
+                                <th>Archétype</th>
+                                <th>Allié Clé</th>
+                                <th>Grand Adversaire</th>
+                                <th>Cortège Final</th>
+                            </tr>
+                        </thead>
+                        <tbody id="leaderboard-body"></tbody>
+                    </table>
+                </div>
+
+                <footer class="leaderboard-footer-bar">
+                    <button id="btn-back-menu" class="btn-secondary btn-compact">⬅ Accueil</button>
+                    <button id="btn-clear-scores" class="btn-danger btn-compact" style="display: none;">Effacer l'historique</button>
+                </footer>
+            </div>
+        </section>
+
+    <!-- SCRIPTS DANS L'ORDRE STRICT -->
+    <script src="data.js"></script>
+    <script src="alliesData.js"></script>
+    <script src="debatesData.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

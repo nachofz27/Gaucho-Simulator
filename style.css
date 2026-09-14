@@ -1,0 +1,4522 @@
+html, body {
+    background-color: #FAF2E6 !important;
+    background: #FAF2E6 !important;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+}
+
+:root {
+    /* Le beige crème vanillé pour l'ensemble */
+    --bg-main: #FAF4EB;
+    /* Ton rouge dominant */
+    --primary: #770720;
+    --primary-hover: #560416;
+    --primary-light: rgba(119, 7, 32, 0.08);
+    
+    /* Textes foncés et chaleureux */
+    --text-dark: #2A1F1D;
+    --text-muted: #7A6662;
+    --card-bg: #FAF4EB;
+    
+    --border-radius: 14px;
+    --shadow: 0 10px 30px rgba(119, 7, 32, 0.1);
+    --transition: all 0.2s ease-in-out;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+body {
+    background-color: var(--bg-main) !important;
+    color: var(--text-dark);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 40px 20px;
+}
+
+#game-container {
+    width: 100%;
+    max-width: 980px;
+    background: var(--bg-main);
+    border: 3px solid var(--primary);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    overflow: visible;
+    position: relative;
+    min-height: 600px;
+}
+
+/* GESTION STRICTE DES ÉCRANS POUR ÉVITER LES BUGS VISUELS */
+.screen {
+    display: none; /* Tout est caché par défaut */
+    padding: 40px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 600px;
+    animation: fadeIn 0.4s ease;
+}
+
+.screen.active {
+    display: flex; /* Seul l'écran actif s'affiche */
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ==========================================
+   3. TYPOGRAPHIE & BOUTONS GÉNÉRAUX
+   ========================================== */
+h1, h2, h3 {
+    color: var(--primary);
+    text-align: center;
+}
+
+.game-title {
+    font-size: 3.5rem; /* Titre plus massif */
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: -1px;
+    margin-bottom: 10px;
+}
+
+.subtitle {
+    font-size: 1.2rem;
+    color: var(--text-muted);
+    margin-bottom: 40px;
+    text-align: center;
+}
+
+button {
+    cursor: pointer;
+    font-size: 1.1rem;
+    font-weight: bold;
+    border-radius: 8px;
+    padding: 16px 24px;
+    transition: var(--transition);
+    border: 2px solid var(--primary);
+    width: 100%;
+}
+
+.btn-primary {
+    background-color: var(--primary);
+    color: #FFF;
+}
+
+.btn-primary:hover {
+    background-color: var(--primary-hover);
+    border-color: var(--primary-hover);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(119, 7, 32, 0.3);
+}
+
+.btn-secondary {
+    background-color: transparent;
+    color: var(--primary);
+}
+
+.btn-secondary:hover {
+    background-color: var(--primary-light);
+    transform: translateY(-2px);
+}
+
+/* ==========================================
+   4. MENU & SÉLECTION PERSO
+   ========================================== */
+.menu-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+
+
+.char-btn h3 {
+    text-align: center;
+    font-size: 1.2rem;
+}
+
+.char-btn p {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    text-align: center;
+}
+
+.char-btn:hover {
+    background-color: var(--primary-light);
+    transform: scale(1.03);
+}
+
+/* ==========================================
+   5. INTERFACE DE JEU (HEADER & STATS)
+   ========================================== */
+#screen-game {
+    padding: 0;
+    justify-content: flex-start;
+}
+
+/* ==========================================
+   HEADER STATS - FOND ROUGE & DATE À GAUCHE
+   ========================================== */
+/* BANDEAU ROUGE PLEINE LARGEUR EN HAUT DU CADRE */
+/* ==========================================
+   HEADER STATS PLEINE LARGEUR & COMPACT (1 LIGNE)
+   ========================================== */
+.game-header {
+    background: var(--primary);
+    padding: 8px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    width: 100%;
+    margin: 0;
+    border-radius: calc(var(--border-radius) - 3px) calc(var(--border-radius) - 3px) 0 0;
+    box-sizing: border-box;
+}
+
+/* 1. Date à gauche */
+.header-left {
+    flex-shrink: 0;
+}
+
+.date-tag-large {
+    font-size: 0.95rem;
+    font-weight: 900;
+    color: #FFF;
+    background: rgba(255, 255, 255, 0.18);
+    padding: 5px 12px;
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    white-space: nowrap;
+}
+
+/* 2. Groupe central des pastilles compactes */
+.header-center-stats {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: nowrap;
+}
+
+.stat-pill-compact {
+    background: #FFFFFF;
+    border-radius: 8px;
+    padding: 4px 8px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+}
+
+.stat-pill-compact .stat-icon {
+    font-size: 0.85rem;
+}
+
+.stat-pill-compact .stat-num {
+    color: #1A1A1A;
+    font-size: 0.82rem;
+    font-weight: 800;
+    white-space: nowrap;
+}
+
+/* Barre d'énergie compacte */
+.stat-energy-compact {
+    flex-direction: column;
+    gap: 2px;
+    min-width: 65px;
+    padding: 3px 6px;
+}
+
+.energy-mini-top {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+}
+
+.energy-mini-top .stat-num {
+    font-size: 0.75rem;
+}
+
+.energy-bar-track-mini {
+    width: 100%;
+    height: 4px;
+    background: rgba(0, 0, 0, 0.12);
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.energy-bar-fill-mini {
+    height: 100%;
+    width: 100%;
+    border-radius: 6px;
+    transition: width 0.3s ease, background-color 0.3s ease;
+    background-color: #22c55e;
+}
+
+/* 3. Statut du militant à droite */
+.header-right {
+    flex-shrink: 0;
+}
+
+.tier-tag-live {
+    font-size: 0.82rem;
+    font-weight: 800;
+    color: var(--primary);
+    background: #FFFDF9;
+    padding: 5px 12px;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    box-shadow: 0 1px 4px rgba(0,0,0,0.15);
+    white-space: nowrap;
+}
+
+/* RESPONSIVE MOBILE (<= 800px) */
+@media (max-width: 800px) {
+    .game-header {
+        flex-wrap: wrap;
+        gap: 8px;
+        padding: 8px 10px;
+    }
+    .header-left, .header-right {
+        width: auto;
+    }
+    .date-tag-large {
+        font-size: 0.82rem;
+        padding: 4px 8px;
+    }
+    .tier-tag-live {
+        font-size: 0.75rem;
+        padding: 4px 8px;
+    }
+    .header-center-stats {
+        width: 100%;
+        justify-content: space-between;
+        order: 3;
+    }
+    .stat-pill-compact {
+        padding: 4px 6px;
+        font-size: 0.75rem;
+    }
+}
+
+.header-top-row {
+    display: flex;
+    justify-content: flex-start; /* Aligné tout à gauche */
+}
+
+.date-tag {
+    font-size: 0.8rem;
+    font-weight: 800;
+    color: #FFF;
+    background: rgba(255, 255, 255, 0.15);
+    padding: 2px 10px;
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    letter-spacing: 0.5px;
+}
+
+.stats-bar {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    align-items: center;
+}
+
+/* Pastilles semi-transparentes blanches sur fond rouge */
+.stat-pill {
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: 10px;
+    padding: 6px 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+}
+
+.stat-icon {
+    font-size: 0.95rem;
+}
+
+.stat-num {
+    color: #1A1A1A;
+    font-size: 0.85rem;
+    font-weight: 800;
+    white-space: nowrap;
+}
+
+/* Barre d'énergie */
+.stat-energy-pill {
+    flex-direction: column;
+    gap: 2px;
+    padding: 4px 8px;
+}
+
+.energy-top-label {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.energy-bar-track {
+    width: 100%;
+    height: 6px;
+    background: rgba(0, 0, 0, 0.15);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.energy-bar-fill {
+    height: 100%;
+    width: 100%;
+    border-radius: 10px;
+    transition: width 0.3s ease, background-color 0.3s ease;
+    background-color: #22c55e;
+}
+.calendar-display {
+    font-weight: 800;
+    font-size: 1.3rem;
+    text-transform: uppercase;
+}
+
+.stats-display {
+    display: flex;
+    gap: 20px;
+}
+
+.stat-item {
+    font-size: 1.1rem;
+    font-weight: bold;
+    background: rgba(255, 255, 255, 0.15);
+    padding: 8px 14px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* ==========================================
+   6. CARTE ÉVÉNEMENT & BORDURES DYNAMIQUES
+   ========================================== */
+.event-zone {
+    width: 100%;
+    padding: 20px 24px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    flex: 1;
+}
+
+
+/* Couleurs des thèmes appliquées sur la bordure gauche */
+.card.theme-default { border-color: var(--primary); }
+.card.theme-ecologie { border-color: #22c55e; }
+.card.theme-antifa { border-color: #dc2626; }
+.card.theme-feminisme { border-color: #a855f7; }
+.card.theme-repression { border-color: #2563eb; }
+.card.theme-medias { border-color: #f97316; }
+.card.theme-international { border-color: #eab308; }
+.card.theme-lgbt {
+    border-image: linear-gradient(to bottom, #ef4444, #eab308, #22c55e, #3b82f6, #a855f7) 1;
+}
+
+/* ==========================================
+   7. ZONE DES CHOIX
+   ========================================== */
+.choices-zone {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 14px;
+}
+   .btn-choice {
+    background: #FFFDF9;
+    color: var(--text-dark);
+    border: 1.5px solid rgba(119, 7, 32, 0.2);
+    border-radius: 24px !important; /* Très arrondi */
+    padding: 10px 18px !important;   /* Plus compact */
+    font-size: 0.9rem !important;    /* Police réduite */
+    line-height: 1.35;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+}
+
+.btn-choice:hover {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: #FFF !important;
+}
+
+.btn-choice:hover .badge-cost {
+    background: rgba(255, 255, 255, 0.2) !important;
+    color: #FFF !important;
+    border-color: transparent !important;
+}
+
+/* ==========================================
+   8. ÉCRAN RÉSULTAT & SCORE DE FIN
+   ========================================== */
+.result-card, .end-content {
+    background: #FFF;
+    border: 3px solid var(--primary);
+    border-radius: var(--border-radius);
+    padding: 40px;
+    width: 100%;
+    max-width: 600px;
+    text-align: center;
+    box-shadow: var(--shadow);
+}
+
+.impact-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    font-size: 1.3rem;
+    margin: 25px 0;
+}
+
+.score-number {
+    font-size: 4rem;
+    font-weight: 900;
+    color: var(--primary);
+    margin: 20px 0;
+}
+
+.leaderboard-form {
+    display: flex;
+    gap: 10px;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.leaderboard-form input {
+    flex: 1;
+    padding: 15px;
+    border: 2px solid var(--primary);
+    border-radius: 8px;
+    font-size: 1.1rem;
+    outline: none;
+}
+/* ==========================================
+   MODULE FEED RÉSEAUX SOCIAUX (PC & MOBILE)
+   ========================================== */
+
+/* Structure 2 colonnes sur grand écran */
+.event-zone {
+    display: grid !important;
+    grid-template-columns: 1.2fr 0.8fr;
+    gap: 24px;
+    padding: 24px;
+    align-items: start;
+}
+
+.event-left-col {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Panneau de droite (PC) */
+.social-panel {
+    background: #FFFDF9;
+    border: 2px solid rgba(119, 7, 32, 0.2);
+    border-radius: var(--border-radius);
+    padding: 18px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+    max-height: 520px;
+    overflow: visible; /* Autorise les animations flottantes à sortir du cadre */
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.social-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--primary-light);
+}
+
+.social-title {
+    font-size: 0.95rem;
+    font-weight: 800;
+    color: var(--primary);
+}
+
+.btn-close-mobile {
+    display: none;
+    background: none;
+    border: none;
+    font-size: 1.8rem;
+    color: var(--primary);
+    cursor: pointer;
+    width: auto;
+    padding: 0;
+}
+
+/* Style des Tweets individuels */
+.tweets-stream {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    overflow-y: auto;
+    max-height: 440px;
+    padding-right: 4px;
+}
+
+.tweet-card {
+    background: #FFFFFF;
+    border: 1px solid rgba(119, 7, 32, 0.12);
+    border-radius: 10px;
+    padding: 12px 14px;
+    font-size: 0.92rem;
+    animation: fadeIn 0.3s ease;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+}
+
+.tweet-author {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 6px;
+}
+
+.tweet-name {
+    font-weight: 800;
+    color: var(--text-dark);
+}
+
+.tweet-handle {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+}
+
+.tweet-text {
+    line-height: 1.4;
+    color: var(--text-dark);
+}
+
+.btn-floating-feed {
+    display: none; /* Masqué sur PC */
+}
+
+/* Rendu adapté SMARTPHONE */
+/* ==========================================
+   RESPONSIVE SMARTPHONE & TABLETTE (<= 800px)
+   ========================================== */
+@media (max-width: 800px) {
+    /* 1. Header de stats compact sur 2 lignes */
+    .stats-bar {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 6px;
+    }
+
+    .stat-pill {
+        padding: 5px 6px;
+        font-size: 0.78rem;
+    }
+
+    /* 2. Zone d'événement en colonne unique */
+    .event-zone {
+        display: flex !important;
+        flex-direction: column;
+        padding: 14px;
+    }
+
+    .card {
+        padding: 16px 14px;
+    }
+
+    .btn-choice {
+        padding: 10px 14px !important;
+        font-size: 0.85rem !important;
+    }
+
+    /* 3. Tiroir mobile coulissant pour le Feed X */
+    .social-panel {
+        display: none;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 75vh;
+        z-index: 999;
+        border-radius: 20px 20px 0 0;
+        border: 3px solid var(--primary);
+        border-bottom: none;
+        box-shadow: 0 -10px 30px rgba(0,0,0,0.25);
+        background: #FAF4EB;
+    }
+
+    .social-panel.mobile-open {
+        display: flex;
+        animation: slideUp 0.3s ease-out;
+    }
+
+    .btn-close-mobile {
+        display: block;
+    }
+
+    /* 4. Bouton flottant mobile en bas à droite */
+    .btn-floating-feed {
+        display: block;
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        z-index: 99;
+        width: auto;
+        padding: 12px 18px;
+        background: var(--primary);
+        color: #FFF;
+        border-radius: 30px;
+        box-shadow: 0 6px 16px rgba(119, 7, 32, 0.4);
+    }
+}
+
+@keyframes slideUp {
+    from { transform: translateY(100%); }
+    to { transform: translateY(0); }
+}
+/* MASCOTTE TORTUE QUI DÉPASSE */
+.mascot-tortue {
+    position: absolute;
+    top: -48px;          /* Légèrement plus haute */
+    right: 40px;
+    font-size: 2.4rem;
+    z-index: 9999;
+    pointer-events: none;
+    transform: scaleX(-1);
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.15));
+}
+/* ==========================================
+   ÉCRAN DE FIN, BADGES & CLASSEMENT LOCAL
+   ========================================== */
+
+.badge-status {
+    display: inline-block;
+    background: var(--primary-light);
+    color: var(--primary);
+    font-weight: 700;
+    padding: 6px 14px;
+    border-radius: 20px;
+    margin: 8px 0 16px 0;
+    border: 1px solid var(--primary);
+}
+
+.score-card {
+    background: #FFFDF9;
+    border: 2px solid var(--primary);
+    border-radius: var(--border-radius);
+    padding: 20px;
+    margin: 15px 0;
+    text-align: center;
+}
+
+.score-label {
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text-muted);
+}
+
+.score-val {
+    font-size: 3rem;
+    font-weight: 900;
+    color: var(--primary);
+    margin: 5px 0;
+}
+
+.rank-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text-dark);
+}
+
+.end-text {
+    line-height: 1.6;
+    margin: 15px 0 25px 0;
+    font-size: 1rem;
+    color: var(--text-dark);
+}
+
+.save-box {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.save-box input {
+    flex: 1;
+    padding: 12px 16px;
+    border: 1.5px solid rgba(119, 7, 32, 0.3);
+    border-radius: 8px;
+    font-size: 1rem;
+    background: #FFF;
+    color: var(--text-dark);
+}
+
+.end-actions, .leaderboard-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+}
+
+/* Tableau Leaderboard */
+.leaderboard-table-container {
+    max-height: 380px;
+    overflow-y: auto;
+    margin: 20px 0;
+    border: 1.5px solid rgba(119, 7, 32, 0.2);
+    border-radius: 8px;
+}
+
+.leaderboard-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #FFFDF9;
+    text-align: left;
+    font-size: 0.95rem;
+}
+
+.leaderboard-table th, .leaderboard-table td {
+    padding: 12px 14px;
+    border-bottom: 1px solid rgba(119, 7, 32, 0.1);
+}
+
+.leaderboard-table th {
+    background: var(--primary);
+    color: #FFF;
+    font-weight: 600;
+}
+
+.btn-danger {
+    background: #4A0404;
+    color: #FFF;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+.btn-danger:hover {
+    background: #2D0202;
+}
+
+/* Badges de coût minimalistes */
+.choice-costs {
+    display: flex;
+    gap: 6px;
+    margin-top: 2px;
+}
+
+.badge-cost {
+    font-size: 0.75rem;
+    font-weight: 800;
+    padding: 1px 7px;
+    border-radius: 12px;
+}
+.cost-loss {
+    background: rgba(239, 68, 68, 0.12);
+    color: #DC2626;
+    border: 1px solid rgba(220, 38, 38, 0.25);
+}
+
+.cost-gain {
+    background: rgba(34, 197, 94, 0.12);
+    color: #16A34A;
+    border: 1px solid rgba(22, 163, 74, 0.25);
+}
+/* ==========================================
+   DÉSACTIVATION DU DOUBLE-TAP ZOOM TACTILE
+   ========================================== */
+html, body, button, .char-card, .btn-choice {
+    touch-action: manipulation;
+}
+
+/* ==========================================
+   GRILLE DES ARCHÉTYPES (PC : GRANDE TAILLE LISIBLE)
+   ========================================== */
+.character-grid, .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 14px;
+    width: 100%;
+    margin: 20px 0;
+}
+
+.char-card {
+    background: #FFFDF9;
+    border: 2px solid rgba(119, 7, 32, 0.2);
+    border-radius: 14px;
+    padding: 16px 12px;
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.15s ease, border-color 0.15s ease, background 0.15s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.char-card:hover {
+    border-color: var(--primary);
+    background: var(--primary);
+    transform: translateY(-3px);
+}
+
+.char-card:hover h3,
+.char-card:hover p {
+    color: #FFF !important;
+}
+
+.char-icon {
+    font-size: 2.2rem;
+    line-height: 1;
+}
+
+.char-card h3 {
+    font-size: 1rem;
+    font-weight: 800;
+    margin: 0;
+    color: var(--primary);
+}
+
+.char-card p {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    line-height: 1.35;
+    margin: 0;
+}
+
+/* ==========================================
+   GRILLE DES ARCHÉTYPES (MOBILE : PETITS CARRÉS 4 À 5 PAR LIGNE)
+   ========================================== */
+@media (max-width: 650px) {
+    .character-grid, .cards-grid {
+        grid-template-columns: repeat(4, 1fr) !important;
+        gap: 5px !important;
+        margin: 10px 0 !important;
+    }
+    .char-card {
+        padding: 6px 2px !important;
+        border-radius: 8px !important;
+        gap: 3px !important;
+    }
+    .char-icon {
+        font-size: 1.3rem !important;
+    }
+    .char-card h3 {
+        font-size: 0.65rem !important;
+        font-weight: 700 !important;
+    }
+    .char-card p {
+        display: none !important; /* Cache les descriptions pour afficher en mosaïque compacte */
+    }
+}
+
+/* ==========================================
+   CARTE D'ÉVÉNEMENT : BORDURES ÉPAISSES & HEADER MÉTA
+   ========================================== */
+.card {
+    background: #FFFDF9;
+    border: 2px solid rgba(119, 7, 32, 0.15);
+    border-left: 8px solid var(--primary) !important;
+    border-radius: 16px;
+    padding: 20px 24px;
+    min-height: 140px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+}
+
+.card h2 {
+    font-size: 1.25rem;
+    margin-bottom: 8px;
+    color: var(--primary);
+    text-align: left;
+}
+
+.card p {
+    font-size: 1rem;
+    line-height: 1.5;
+    color: var(--text-dark);
+    text-align: left;
+}
+
+/* Couleurs des thèmes sur la bordure gauche épaisse */
+.card.theme-default { border-left-color: var(--primary) !important; }
+.card.theme-ecolo, .card.theme-ecologie { border-left-color: #16a34a !important; }
+.card.theme-antifa { border-left-color: #dc2626 !important; }
+.card.theme-feminisme { border-left-color: #9333ea !important; }
+.card.theme-repression { border-left-color: #1e293b !important; }
+.card.theme-medias { border-left-color: #ea580c !important; }
+.card.theme-international { border-left-color: #0284c7 !important; }
+
+/* En-tête métadonnées de l'événement */
+.event-meta-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.badge-event-theme {
+    font-size: 0.75rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    background: rgba(0, 0, 0, 0.05);
+    color: var(--text-dark);
+    padding: 3px 8px;
+    border-radius: 8px;
+}
+
+.tag-character-clickable {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--primary);
+    background: var(--primary-light);
+    border: 1px solid rgba(119, 7, 32, 0.2);
+    padding: 3px 10px;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: background 0.15s ease, transform 0.15s ease;
+}
+
+.tag-character-clickable:hover {
+    background: var(--primary);
+    color: #FFF;
+    transform: scale(1.03);
+}
+/* ==========================================
+   ZONE DE TIRAGE DE PACKS (TOUR 24)
+   ========================================== */
+.pack-zone {
+    width: 100%;
+    padding: 20px;
+    box-sizing: border-box;
+    text-align: center;
+    animation: fadeIn 0.4s ease;
+}
+
+.pack-zone-title {
+    font-size: 1.5rem;
+    font-weight: 900;
+    color: var(--primary);
+    margin-bottom: 6px;
+}
+
+.pack-zone-desc {
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    margin-bottom: 24px;
+}
+
+.packs-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 25px;
+}
+
+@media (max-width: 650px) {
+    .packs-container {
+        grid-template-columns: 1fr;
+    }
+}
+
+.pack-card {
+    background: #FFFDF9;
+    border: 2px solid rgba(119, 7, 32, 0.2);
+    border-radius: 16px;
+    padding: 20px 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+}
+
+.pack-premium {
+    border: 2px solid #d97706;
+    background: linear-gradient(180deg, #FFFDF9 0%, #FFFBEB 100%);
+}
+
+.pack-icon {
+    font-size: 2.5rem;
+    line-height: 1;
+}
+
+.pack-card h3 {
+    font-size: 1.1rem;
+    color: var(--primary);
+    margin: 0;
+}
+
+.pack-sub {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    min-height: 35px;
+    line-height: 1.3;
+}
+
+.pack-price {
+    font-size: 1.3rem;
+    font-weight: 900;
+    color: var(--primary);
+    background: var(--primary-light);
+    padding: 4px 14px;
+    border-radius: 20px;
+}
+
+.pack-premium .pack-price {
+    color: #b45309;
+    background: #fef3c7;
+}
+
+.btn-buy-pack {
+    width: 100%;
+    margin-top: 8px;
+    padding: 10px;
+    font-size: 0.95rem;
+    background: var(--primary);
+    color: #FFF;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 800;
+}
+
+.btn-buy-premium {
+    background: #d97706;
+}
+
+.btn-buy-pack:disabled {
+    background: #a1a1aa !important;
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+/* CARTE DE L'ALLIÉ RÉVÉLÉE */
+.revealed-ally-box {
+    background: #FFFDF9;
+    border: 3px solid var(--primary);
+    border-radius: 16px;
+    padding: 24px;
+    max-width: 450px;
+    margin: 0 auto;
+    position: relative;
+    animation: fadeIn 0.4s ease;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+}
+
+.badge-rarity {
+    display: inline-block;
+    padding: 4px 12px;
+    font-size: 0.75rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    color: #FFF;
+    background: #71717a;
+    border-radius: 12px;
+    margin-bottom: 8px;
+}
+
+.ally-role-text {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    margin-bottom: 10px;
+}
+
+.ally-bio-text {
+    font-size: 0.88rem;
+    line-height: 1.4;
+    color: var(--text-dark);
+    margin-bottom: 14px;
+}
+
+.ally-bonus-tag {
+    font-size: 1.1rem;
+    font-weight: 900;
+    color: #15803d;
+    background: #dcfce7;
+    padding: 6px 14px;
+    border-radius: 10px;
+    display: inline-block;
+}
+
+.synergy-tag {
+    margin-top: 8px;
+    font-size: 0.85rem;
+    font-weight: 800;
+    color: #b45309;
+    background: #fef3c7;
+    padding: 4px 10px;
+    border-radius: 8px;
+}
+/* ==========================================
+   ÉCRAN DE FIN : GRILLE RÉCAPITULATIVE
+   ========================================== */
+.final-march-card {
+    background: linear-gradient(180deg, #FFFDF9 0%, #FAF2E6 100%);
+    border: 3px solid var(--primary);
+}
+
+.end-recap-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin: 18px 0;
+    text-align: left;
+}
+
+@media (max-width: 600px) {
+    .end-recap-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.recap-box {
+    background: #FFFDF9;
+    border: 1.5px solid rgba(119, 7, 32, 0.2);
+    border-radius: 12px;
+    padding: 10px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.recap-label {
+    font-size: 0.75rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    color: var(--text-muted);
+}
+
+.recap-val {
+    font-size: 0.95rem;
+    font-weight: 800;
+    color: var(--primary);
+}
+
+.recap-ally-box {
+    border-color: #d97706;
+    background: #FFFBEB;
+}
+
+/* ==========================================
+   ALBUM DE COLLECTION DES CAMARADES
+   ========================================== */
+.collection-container {
+    width: 100%;
+    max-width: 900px;
+    background: #FFFDF9;
+    border: 3px solid var(--primary);
+    border-radius: var(--border-radius);
+    padding: 24px;
+    box-shadow: var(--shadow);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.collection-header {
+    text-align: center;
+    margin-bottom: 16px;
+}
+
+.collection-header h2 {
+    font-size: 1.8rem;
+    color: var(--primary);
+    margin-bottom: 4px;
+}
+
+.collection-filters {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.filter-btn {
+    padding: 6px 14px;
+    font-size: 0.85rem;
+    font-weight: 800;
+    border-radius: 20px;
+    border: 1.5px solid var(--primary);
+    background: transparent;
+    color: var(--primary);
+    width: auto;
+    cursor: pointer;
+}
+
+.filter-btn.active, .filter-btn:hover {
+    background: var(--primary);
+    color: #FFF;
+}
+
+.collection-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+    gap: 12px;
+    width: 100%;
+    max-height: 480px;
+    overflow-y: auto;
+    padding: 6px;
+}
+
+/* Carte de collection */
+.ally-collection-card {
+    background: #FFFFFF;
+    border: 2px solid rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+    transition: transform 0.15s ease;
+}
+
+.ally-collection-card:hover {
+    transform: translateY(-2px);
+}
+
+.ally-collection-card.locked {
+    background: #f4f4f5;
+    border: 2px dashed #d4d4d8;
+    opacity: 0.6;
+    align-items: center;
+    justify-content: center;
+    min-height: 140px;
+}
+
+.locked-icon {
+    font-size: 2rem;
+    margin-bottom: 4px;
+}
+
+.locked-text {
+    font-size: 0.8rem;
+    font-weight: 800;
+    color: #71717a;
+}
+
+.card-tier-pill {
+    align-self: flex-start;
+    font-size: 0.68rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    color: #FFF;
+    padding: 2px 8px;
+    border-radius: 10px;
+}
+
+.card-name-title {
+    font-size: 0.92rem;
+    font-weight: 800;
+    color: var(--text-dark);
+}
+
+.card-role-sub {
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--text-muted);
+}
+
+.card-bio-p {
+    font-size: 0.75rem;
+    line-height: 1.35;
+    color: var(--text-dark);
+}
+/* ==========================================
+   REFONTE VISUELLE : ÉCRAN DE FIN COMPACT
+   ========================================== */
+.end-compact-container {
+    width: 100%;
+    max-width: 580px;
+    margin: 0 auto;
+    background: #FFFDF9;
+    border: 2px solid rgba(119, 7, 32, 0.25);
+    border-radius: 16px;
+    padding: 20px 24px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    box-sizing: border-box;
+}
+
+.end-header {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+}
+
+.end-pre-tag {
+    font-size: 0.68rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    color: var(--text-muted, #71717a);
+    text-transform: uppercase;
+}
+
+.end-main-title {
+    font-size: 1.35rem;
+    font-weight: 900;
+    color: var(--primary, #770720);
+    margin: 0;
+}
+
+.end-verdict-pill {
+    display: inline-block;
+    font-size: 0.78rem;
+    font-weight: 800;
+    color: #92400e;
+    background: #fef3c7;
+    border: 1px solid #fde68a;
+    padding: 3px 10px;
+    border-radius: 20px;
+    margin-top: 2px;
+}
+
+/* CARTE SCORE CENTRALE */
+.end-score-hero {
+    background: linear-gradient(180deg, #FAF2E6 0%, #F5E7D3 100%);
+    border: 1.5px solid rgba(119, 7, 32, 0.2);
+    border-radius: 12px;
+    padding: 12px 16px;
+    text-align: center;
+}
+
+.score-hero-label {
+    font-size: 0.72rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-muted, #71717a);
+}
+
+.score-hero-number {
+    font-size: 1.85rem;
+    font-weight: 900;
+    color: var(--primary, #770720);
+    line-height: 1.15;
+    margin: 2px 0;
+}
+
+.score-hero-sub {
+    font-size: 0.75rem;
+    color: var(--text-dark, #27272a);
+    font-weight: 600;
+}
+
+/* GRILLE DES 4 INFOS */
+.end-stats-dashboard {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+@media (max-width: 480px) {
+    .end-stats-dashboard {
+        grid-template-columns: 1fr;
+    }
+}
+
+.dash-card {
+    background: #FFFFFF;
+    border: 1px solid #e4e4e7;
+    border-radius: 10px;
+    padding: 9px 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+}
+
+.dash-header {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.dash-icon {
+    font-size: 0.85rem;
+}
+
+.dash-label {
+    font-size: 0.68rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    color: var(--text-muted, #71717a);
+}
+
+.dash-value {
+    font-size: 0.86rem;
+    font-weight: 800;
+    color: var(--text-dark, #18181b);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.dash-card.nemesis-theme {
+    border-left: 3px solid #dc2626;
+}
+
+.dash-card.nemesis-theme .dash-value {
+    color: #991b1b;
+}
+
+.dash-card.ally-theme {
+    border-left: 3px solid #d97706;
+    background: #fffdf5;
+}
+
+.dash-card.ally-theme .dash-value {
+    color: #b45309;
+}
+
+/* ROW DE SAUVEGARDE COMPACTE */
+.end-save-row {
+    display: flex;
+    gap: 8px;
+    margin-top: 2px;
+}
+
+.input-save-compact {
+    flex: 1;
+    padding: 8px 12px;
+    font-size: 0.85rem;
+    border: 1.5px solid #d4d4d8;
+    border-radius: 8px;
+    outline: none;
+    font-family: inherit;
+    background: #FFF;
+}
+
+.input-save-compact:focus {
+    border-color: var(--primary, #770720);
+}
+
+.btn-save-compact {
+    padding: 8px 14px;
+    font-size: 0.85rem;
+    font-weight: 800;
+    background: var(--primary, #770720);
+    color: #FFF;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.btn-save-compact:hover {
+    filter: brightness(1.1);
+}
+
+/* FOOTER BOUTONS */
+.end-footer-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-top: 4px;
+}
+
+.btn-action-ghost {
+    flex: 1;
+    padding: 7px 12px;
+    font-size: 0.82rem;
+    font-weight: 700;
+    background: transparent;
+    color: var(--primary, #770720);
+    border: 1.5px solid var(--primary, #770720);
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.btn-action-ghost:hover {
+    background: var(--primary-light, #FAF2E6);
+}
+/* Barre de Tension / Conflictualité 🔥 */
+.stat-tension-compact {
+    flex-direction: column;
+    gap: 2px;
+    min-width: 65px;
+    padding: 3px 6px;
+}
+
+.tension-bar-track-mini {
+    width: 100%;
+    height: 4px;
+    background: rgba(0, 0, 0, 0.12);
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.tension-bar-fill-mini {
+    height: 100%;
+    width: 0%;
+    border-radius: 6px;
+    transition: width 0.3s ease, background-color 0.3s ease;
+    background-color: #f97316;
+}
+/* ==========================================
+   STYLE DU MODULE DE DÉBAT
+   ========================================== */
+.debate-container {
+    max-width: 580px;
+    width: 100%;
+    margin: 0 auto;
+    border-left: 8px solid #dc2626 !important;
+}
+
+.debate-adversary-box {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    background: rgba(220, 38, 38, 0.08);
+    border: 1.5px solid rgba(220, 38, 38, 0.25);
+    border-radius: 12px;
+    padding: 12px 16px;
+    margin: 14px 0;
+}
+
+.adversary-avatar {
+    font-size: 2.2rem;
+}
+
+.adversary-info h3 {
+    text-align: left;
+    margin: 0;
+    font-size: 1.1rem;
+    color: #991b1b;
+}
+
+.adversary-info p {
+    margin: 2px 0 0 0;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+.debate-context-text {
+    font-size: 0.95rem;
+    line-height: 1.45;
+    margin-bottom: 14px;
+}
+
+.debate-odds-box {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #FFF;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    padding: 10px 14px;
+    font-size: 0.9rem;
+    margin-bottom: 16px;
+}
+
+.debate-odds-box strong {
+    font-size: 1.1rem;
+    color: var(--primary);
+}
+/* =========================================================
+   CORRECTIONS MOBILE (Taille des profils & Header de stats)
+   ========================================================= */
+@media (max-width: 800px) {
+
+    /* 1. Décalage des profils vers la gauche et suppression des marges superflues */
+    #screen-character {
+        padding: 10px 4px !important;
+        align-items: stretch !important;
+    }
+
+    .character-grid, .cards-grid {
+        grid-template-columns: repeat(3, 1fr) !important;
+        gap: 5px !important;
+        margin: 5px 0 !important;
+        padding: 2px 2px 2px 0 !important; /* Collé à gauche */
+        max-height: 68vh !important;
+        overflow-y: auto !important;
+    }
+
+    .char-card {
+        padding: 8px 4px !important;
+        border-radius: 10px !important;
+        gap: 4px !important;
+    }
+
+    .char-icon {
+        font-size: 1.5rem !important;
+    }
+
+    .char-card h3 {
+        font-size: 0.72rem !important;
+        font-weight: 800 !important;
+        line-height: 1.1 !important;
+    }
+
+    .char-card p {
+        font-size: 0.62rem !important;
+        line-height: 1.2 !important;
+        display: -webkit-box !important;
+        -webkit-box-orient: vertical !important;
+        -webkit-line-clamp: 2 !important;
+        line-clamp: 2 !important; /* Propriété standard */
+        overflow: hidden !important;
+    }
+
+    /* 2. Header de jeu : agencement en grille propre pour ne rien faire déborder */
+    .game-header {
+        display: grid !important;
+        grid-template-columns: auto auto !important;
+        grid-template-rows: auto auto !important;
+        align-items: center !important;
+        gap: 6px !important;
+        padding: 8px 10px !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+    }
+
+    .header-left {
+        grid-column: 1 !important;
+        grid-row: 1 !important;
+    }
+
+    .header-right {
+        grid-column: 2 !important;
+        grid-row: 1 !important;
+        justify-self: end !important;
+    }
+
+    .date-tag-large {
+        font-size: 0.75rem !important;
+        padding: 3px 6px !important;
+    }
+
+    .tier-tag-live {
+        font-size: 0.60rem !important;
+        line-height: 1.15 !important;
+        padding: 3px 5px !important;
+        white-space: normal !important;      /* Autorise le saut de ligne */
+        text-align: right !important;
+        max-width: 110px !important;         /* Force le texte à s'enrouler sous lui-même si trop long */
+        display: inline-block !important;
+    }
+
+    /* Les pastilles de stats en bas du header sur toute la largeur */
+    .header-center-stats {
+        grid-column: 1 / -1 !important;
+        grid-row: 2 !important;
+        display: grid !important;
+        grid-template-columns: repeat(4, 1fr) !important;
+        gap: 4px !important;
+        width: 100% !important;
+        margin: 0 !important;
+    }
+
+    .stat-pill-compact {
+        padding: 3px 2px !important;
+        font-size: 0.68rem !important;
+        justify-content: center !important;
+        min-width: 0 !important;
+    }
+
+    .stat-pill-compact .stat-icon {
+        font-size: 0.75rem !important;
+    }
+
+    .stat-pill-compact .stat-num {
+        font-size: 0.7rem !important;
+    }
+
+    /* Masquage des barres de progression graphiques sur mobile pour gagner de la place */
+    .energy-bar-track-mini, 
+    .tension-bar-track-mini {
+        display: none !important;
+    }
+}
+/* =========================================================
+   MOBILE ONLY : COLLECTION EN MOSAÏQUE & TABLEAU CALIBRÉ
+   ========================================================= */
+@media (max-width: 800px) {
+
+    /* 1. Trombinoscope : petits carrés en grille 3 par 3 scrollable */
+    .collection-container {
+        padding: 12px 8px !important;
+    }
+
+    .collection-header h2 {
+        font-size: 1.2rem !important;
+        margin-bottom: 2px !important;
+    }
+
+    .collection-filters {
+        gap: 4px !important;
+        margin-bottom: 10px !important;
+    }
+
+    .filter-btn {
+        padding: 3px 8px !important;
+        font-size: 0.7rem !important;
+    }
+
+    .collection-grid {
+        grid-template-columns: repeat(3, 1fr) !important; /* 3 cartes par rangée */
+        gap: 6px !important;
+        max-height: 60vh !important;
+        padding: 4px !important;
+    }
+
+    /* Carte débloquée compacte */
+    .ally-collection-card {
+        padding: 6px 4px !important;
+        gap: 2px !important;
+        min-height: 85px !important;
+        border-radius: 8px !important;
+    }
+
+    .card-tier-pill {
+        font-size: 0.55rem !important;
+        padding: 1px 4px !important;
+        border-radius: 6px !important;
+    }
+
+    .card-name-title {
+        font-size: 0.72rem !important;
+        line-height: 1.15 !important;
+    }
+
+    .card-role-sub {
+        font-size: 0.6rem !important;
+    }
+
+    .card-bio-p {
+        display: none !important; /* Masque la longue bio sur smartphone */
+    }
+
+    /* Carte verrouillée compacte */
+    .ally-collection-card.locked {
+        min-height: 85px !important;
+        padding: 4px !important;
+    }
+
+    .locked-icon {
+        font-size: 1.2rem !important;
+        margin-bottom: 2px !important;
+    }
+
+    .locked-text {
+        font-size: 0.65rem !important;
+    }
+
+    .ally-collection-card.locked div:last-child {
+        font-size: 0.58rem !important;
+    }
+/* 2. Panthéon des Luttes : affichage en fiche compacte */
+    #screen-leaderboard {
+        padding: 12px 6px !important;
+    }
+
+    #screen-leaderboard h2 {
+        font-size: 1.25rem !important;
+        margin-bottom: 2px !important;
+    }
+
+    #screen-leaderboard .subtitle {
+        font-size: 0.78rem !important;
+        margin-bottom: 10px !important;
+    }
+
+    .leaderboard-table-container {
+        width: 100% !important;
+        max-height: 65vh !important;
+        margin: 4px 0 !important;
+        border: none !important;
+        background: transparent !important;
+    }
+
+    .leaderboard-table,
+    .leaderboard-table tbody {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 6px !important;
+        width: 100% !important;
+    }
+
+    .leaderboard-table thead {
+        display: none !important;
+    }
+
+    /* Message si historique vide */
+    .leaderboard-table tr:has(td[colspan]) {
+        display: block !important;
+        background: #FFFFFF !important;
+        border: 1.5px dashed rgba(119, 7, 32, 0.2) !important;
+        border-radius: 8px !important;
+        padding: 12px !important;
+    }
+
+    .leaderboard-table td[colspan] {
+        display: block !important;
+        text-align: center !important;
+        font-size: 0.78rem !important;
+        color: var(--text-muted) !important;
+        border: none !important;
+    }
+
+    /* Carte de score quand il y a des données */
+    .leaderboard-table tr:not(:has(td[colspan])) {
+        display: grid !important;
+        grid-template-columns: 28px 1fr auto !important;
+        grid-template-rows: auto auto !important;
+        gap: 2px 6px !important;
+        background: #FFFFFF !important;
+        border: 1.5px solid rgba(119, 7, 32, 0.15) !important;
+        border-radius: 8px !important;
+        padding: 6px 8px !important;
+        align-items: center !important;
+    }
+
+    .leaderboard-table tr:not(:has(td[colspan])) td:nth-child(1) {
+        grid-column: 1 !important;
+        grid-row: 1 / span 2 !important;
+        font-size: 0.75rem !important;
+        padding: 0 !important;
+        border: none !important;
+    }
+
+    .leaderboard-table tr:not(:has(td[colspan])) td:nth-child(2) {
+        grid-column: 2 !important;
+        grid-row: 1 !important;
+        font-size: 0.75rem !important;
+        padding: 0 !important;
+        border: none !important;
+    }
+
+    .leaderboard-table tr:not(:has(td[colspan])) td:nth-child(6) {
+        grid-column: 3 !important;
+        grid-row: 1 !important;
+        text-align: right !important;
+        font-size: 0.75rem !important;
+        color: var(--primary) !important;
+        padding: 0 !important;
+        border: none !important;
+    }
+
+    .leaderboard-table tr:not(:has(td[colspan])) td:nth-child(3) {
+        grid-column: 2 !important;
+        grid-row: 2 !important;
+        font-size: 0.65rem !important;
+        color: var(--text-muted) !important;
+        padding: 0 !important;
+        border: none !important;
+    }
+
+    .leaderboard-table tr:not(:has(td[colspan])) td:nth-child(4),
+    .leaderboard-table tr:not(:has(td[colspan])) td:nth-child(5) {
+        display: inline-flex !important;
+        font-size: 0.62rem !important;
+        padding: 0 !important;
+        border: none !important;
+    }
+
+    /* Cellule 4 : Allié en vert */
+    .leaderboard-table tr:not(:has(td[colspan])) td:nth-child(4) {
+        grid-column: 3 !important;
+        grid-row: 2 !important;
+        display: flex !important;
+        justify-content: flex-end !important;
+        font-size: 0.62rem !important;
+        font-weight: 700 !important;
+        color: #15803d !important; /* Vert */
+        padding: 0 !important;
+        border: none !important;
+    }
+    .leaderboard-table tr:not(:has(td[colspan])) td:nth-child(4) span {
+        color: #15803d !important;
+    }
+
+    /* Cellule 5 : Pire ennemi en rouge en dessous de l'allié */
+    .leaderboard-table tr:not(:has(td[colspan])) td:nth-child(5) {
+        grid-column: 3 !important;
+        grid-row: 3 !important;
+        display: flex !important;
+        justify-content: flex-end !important;
+        font-size: 0.60rem !important;
+        font-weight: 700 !important;
+        color: #dc2626 !important; /* Rouge */
+        padding: 0 !important;
+        border: none !important;
+    }
+    .leaderboard-table tr:not(:has(td[colspan])) td:nth-child(5) span {
+        color: #dc2626 !important;
+    }
+
+    /* Ajustement de la grille du tableau pour 3 micro-lignes */
+    .leaderboard-table tr:not(:has(td[colspan])) {
+        grid-template-rows: auto auto auto !important;
+        padding: 6px 8px !important;
+    }
+    .leaderboard-table tr:not(:has(td[colspan])) td:nth-child(1) {
+        grid-row: 1 / span 3 !important;
+    }
+    /* ==========================================
+       DÉBAT PLATEAU ULTRA-COMPACT (SUR MOBILE)
+       ========================================== */
+    #screen-debate {
+        padding: 8px 6px !important;
+    }
+
+    .debate-container {
+        padding: 10px 12px !important;
+        border-radius: 12px !important;
+        gap: 6px !important;
+    }
+
+    #debate-title {
+        font-size: 0.95rem !important;
+        margin-bottom: 4px !important;
+        line-height: 1.2 !important;
+    }
+
+    .debate-adversary-box {
+        padding: 6px 8px !important;
+        margin: 6px 0 !important;
+        gap: 8px !important;
+    }
+
+    .adversary-avatar {
+        font-size: 1.4rem !important;
+    }
+
+    .adversary-info h3 {
+        font-size: 0.8rem !important;
+    }
+
+    .adversary-info p {
+        font-size: 0.68rem !important;
+    }
+
+    /* Contexte & citation adverse */
+    .debate-story-p {
+        font-size: 0.75rem !important;
+        line-height: 1.25 !important;
+        margin-bottom: 4px !important;
+    }
+
+    .debate-quote-box {
+        font-size: 0.72rem !important;
+        padding: 6px 8px !important;
+        line-height: 1.25 !important;
+        border-left-width: 3px !important;
+        margin: 4px 0 !important;
+    }
+
+    .debate-odds-box {
+        padding: 4px 8px !important;
+        font-size: 0.72rem !important;
+        margin-bottom: 6px !important;
+    }
+
+    .debate-odds-box strong {
+        font-size: 0.85rem !important;
+    }
+
+    /* Boutons de réponse aux débats condensés */
+    .debate-choice-btn {
+        padding: 6px 8px !important;
+        margin-bottom: 4px !important;
+        min-height: auto !important;
+    }
+
+    .debate-choice-btn div[style*="font-weight: 800"] {
+        font-size: 0.75rem !important;
+        line-height: 1.2 !important;
+    }
+
+    .debate-choice-btn .choice-costs {
+        margin-top: 2px !important;
+    }
+
+    .debate-choice-btn .badge-cost {
+        font-size: 0.62rem !important;
+        padding: 1px 5px !important;
+    }
+}
+/* =========================================================
+   CORRECTION MOBILE : BOUTON DE SAUVEGARDE DU SCORE
+   ========================================================= */
+@media (max-width: 600px) {
+    /* On passe le conteneur en colonne au lieu d'une ligne */
+    .end-save-row {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    /* Le bouton prend toute la largeur et on l'autorise à s'adapter */
+    .btn-save-compact {
+        width: 100%;
+        white-space: normal; /* Annule le 'nowrap' pour éviter que ça déborde */
+    }
+}
+/* =========================================================
+   ANIMATION DU REVEAL FINAL (COMPTEUR & IMPACT)
+   ========================================================= */
+
+/* Effet de battement/grossissement quand le compteur tourne */
+.counter-animating {
+    color: #e11d48 !important;
+    display: inline-block;
+    animation: counterPulse 0.15s ease infinite alternate;
+}
+
+@keyframes counterPulse {
+    from { transform: scale(1); }
+    to { transform: scale(1.05); }
+}
+
+/* Le choc visuel final quand le chiffre s'arrête */
+.counter-slam {
+    animation: slamEffect 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+@keyframes slamEffect {
+    0% { transform: scale(1.4); filter: brightness(1.3); }
+    100% { transform: scale(1); filter: brightness(1); }
+}
+
+/* Apparition dynamique du verdict */
+.verdict-reveal {
+    animation: popVerdict 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+@keyframes popVerdict {
+    0% { opacity: 0; transform: scale(0.6) translateY(10px); }
+    100% { opacity: 1; transform: scale(1) translateY(0); }
+}
+/* =========================================================
+   REFONTE DU FEED RÉSEAUX SOCIAUX (LOOK X / AUTHENTIQUE)
+   ========================================================= */
+.tweet-card-pro {
+    background: #FFFFFF;
+    border: 1px solid rgba(119, 7, 32, 0.1);
+    border-radius: 12px;
+    padding: 12px 14px;
+    margin-bottom: 10px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+    transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.tweet-card-pro:hover {
+    background-color: #FFFDF9;
+    border-color: rgba(119, 7, 32, 0.22);
+}
+
+.tweet-pro-layout {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+}
+
+.tweet-avatar {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--primary) 0%, #4a0404 100%);
+    color: #FFFFFF;
+    font-weight: 800;
+    font-size: 0.85rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    box-shadow: 0 2px 4px rgba(119, 7, 32, 0.2);
+}
+
+.tweet-pro-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.tweet-pro-header {
+    display: flex;
+    align-items: baseline;
+    gap: 5px;
+    flex-wrap: wrap;
+    margin-bottom: 4px;
+}
+
+.tweet-name-pro {
+    font-size: 0.86rem;
+    font-weight: 800;
+    color: var(--text-dark);
+}
+
+.tweet-handle-pro {
+    font-size: 0.76rem;
+    color: var(--text-muted);
+}
+
+.tweet-dot-pro, .tweet-time-pro {
+    font-size: 0.72rem;
+    color: #a1a1aa;
+}
+
+.tweet-text-pro {
+    font-size: 0.86rem;
+    line-height: 1.4;
+    color: #1f2937;
+    margin: 4px 0 8px 0;
+    word-break: break-word;
+}
+
+.tweet-actions-bar {
+    display: flex;
+    justify-content: space-between;
+    max-width: 200px;
+    color: #9ca3af;
+    font-size: 0.72rem;
+    font-weight: 600;
+    user-select: none;
+    padding-top: 4px;
+    border-top: 1px solid rgba(0, 0, 0, 0.04);
+}
+
+.tweet-action-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    transition: color 0.15s ease;
+}
+
+.tweet-action-item:hover {
+    color: var(--primary);
+}
+
+/* =========================================================
+   REFONTE DU HEADER STATS (LOOK DASHBOARD PRO & COMPACT)
+   ========================================================= */
+.game-header {
+    background: linear-gradient(180deg, #770720 0%, #63051a 100%) !important;
+    border-bottom: 2px solid rgba(0, 0, 0, 0.15);
+    padding: 10px 16px !important;
+}
+
+.stat-pill-compact {
+    background: #FFFFFF !important;
+    border: 1px solid rgba(0, 0, 0, 0.08) !important;
+    border-radius: 10px !important;
+    padding: 5px 10px !important;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08) !important;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: transform 0.15s ease;
+}
+
+.stat-pill-compact:hover {
+    transform: translateY(-1px);
+}
+
+.stat-pill-compact .stat-icon {
+    font-size: 0.95rem;
+}
+
+.stat-pill-compact .stat-num {
+    color: #18181b !important;
+    font-size: 0.84rem !important;
+    font-weight: 800 !important;
+    letter-spacing: -0.2px;
+}
+
+/* Amélioration des barres de progression énergie / tension */
+.tension-bar-track-mini {
+    background: rgba(0, 0, 0, 0.08) !important;
+    border-radius: 4px !important;
+}
+
+/* Tag de rang en haut à droite */
+.tier-tag-live {
+    background: #FFFDF9 !important;
+    color: var(--primary) !important;
+    font-weight: 800 !important;
+    border: 1px solid rgba(255, 255, 255, 0.5) !important;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15) !important;
+}
+
+/* Date à gauche */
+.date-tag-large {
+    background: rgba(255, 255, 255, 0.16) !important;
+    border: 1px solid rgba(255, 255, 255, 0.25) !important;
+    font-size: 0.88rem !important;
+}
+
+/* =========================================================
+   FINITION MOBILE SPÉCIFIQUE (HEADER & TWEETS)
+   ========================================================= */
+@media (max-width: 800px) {
+    .stat-pill-compact {
+        padding: 4px 6px !important;
+        border-radius: 8px !important;
+    }
+    
+    .stat-pill-compact .stat-num {
+        font-size: 0.72rem !important;
+    }
+
+    .tweet-card-pro {
+        padding: 10px 12px;
+        margin-bottom: 8px;
+    }
+
+    .tweet-avatar {
+        width: 30px;
+        height: 30px;
+        font-size: 0.78rem;
+    }
+
+    .tweet-text-pro {
+        font-size: 0.82rem;
+    }
+}
+/* =========================================================
+   ACTIONS SOCIALES (LIKE & RETWEET)
+   ========================================================= */
+.btn-like-action, .btn-rt-action {
+    cursor: pointer;
+    transition: transform 0.15s ease, color 0.15s ease;
+}
+
+.btn-like-action:active, .btn-rt-action:active {
+    transform: scale(1.2);
+}
+
+.btn-like-action:hover, .btn-like-action.liked {
+    color: #e11d48 !important;
+}
+
+.btn-like-action.liked {
+    font-weight: 800;
+}
+
+.btn-rt-action:hover, .btn-rt-action.retweeted {
+    color: #16a34a !important;
+}
+
+.btn-rt-action.retweeted {
+    font-weight: 800;
+}
+
+/* =========================================================
+   BOUTON FLOTTANT FEED : MASQUÉ PAR DÉFAUT (SUR ORDINATEUR)
+   ========================================================= */
+.btn-floating-feed {
+    display: none !important; /* Absent sur grand écran */
+}
+
+/* =========================================================
+   EN-TÊTE MOBILE AJUSTÉ & BADGE DE NOTORIÉTÉ COMPLET (<= 800px)
+   ========================================================= */
+@media (max-width: 800px) {
+    /* 1. Bouton flottant mobile */
+    .btn-floating-feed {
+        display: flex !important;
+        position: fixed;
+        bottom: 18px;
+        right: 18px;
+        background: var(--primary) !important;
+        color: #FFF !important;
+        border: none !important;
+        border-radius: 30px !important;
+        padding: 12px 20px !important;
+        font-weight: 800 !important;
+        font-size: 0.95rem !important;
+        box-shadow: 0 4px 16px rgba(119, 7, 32, 0.45) !important;
+        z-index: 1000;
+        width: auto !important;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .feed-badge-pill {
+        position: absolute;
+        top: -6px;
+        right: -4px;
+        background: #dc2626;
+        color: #FFF;
+        font-size: 0.75rem;
+        font-weight: 900;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 2px solid #FFF;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25);
+        animation: pulseBadge 1.8s infinite;
+    }
+
+    @keyframes pulseBadge {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.15); }
+        100% { transform: scale(1); }
+    }
+
+    /* 2. En-tête : Structure ordonnée à 3 étages */
+    .game-header {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 8px !important;
+        padding: 10px !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+        overflow: visible !important;
+    }
+
+    /* Étage 1 : La date centrée ou calée à gauche */
+    .header-left {
+        width: 100% !important;
+        display: flex !important;
+        justify-content: center !important;
+        margin: 0 !important;
+    }
+
+    .date-tag-large {
+        font-size: 0.76rem !important;
+        padding: 4px 12px !important;
+        border-radius: 20px !important;
+        white-space: nowrap !important;
+        display: inline-block !important;
+    }
+
+    /* Étage 2 : Les 4 pastilles étirées */
+    .stats-bar-group {
+        display: grid !important;
+        grid-template-columns: repeat(4, 1fr) !important;
+        gap: 6px !important;
+        width: 100% !important;
+        margin: 0 !important;
+    }
+
+    .stat-pill-compact {
+        background: #FFFFFF !important;
+        border: 1px solid rgba(119, 7, 32, 0.15) !important;
+        border-radius: 10px !important;
+        padding: 6px 2px !important;
+        min-height: 48px !important;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 2px !important;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.06) !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+    }
+
+    .stat-pill-compact .stat-icon {
+        font-size: 0.88rem !important;
+        line-height: 1 !important;
+    }
+
+    .stat-pill-compact .stat-num {
+        font-size: 0.74rem !important;
+        font-weight: 900 !important;
+        color: #18181b !important;
+    }
+
+    .stat-pill-compact .tension-bar-track-mini {
+        display: block !important;
+        width: 85% !important;
+        height: 3px !important;
+        background: rgba(0, 0, 0, 0.1) !important;
+        border-radius: 3px !important;
+        margin-top: 2px !important;
+    }
+
+    /* Étage 3 : Le Statut de notoriété en pleine largeur sous les jauges */
+    .header-right {
+        width: 100% !important;
+        display: flex !important;
+        justify-content: center !important;
+        margin-top: 2px !important;
+    }
+
+    .tier-tag-live {
+        width: 100% !important;
+        max-width: none !important; /* Annule définitivement le blocage des 110px */
+        box-sizing: border-box !important;
+        text-align: center !important;
+        white-space: normal !important;
+        display: block !important;
+        font-size: 0.75rem !important;
+        font-weight: 800 !important;
+        color: var(--primary) !important;
+        background: #FFFDF9 !important;
+        padding: 5px 12px !important;
+        border-radius: 12px !important;
+        border: 1px solid rgba(255, 255, 255, 0.6) !important;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12) !important;
+    }
+}
+/* =========================================================
+   RÉSOLUTION IN-SITU & FEEDBACK COLORÉ
+   ========================================================= */
+
+/* L'encadré du texte de conséquence selon l'ambiance */
+.consequence-box {
+    padding: 14px 16px;
+    border-radius: 10px;
+    margin-top: 10px;
+    animation: fadeIn 0.3s ease;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+/* Cas 1 : Dominance négative (Alerte / Dégâts) */
+.consequence-box.mood-danger {
+    background: rgba(220, 38, 38, 0.08);
+    border: 1.5px solid rgba(220, 38, 38, 0.3);
+}
+
+/* Cas 2 : Dominance positive (Succès) */
+.consequence-box.mood-success {
+    background: rgba(22, 163, 74, 0.08);
+    border: 1.5px solid rgba(22, 163, 74, 0.3);
+}
+
+/* Cas 3 : Équilibré / Mixte */
+.consequence-box.mood-neutral {
+    background: rgba(119, 7, 32, 0.04);
+    border: 1.5px solid rgba(119, 7, 32, 0.15);
+}
+
+.consequence-text-live {
+    font-size: 0.95rem;
+    line-height: 1.5;
+    color: var(--text-dark);
+    margin: 0;
+    font-weight: 600;
+}
+
+/* Zone d'impact sous la carte */
+.consequence-feedback-zone {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin-top: 10px;
+    animation: fadeIn 0.35s ease;
+}
+
+.consequence-badges-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: flex-start;
+}
+
+.consequence-badge {
+    font-size: 0.82rem;
+    font-weight: 800;
+    padding: 5px 12px;
+    border-radius: 20px;
+    display: inline-flex;
+    align-items: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.04);
+    animation: popBadge 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+.consequence-badge.badge-gain {
+    background: #dcfce7;
+    color: #15803d;
+    border: 1.5px solid #86efac;
+}
+
+.consequence-badge.badge-loss {
+    background: #fee2e2;
+    color: #dc2626;
+    border: 1.5px solid #fca5a5;
+}
+
+@keyframes popBadge {
+    0% { transform: scale(0.6); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+.btn-continue-pulse {
+    animation: pulseButton 2s infinite ease-in-out;
+}
+
+@keyframes pulseButton {
+    0%, 100% { box-shadow: 0 4px 12px rgba(119, 7, 32, 0.25); }
+    50% { box-shadow: 0 6px 20px rgba(119, 7, 32, 0.45); }
+}
+
+/* =========================================================
+   ANIMATION DES BADGES DE STATS & CHIFFRES FLOTTANTS
+   ========================================================= */
+.stat-pill-compact, .stat-followers-social {
+    position: relative;
+    transition: background-color 0.3s ease, border-color 0.3s ease, transform 0.2s ease;
+}
+
+/* Coloration temporaire du fond des badges */
+.stat-pill-compact.pill-flash-gain {
+    background-color: #dcfce7 !important;
+    border-color: #22c55e !important;
+    transform: scale(1.05);
+}
+
+.stat-pill-compact.pill-flash-loss {
+    background-color: #fee2e2 !important;
+    border-color: #ef4444 !important;
+    transform: scale(1.05);
+}
+
+/* Chiffre flottant visible plus longtemps (2,2s) */
+.floating-stat-num {
+    position: absolute;
+    top: -16px;
+    font-size: 0.85rem;
+    font-weight: 900;
+    pointer-events: none;
+    white-space: nowrap;
+    animation: floatUpAndFade 2.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    z-index: 100;
+}
+
+.floating-stat-num.float-gain {
+    color: #15803d;
+    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.9);
+}
+
+.floating-stat-num.float-loss {
+    color: #dc2626;
+    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.9);
+}
+
+@keyframes floatUpAndFade {
+    0% { transform: translateY(0) scale(0.7); opacity: 0; }
+    15% { transform: translateY(-8px) scale(1.2); opacity: 1; }
+    70% { transform: translateY(-16px) scale(1); opacity: 0.9; }
+    100% { transform: translateY(-30px) scale(0.9); opacity: 0; }
+}
+/* =========================================================
+   ARÈNE DE COMBAT ARCADE / DÉBATS VERSUS (AJUSTÉE)
+   ========================================================= */
+#screen-debate {
+    padding: 10px !important;
+    background: radial-gradient(circle at center, #2a0812 0%, #120206 100%) !important;
+}
+
+.arcade-arena {
+    width: 100%;
+    max-width: 760px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    box-sizing: border-box;
+}
+
+/* 1. Barres de vie / HUD supérieur */
+.arena-top-hud {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: 12px;
+    background: rgba(0, 0, 0, 0.45);
+    border: 1.5px solid rgba(255, 255, 255, 0.15);
+    border-radius: 12px;
+    padding: 10px 14px;
+}
+
+.fighter-hud {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    min-width: 0;
+}
+
+.player-hud { align-items: flex-start; text-align: left; }
+.opp-hud { align-items: flex-end; text-align: right; }
+
+/* Noms débridés sur PC */
+.hud-name {
+    font-size: 0.95rem;
+    font-weight: 900;
+    color: #FFF;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    max-width: 100%;
+    white-space: normal;
+    line-height: 1.2;
+}
+
+.health-bar-frame {
+    width: 100%;
+    max-width: 220px;
+    height: 10px;
+    background: rgba(255, 255, 255, 0.2);
+    border: 1.5px solid #000;
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.health-fill {
+    height: 100%;
+    transition: width 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.player-health-fill {
+    background: linear-gradient(90deg, #16a34a, #4ade80);
+}
+
+.opp-health-fill {
+    background: linear-gradient(90deg, #dc2626, #f87171);
+}
+
+.health-val-tag {
+    font-size: 0.68rem;
+    font-weight: 800;
+    color: #e2e8f0;
+}
+
+.arena-versus-badge {
+    background: #dc2626;
+    color: #FFF;
+    font-size: 0.85rem;
+    font-weight: 900;
+    padding: 4px 8px;
+    border-radius: 8px;
+    border: 2px solid #FFF;
+    box-shadow: 0 0 10px rgba(220, 38, 38, 0.8);
+    transform: rotate(-5deg);
+    flex-shrink: 0;
+}
+
+/* 2. Scène centrale avec micro au milieu */
+.arena-stage {
+    position: relative;
+    background: linear-gradient(180deg, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.65) 100%);
+    border: 1.5px solid rgba(255, 255, 255, 0.12);
+    border-radius: 14px;
+    padding: 14px 14px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow: hidden;
+}
+
+.stage-spotlight {
+    position: absolute;
+    top: -40px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 320px;
+    height: 130px;
+    background: radial-gradient(ellipse at center, rgba(255, 255, 255, 0.14) 0%, rgba(255,255,255,0) 70%);
+    pointer-events: none;
+}
+
+.stage-center-icon {
+    font-size: 2.2rem;
+    filter: drop-shadow(0 4px 10px rgba(0,0,0,0.5));
+    margin-bottom: 4px;
+    animation: idleBounce 1.5s infinite ease-in-out alternate;
+}
+
+@keyframes idleBounce {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(-4px); }
+}
+
+.stage-center-fx {
+    position: absolute;
+    left: 50%;
+    top: 30%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    z-index: 50;
+}
+
+.hit-text {
+    font-size: 1.3rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    padding: 6px 14px;
+    border-radius: 8px;
+    display: inline-block;
+    animation: popBadge 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    white-space: nowrap;
+}
+
+.hit-critical {
+    background: #22c55e;
+    color: #FFF;
+    border: 2px solid #FFF;
+    box-shadow: 0 0 15px rgba(34, 197, 94, 0.8);
+}
+
+.hit-blocked {
+    background: #dc2626;
+    color: #FFF;
+    border: 2px solid #FFF;
+    box-shadow: 0 0 15px rgba(220, 38, 38, 0.8);
+}
+
+/* Bulle d'attaque */
+.comic-attack-bubble {
+    width: 100%;
+    background: #FFFDF9;
+    border: 2px solid #18181b;
+    border-radius: 12px;
+    padding: 10px 14px;
+    box-shadow: 3px 3px 0px rgba(0, 0, 0, 0.6);
+    box-sizing: border-box;
+}
+
+.bubble-speaker-tag {
+    font-size: 0.65rem;
+    font-weight: 900;
+    color: #dc2626;
+    letter-spacing: 0.5px;
+    margin-bottom: 3px;
+    text-align: left;
+}
+
+.bubble-text {
+    font-size: 0.88rem;
+    font-weight: 800;
+    line-height: 1.35;
+    color: #18181b;
+    margin: 0;
+    text-align: left;
+}
+
+.bubble-triumph {
+    background: #f0fdf4;
+    border-color: #16a34a;
+}
+.bubble-triumph .bubble-speaker-tag { color: #16a34a; }
+
+.bubble-defeat {
+    background: #fef2f2;
+    border-color: #dc2626;
+}
+
+/* 3. Deck de cartes avec surbrillance au survol */
+.arena-deck-zone {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+}
+
+.action-skill-card {
+    background: #FFFDF9;
+    border-radius: 12px;
+    padding: 12px 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 8px;
+    cursor: pointer;
+    border: 2px solid #000;
+    box-shadow: 0 4px 0px #000;
+    transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+    user-select: none;
+    box-sizing: border-box;
+}
+
+.skill-card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.skill-badge-type {
+    font-size: 0.62rem;
+    font-weight: 900;
+    padding: 2px 6px;
+    border-radius: 6px;
+    text-transform: uppercase;
+}
+
+.skill-odds-tag {
+    font-size: 0.68rem;
+    font-weight: 900;
+    color: #15803d;
+    background: #dcfce7;
+    padding: 2px 6px;
+    border-radius: 6px;
+}
+
+.skill-card-desc {
+    font-size: 0.78rem;
+    font-weight: 700;
+    line-height: 1.3;
+    color: #18181b;
+    text-align: left;
+}
+
+/* Couleurs de base des bordures */
+.card-red { border-color: #dc2626; }
+.card-red .skill-badge-type { background: #fee2e2; color: #dc2626; }
+
+.card-blue { border-color: #2563eb; }
+.card-blue .skill-badge-type { background: #dbeafe; color: #2563eb; }
+
+.card-gold { border-color: #d97706; }
+.card-gold .skill-badge-type { background: #fef3c7; color: #b45309; }
+
+/* Survol PC : Surbrillance colorée & élévation */
+@media (hover: hover) {
+    .card-red:hover {
+        border-color: #ef4444;
+        box-shadow: 0 0 16px rgba(239, 68, 68, 0.75), 0 4px 0px #7f1d1d;
+        transform: translateY(-4px);
+    }
+    .card-blue:hover {
+        border-color: #3b82f6;
+        box-shadow: 0 0 16px rgba(59, 130, 246, 0.75), 0 4px 0px #1e3a8a;
+        transform: translateY(-4px);
+    }
+    .card-gold:hover {
+        border-color: #f59e0b;
+        box-shadow: 0 0 16px rgba(245, 158, 11, 0.75), 0 4px 0px #78350f;
+        transform: translateY(-4px);
+    }
+}
+
+.action-skill-card:active {
+    transform: translateY(2px);
+    box-shadow: 0 1px 0px #000;
+}
+
+/* Panneau de fin de combat */
+.arcade-victory-panel {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+    width: 100%;
+}
+
+.btn-arcade-continue {
+    width: 100%;
+    padding: 12px;
+    background: #22c55e;
+    color: #FFF;
+    font-size: 1rem;
+    font-weight: 900;
+    border: 2px solid #FFF;
+    border-radius: 10px;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(34, 197, 94, 0.4);
+    text-transform: uppercase;
+}
+
+/* =========================================================
+   ADAPTATION MOBILE RIGOUREUSE (ZÉRO DÉBORDEMENT)
+   ========================================================= */
+@media (max-width: 650px) {
+    .arena-top-hud {
+        gap: 6px;
+        padding: 6px 8px;
+    }
+
+    .hud-name {
+        font-size: 0.68rem;
+        line-height: 1.15;
+    }
+
+    .health-bar-frame {
+        max-width: 100%;
+        height: 7px;
+    }
+
+    .health-val-tag {
+        font-size: 0.58rem;
+    }
+
+    .arena-versus-badge {
+        font-size: 0.65rem;
+        padding: 2px 5px;
+    }
+
+    .arena-stage {
+        padding: 8px 10px;
+    }
+
+    .stage-center-icon {
+        font-size: 1.6rem;
+        margin-bottom: 2px;
+    }
+
+    .comic-attack-bubble {
+        padding: 8px 10px;
+    }
+
+    .bubble-speaker-tag {
+        font-size: 0.58rem;
+    }
+
+    .bubble-text {
+        font-size: 0.76rem;
+    }
+
+    .arena-deck-zone {
+        grid-template-columns: 1fr;
+        gap: 6px;
+    }
+
+    .action-skill-card {
+        padding: 8px 10px;
+        gap: 4px;
+    }
+
+    .skill-card-desc {
+        font-size: 0.74rem;
+    }
+}
+/* =========================================================
+   STYLE IMPACTANT DU BURN-OUT (DÉFAITE)
+   ========================================================= */
+.gameover-burnout-text {
+    color: #dc2626 !important;
+    font-size: 2.6rem !important;
+    font-weight: 900 !important;
+    letter-spacing: 2px !important;
+    text-shadow: 0 2px 10px rgba(220, 38, 38, 0.35);
+    animation: shakePill 0.4s ease;
+}
+
+.verdict-burnout {
+    background: #fee2e2 !important;
+    color: #991b1b !important;
+    border: 1.5px solid #f87171 !important;
+}
+
+/* Teinte rouge marquée pour la case du Némésis */
+.dash-card.nemesis-theme.nemesis-burnout-active {
+    background: #fef2f2 !important;
+    border: 1.5px solid #dc2626 !important;
+    border-left: 5px solid #b91c1c !important;
+    box-shadow: 0 2px 8px rgba(220, 38, 38, 0.15);
+}
+
+.dash-card.nemesis-theme.nemesis-burnout-active .dash-label {
+    color: #991b1b !important;
+}
+
+.dash-card.nemesis-theme.nemesis-burnout-active .dash-value {
+    color: #7f1d1d !important;
+    font-weight: 900 !important;
+}
+/* =========================================================
+   BOUTON SONORE (MENU & JEU)
+   ========================================================= */
+.btn-sound-toggle {
+    background: rgba(255, 255, 255, 0.2);
+    border: 1.5px solid rgba(255, 255, 255, 0.4);
+    color: #FFF;
+    font-size: 1rem;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    transition: transform 0.15s ease, background 0.15s ease;
+    z-index: 100;
+}
+
+.btn-sound-toggle:hover {
+    background: rgba(255, 255, 255, 0.35);
+    transform: scale(1.1);
+}
+
+/* Position sur l'écran Menu (En haut à droite) */
+#screen-menu {
+    position: relative;
+}
+
+#btn-sound-menu {
+    position: absolute;
+    top: 18px;
+    right: 18px;
+    background: rgba(119, 7, 32, 0.1);
+    border: 1.5px solid rgba(119, 7, 32, 0.3);
+    color: var(--primary);
+}
+
+#btn-sound-menu:hover {
+    background: var(--primary);
+    color: #FFF;
+}
+
+
+
+/* Position sur Smartphone (<= 800px) : Mini en haut à droite */
+@media (max-width: 800px) {
+    #btn-sound-game {
+        position: static !important;
+        grid-column: 2;
+        grid-row: 1;
+        justify-self: end;
+        width: 26px !important;
+        height: 26px !important;
+        font-size: 0.72rem !important;
+        border: 1px solid rgba(255, 255, 255, 0.4) !important;
+        background: rgba(255, 255, 255, 0.2) !important;
+        box-shadow: none !important;
+        margin-left: 6px;
+    }
+
+    /* Ajustement de la 1ère ligne du header pour caler le bouton sans gêner */
+    .header-right {
+        display: flex !important;
+        align-items: center !important;
+        gap: 6px !important;
+    }
+}
+/* =========================================================
+   FIX ANTI-SUPERPOSITION HEADER ORDINATEUR
+   ========================================================= */
+@media (min-width: 801px) {
+    .game-header {
+        display: grid !important;
+        grid-template-columns: auto 1fr auto !important;
+        align-items: center !important;
+        gap: 10px !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+    }
+
+    .header-left {
+        min-width: 170px !important; /* Réserve la place sans pousser les autres */
+    }
+
+    .date-tag-large {
+        font-size: 0.78rem !important;
+        white-space: nowrap !important;
+        padding: 4px 8px !important;
+        display: inline-block !important;
+    }
+
+    .stats-bar-group {
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+        gap: 8px !important;
+        margin: 0 auto !important;
+    }
+
+    .header-right {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: flex-end !important;
+        gap: 8px !important;
+        min-width: 0 !important;
+    }
+
+    .tier-tag-live {
+        font-size: 0.72rem !important;
+        padding: 3px 8px !important;
+        white-space: nowrap !important;
+    }
+}
+#screen-character {
+    position: relative;
+}
+
+#btn-sound-character {
+    position: absolute;
+    top: 18px;
+    right: 18px;
+    background: rgba(119, 7, 32, 0.1);
+    border: 1.5px solid rgba(119, 7, 32, 0.3);
+    color: var(--primary);
+}
+
+#btn-sound-character:hover {
+    background: var(--primary);
+    color: #FFF;
+}
+/* Badge de date avec saut de ligne élégant */
+.date-tag-large {
+    display: inline-flex !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    justify-content: center !important;
+    padding: 5px 10px !important;
+    line-height: 1.15 !important;
+    min-width: 140px;
+}
+
+.date-main {
+    font-size: 0.82rem;
+    font-weight: 800;
+}
+
+.date-sub {
+    font-size: 0.68rem;
+    font-weight: 600;
+    opacity: 0.85;
+}
+
+/* Grille du header pour que rien ne se chevauche */
+@media (min-width: 801px) {
+    .game-header {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        gap: 12px !important;
+    }
+
+    .header-left {
+        flex-shrink: 0 !important;
+    }
+
+    .stats-bar-group {
+        flex: 1 !important;
+        justify-content: center !important;
+        margin: 0 !important;
+    }
+
+    .header-right {
+        flex-shrink: 0 !important;
+    }
+}
+/* =========================================================
+   COMPACTAGE DE LA CARTE D'ÉVÉNEMENT PRINCIPALE
+   ========================================================= */
+#event-card {
+    padding: 14px 16px !important;
+    margin-bottom: 10px !important;
+}
+
+/* En-tête (Thème et Intervenant) */
+.event-meta-header {
+    margin-bottom: 6px !important;
+    gap: 6px !important;
+}
+
+.badge-event-theme,
+.tag-character-clickable {
+    font-size: 0.72rem !important;
+    padding: 3px 8px !important;
+}
+
+/* Titre de l'événement */
+#event-title {
+    font-size: 1.05rem !important;
+    line-height: 1.25 !important;
+    margin: 4px 0 6px 0 !important;
+}
+
+/* Description / Contexte */
+#event-description {
+    font-size: 0.85rem !important;
+    line-height: 1.4 !important;
+    margin-bottom: 0 !important;
+}
+
+/* Version Smartphone : encore plus sobre */
+@media (max-width: 650px) {
+    #event-card {
+        padding: 10px 12px !important;
+    }
+
+    #event-title {
+        font-size: 0.95rem !important;
+    }
+
+    #event-description {
+        font-size: 0.80rem !important;
+        line-height: 1.35 !important;
+    }
+}
+/* =========================================================
+   HABILLAGE VISUEL DES 5 ARÈNES DE DÉBAT (RÉALISTE SANS IMAGE)
+   ========================================================= */
+
+/* Structure commune */
+.tier-ambiance-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 4px;
+}
+
+.tier-decor-badge {
+    font-size: 0.72rem;
+    font-weight: 900;
+    padding: 3px 10px;
+    border-radius: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* ---------------------------------------------------------
+   PALIER 1 : LA FAC / SALLE DE TD (Tableau ardoise & craie)
+   --------------------------------------------------------- */
+#screen-debate.arena-tier-1 {
+    background: radial-gradient(circle at center, #1b2820 0%, #0c140f 100%) !important;
+    border: 3px solid #3d4a3e;
+}
+.arena-tier-1 .tier-decor-badge {
+    background: #2a3d30;
+    color: #a3e635;
+    border: 1px dashed #65a30d;
+}
+.arena-tier-1 .chalk-doodle {
+    font-size: 0.70rem;
+    color: rgba(255, 255, 255, 0.6);
+    font-style: italic;
+}
+
+/* ---------------------------------------------------------
+   PALIER 2 : LIVE TIKTOK (Néons magenta, cyan & cœurs flottants)
+   --------------------------------------------------------- */
+#screen-debate.arena-tier-2 {
+    background: radial-gradient(circle at top right, #3b0764 0%, #12021c 100%) !important;
+    border: 2px solid #d946ef;
+    box-shadow: inset 0 0 30px rgba(217, 70, 239, 0.2);
+}
+.arena-tier-2 .tier-decor-badge.tiktok-badge {
+    background: #000;
+    color: #22d3ee;
+    border: 1.5px solid #ec4899;
+    box-shadow: 0 0 10px rgba(236, 72, 153, 0.6);
+}
+.tiktok-floating-hearts {
+    display: flex;
+    gap: 6px;
+}
+.heart-fx {
+    font-size: 1rem;
+    animation: floatHeart 1.8s infinite ease-in-out alternate;
+}
+.heart-fx.h2 { animation-delay: 0.4s; }
+.heart-fx.h3 { animation-delay: 0.8s; }
+@keyframes floatHeart {
+    0% { transform: translateY(0) scale(0.9); opacity: 0.7; }
+    100% { transform: translateY(-8px) scale(1.15); opacity: 1; }
+}
+
+/* ---------------------------------------------------------
+   PALIER 3 : LA SORBONNE / TRIBUNE (Boiseries & dorures)
+   --------------------------------------------------------- */
+#screen-debate.arena-tier-3 {
+    background: radial-gradient(circle at center, #2e1408 0%, #130702 100%) !important;
+    border: 2px solid #b45309;
+}
+.arena-tier-3 .tier-decor-badge.academic-badge {
+    background: #451a03;
+    color: #fde68a;
+    border: 1px solid #d97706;
+}
+.academic-crest {
+    font-size: 0.68rem;
+    font-weight: 900;
+    color: #d97706;
+    letter-spacing: 1px;
+}
+
+/* ---------------------------------------------------------
+   PALIER 4 : LE STUDIO RADIO (Voyant ON AIR & VU-mètres)
+   --------------------------------------------------------- */
+#screen-debate.arena-tier-4 {
+    background: radial-gradient(circle at center, #18191f 0%, #090a0c 100%) !important;
+    border: 2px solid #3f3f46;
+}
+.arena-tier-4 .tier-decor-badge.radio-badge {
+    background: #09090b;
+    color: #e4e4e7;
+    border: 1.5px solid #71717a;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.on-air-pulse {
+    color: #ef4444;
+    font-weight: 900;
+    animation: blinkOnAir 1.2s infinite ease-in-out;
+}
+@keyframes blinkOnAir {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+}
+.audio-vumeter-bars {
+    display: flex;
+    align-items: flex-end;
+    gap: 3px;
+    height: 16px;
+}
+.vubar {
+    width: 4px;
+    background: #22c55e;
+    border-radius: 1px;
+    animation: vumeterJump 0.6s infinite ease-in-out alternate;
+}
+.vubar.b2 { height: 60%; animation-delay: 0.1s; background: #eab308; }
+.vubar.b3 { height: 90%; animation-delay: 0.25s; background: #ef4444; }
+.vubar.b4 { height: 40%; animation-delay: 0.15s; }
+.vubar.b5 { height: 75%; animation-delay: 0.35s; background: #eab308; }
+@keyframes vumeterJump {
+    0% { height: 20%; }
+    100% { height: 100%; }
+}
+
+/* ---------------------------------------------------------
+   PALIER 5 : LE PRIME TIME TÉLÉVISE (Édition spéciale & chiron)
+   --------------------------------------------------------- */
+#screen-debate.arena-tier-5 {
+    background: radial-gradient(ellipse at top, #0f1d4a 0%, #040817 100%) !important;
+    border: 2.5px solid #dc2626;
+    box-shadow: inset 0 0 40px rgba(220, 38, 38, 0.4);
+}
+.arena-tier-5 .tier-decor-badge.tv-badge {
+    background: #b91c1c;
+    color: #FFF;
+    font-weight: 900;
+    border: 1px solid #f87171;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+.rec-dot {
+    color: #fef08a;
+    animation: blinkOnAir 0.8s infinite ease-in-out;
+}
+.tv-breaking-chiron {
+    display: flex;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+    overflow: hidden;
+    max-width: 380px;
+}
+.chiron-flash {
+    background: #dc2626;
+    color: #FFF;
+    font-size: 0.60rem;
+    font-weight: 900;
+    padding: 3px 6px;
+    white-space: nowrap;
+}
+.chiron-text {
+    font-size: 0.60rem;
+    color: #e2e8f0;
+    font-weight: 700;
+    padding: 3px 8px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+/* =========================================================
+   PLACEMENT DU BOUTON SON DANS LE HEADER (PC & MOBILE)
+   ========================================================= */
+#btn-sound-game {
+    position: static !important;
+    width: 32px !important;
+    height: 32px !important;
+    min-width: 32px !important;
+    font-size: 0.85rem !important;
+    margin: 0 4px !important;
+    background: rgba(119, 7, 32, 0.1) !important;
+    border: 1.5px solid rgba(119, 7, 32, 0.25) !important;
+    color: var(--primary) !important;
+    border-radius: 50% !important;
+    cursor: pointer !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    box-shadow: none !important;
+    flex-shrink: 0 !important;
+}
+
+#btn-sound-game:hover {
+    background: var(--primary) !important;
+    color: #FFF !important;
+}
+
+/* =========================================================
+   BOUTONS SON EN HAUT À DROITE (COLLECTION & PANTHÉON)
+   ========================================================= */
+#screen-collection,
+#screen-leaderboard {
+    position: relative;
+}
+
+.btn-corner-sound {
+    position: absolute !important;
+    top: 18px !important;
+    right: 18px !important;
+    background: rgba(119, 7, 32, 0.1) !important;
+    border: 1.5px solid rgba(119, 7, 32, 0.25) !important;
+    color: var(--primary) !important;
+    z-index: 50 !important;
+}
+
+.btn-corner-sound:hover {
+    background: var(--primary) !important;
+    color: #FFF !important;
+}
+
+/* Ajustement sur mobile pour ne pas écraser les titres */
+@media (max-width: 650px) {
+    .btn-corner-sound {
+        top: 12px !important;
+        right: 12px !important;
+        width: 30px !important;
+        height: 30px !important;
+        font-size: 0.75rem !important;
+    }
+}
+/* =========================================================
+   FIX : PETIT BOUTON RETOUR MENU COMPACT (EN HAUT À GAUCHE)
+   ========================================================= */
+#screen-character {
+    position: relative !important;
+}
+
+.btn-back-corner {
+    position: absolute !important;
+    top: 14px !important;
+    left: 14px !important;
+    width: auto !important;          /* Empêche de s'étaler sur tout l'écran */
+    max-width: fit-content !important;
+    height: auto !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 4px !important;
+    background: rgba(119, 7, 32, 0.08) !important;
+    border: 1.5px solid rgba(119, 7, 32, 0.3) !important;
+    color: var(--primary) !important;
+    padding: 5px 12px !important;
+    border-radius: 9999px !important;
+    font-size: 0.80rem !important;
+    font-weight: 700 !important;
+    cursor: pointer !important;
+    z-index: 100 !important;
+    box-shadow: none !important;
+}
+
+.btn-back-corner:hover {
+    background: var(--primary) !important;
+    color: #FFF !important;
+    transform: scale(1.03) !important;
+}
+
+/* Sur smartphone */
+@media (max-width: 650px) {
+    .btn-back-corner {
+        top: 10px !important;
+        left: 10px !important;
+        padding: 4px 10px !important;
+        font-size: 0.75rem !important;
+    }
+}
+
+/* =========================================================
+   REPOSITIONNEMENT BOUTONS SON D'ANGLE (COLLECTION & PANTHÉON)
+   ========================================================= */
+.btn-corner-sound {
+    position: absolute !important;
+    top: 8px !important;       /* Remonté au-dessus de la ligne */
+    right: 10px !important;     /* Calé plus nettement dans l'angle */
+    z-index: 100 !important;
+}
+
+/* Espacement suffisant pour ne jamais écraser le titre */
+.collection-container,
+.leaderboard-container {
+    margin-top: 36px !important;
+}
+
+/* =========================================================
+   CARTE & TABLEAU DU PANTHÉON DES LUTTES
+   ========================================================= */
+.leaderboard-container {
+    background: #FFFFFF;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: 16px;
+    padding: 24px;
+    max-width: 900px;
+    width: 95%;
+    margin-left: auto;
+    margin-right: auto;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+    color: #18181b;
+}
+
+.leaderboard-table-container {
+    overflow-x: auto;
+    margin: 20px 0;
+}
+
+.leaderboard-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.88rem;
+    color: #18181b;
+}
+
+.leaderboard-table th {
+    background: rgba(119, 7, 32, 0.06);
+    color: var(--primary);
+    padding: 10px 12px;
+    text-align: left;
+    font-weight: 800;
+    border-bottom: 2px solid rgba(119, 7, 32, 0.2);
+}
+
+.leaderboard-table td {
+    padding: 10px 12px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.leaderboard-actions {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 18px;
+}
+
+/* Adaptation smartphone */
+@media (max-width: 650px) {
+    .btn-back-corner {
+        top: 10px !important;
+        left: 10px !important;
+        padding: 4px 10px !important;
+        font-size: 0.75rem !important;
+    }
+
+    .btn-corner-sound {
+        top: 8px !important;
+        right: 8px !important;
+    }
+
+    .leaderboard-container {
+        padding: 16px 12px;
+        margin-top: 40px !important;
+    }
+}
+/* =========================================================
+   AJUSTEMENTS MOBILES : HEADER JEU & ÉCRAN PROFILS
+   ========================================================= */
+@media (max-width: 800px) {
+    /* 1. Bouton son de jeu calé tout en haut à droite */
+    #screen-game {
+        position: relative !important;
+    }
+
+    #btn-sound-game {
+        position: absolute !important;
+        top: 8px !important;
+        right: 8px !important;
+        width: 26px !important;
+        height: 26px !important;
+        min-width: 26px !important;
+        font-size: 0.72rem !important;
+        margin: 0 !important;
+        z-index: 120 !important;
+        background: rgba(119, 7, 32, 0.12) !important;
+        border: 1px solid rgba(119, 7, 32, 0.3) !important;
+    }
+
+    /* Évite que le statut ou la date ne viennent sous le bouton son */
+    .game-header {
+        padding-right: 34px !important;
+    }
+
+    /* 2. Écran Profils : abaissement et réduction du titre et du sous-titre */
+    #screen-character {
+        padding-top: 54px !important; /* Dégage la place pour le bouton retour */
+    }
+
+    #screen-character h2 {
+        font-size: 1.15rem !important;
+        line-height: 1.25 !important;
+        margin-top: 4px !important;
+        margin-bottom: 4px !important;
+        text-align: center !important;
+        padding: 0 10px !important;
+    }
+
+    #screen-character .subtitle {
+        font-size: 0.76rem !important;
+        line-height: 1.35 !important;
+        margin-bottom: 14px !important;
+        text-align: center !important;
+        padding: 0 16px !important;
+    }
+}
+/* =========================================================
+   ÉCRAN : À PROPOS & RÈGLES DU JEU
+   ========================================================= */
+#screen-about {
+    position: relative;
+    padding: 20px 10px;
+    display: none;
+}
+
+#screen-about.active {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.about-container {
+    background: #FFFFFF;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: 16px;
+    padding: 28px 24px;
+    max-width: 820px;
+    width: 95%;
+    max-height: 86vh;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.07);
+    margin-top: 30px;
+}
+
+.about-header {
+    text-align: center;
+    border-bottom: 2px solid rgba(119, 7, 32, 0.12);
+    padding-bottom: 12px;
+    margin-bottom: 16px;
+    flex-shrink: 0;
+}
+
+.about-header h2 {
+    color: var(--primary);
+    font-size: 1.4rem;
+    margin-bottom: 4px;
+}
+
+.about-content-scroll {
+    overflow-y: auto;
+    padding-right: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+/* Personnalisation de la barre de scroll */
+.about-content-scroll::-webkit-scrollbar {
+    width: 6px;
+}
+.about-content-scroll::-webkit-scrollbar-thumb {
+    background: rgba(119, 7, 32, 0.25);
+    border-radius: 3px;
+}
+
+.about-section h3 {
+    color: var(--primary);
+    font-size: 1.05rem;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.about-section p {
+    font-size: 0.88rem;
+    line-height: 1.5;
+    color: #27272a;
+    margin: 0;
+}
+
+.about-rules-list {
+    list-style: none;
+    padding: 0;
+    margin: 6px 0 0 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.about-rules-list li {
+    font-size: 0.86rem;
+    line-height: 1.45;
+    color: #3f3f46;
+    background: rgba(0, 0, 0, 0.02);
+    padding: 8px 12px;
+    border-radius: 8px;
+    border-left: 3px solid var(--primary);
+}
+
+.about-tip {
+    background: rgba(217, 119, 6, 0.08);
+    border: 1px solid rgba(217, 119, 6, 0.25);
+    padding: 8px 12px;
+    border-radius: 8px;
+    margin-top: 8px !important;
+}
+
+.about-footer-action {
+    margin-top: 16px;
+    display: flex;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+/* Smartphone */
+@media (max-width: 650px) {
+    .about-container {
+        padding: 16px 12px;
+        max-height: 82vh;
+        margin-top: 40px;
+    }
+
+    .about-header h2 {
+        font-size: 1.15rem;
+    }
+
+    .about-section h3 {
+        font-size: 0.95rem;
+    }
+
+    .about-rules-list li {
+        font-size: 0.80rem;
+        padding: 6px 10px;
+    }
+}
+/* =========================================================
+   STYLE TYPOGRAPHIQUE DU SOUS-TITRE ROAD TO 2027
+   ========================================================= */
+.subtitle {
+    font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+    font-size: 0.82rem !important;
+    font-weight: 800 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 3px !important;
+    color: var(--primary, #770720) !important;
+    opacity: 0.85 !important;
+    margin-top: 4px !important;
+    margin-bottom: 22px !important;
+}
+
+/* =========================================================
+   RETRAIT DÉFINITIF DE LA TORTUE
+   ========================================================= */
+.mascot-tortue {
+    display: none !important;
+}
+/* =========================================================
+   ÉCRAN LOGISTIQUE DU CORTÈGE (SHOP MANIF)
+   ========================================================= */
+#screen-logistics {
+    position: relative;
+    padding: 20px 10px;
+    display: none;
+}
+
+#screen-logistics.active {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.logistics-container {
+    background: #FFFFFF;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: 16px;
+    padding: 24px;
+    max-width: 920px;
+    width: 95%;
+    max-height: 88vh;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.08);
+    margin-top: 30px;
+}
+
+.logistics-header {
+    text-align: center;
+    border-bottom: 2px solid rgba(119, 7, 32, 0.1);
+    padding-bottom: 12px;
+    margin-bottom: 14px;
+    flex-shrink: 0;
+}
+
+.logistics-header h2 {
+    color: var(--primary);
+    font-size: 1.35rem;
+    margin-bottom: 2px;
+}
+
+.logistics-budget-bar {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(119, 7, 32, 0.06);
+    border: 1.5px solid rgba(119, 7, 32, 0.25);
+    padding: 6px 16px;
+    border-radius: 9999px;
+    font-size: 0.9rem;
+    color: var(--primary);
+    margin-top: 4px;
+}
+
+.logistics-budget-bar strong {
+    font-size: 1.1rem;
+    color: #15803d;
+}
+
+/* Grille des items */
+.logistics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 12px;
+    overflow-y: auto;
+    padding: 6px 8px 12px 2px;
+}
+
+.logistics-card {
+    background: #FAFAFA;
+    border: 1.5px solid #E4E4E7;
+    border-radius: 12px;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.logistics-card:hover:not(.disabled) {
+    border-color: var(--primary);
+    box-shadow: 0 4px 12px rgba(119, 7, 32, 0.1);
+}
+
+.logistics-card.bought {
+    background: rgba(21, 128, 61, 0.06);
+    border-color: #15803d;
+}
+
+.logistics-card.disabled {
+    opacity: 0.5;
+    filter: grayscale(0.8);
+    pointer-events: none;
+}
+
+.logistics-card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 6px;
+}
+
+.logistics-icon {
+    font-size: 1.4rem;
+}
+
+.logistics-cost {
+    font-weight: 800;
+    font-size: 0.88rem;
+    color: var(--primary);
+    background: rgba(119, 7, 32, 0.08);
+    padding: 2px 8px;
+    border-radius: 6px;
+}
+
+.logistics-card-name {
+    font-size: 0.88rem;
+    font-weight: 800;
+    color: #18181b;
+    margin-bottom: 4px;
+    line-height: 1.25;
+}
+
+.logistics-card-desc {
+    font-size: 0.76rem;
+    line-height: 1.35;
+    color: #52525b;
+    margin-bottom: 10px;
+    flex-grow: 1;
+}
+
+.btn-toggle-buy {
+    border: none;
+    border-radius: 6px;
+    padding: 6px 10px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.15s ease;
+}
+
+.btn-buy {
+    background: var(--primary);
+    color: #FFF;
+}
+.btn-buy:hover {
+    background: #550517;
+}
+
+.btn-refund {
+    background: #dc2626;
+    color: #FFF;
+}
+
+.logistics-footer {
+    padding-top: 14px;
+    display: flex;
+    justify-content: center;
+    border-top: 1px solid rgba(0, 0, 0, 0.08);
+    flex-shrink: 0;
+}
+
+.btn-large-fire {
+    font-size: 0.95rem !important;
+    padding: 10px 24px !important;
+    font-weight: 800 !important;
+}
+
+/* Smartphone */
+@media (max-width: 650px) {
+    .logistics-container {
+        padding: 14px 10px;
+        margin-top: 40px;
+        max-height: 84vh;
+    }
+
+    .logistics-grid {
+        grid-template-columns: 1fr;
+    }
+}
+/* =========================================================
+   REFONTE VISUELLE COLLECTION & MODALE
+   ========================================================= */
+.collection-header h2 {
+    color: var(--primary);
+    font-size: 1.4rem;
+    margin-bottom: 2px;
+    text-align: center;
+}
+
+.subtitle-collection {
+    text-align: center;
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: #71717a;
+    margin-bottom: 14px;
+}
+
+/* Boutons filtres colorés */
+.collection-filters {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 18px;
+}
+
+.filter-btn {
+    border-radius: 9999px;
+    padding: 5px 14px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    cursor: pointer;
+    border: 1.5px solid transparent;
+    transition: transform 0.15s ease, opacity 0.15s ease;
+}
+
+.filter-btn:hover {
+    transform: translateY(-1px);
+}
+
+.filter-btn[data-tier="all"] { background: #f4f4f5; color: #18181b; }
+.filter-btn.filter-t1 { background: #f1f5f9; color: #475569; border-color: #94a3b8; }
+.filter-btn.filter-t2 { background: #f0fdf4; color: #15803d; border-color: #86efac; }
+.filter-btn.filter-t3 { background: #eff6ff; color: #1d4ed8; border-color: #93c5fd; }
+.filter-btn.filter-t4 { background: #faf5ff; color: #7e22ce; border-color: #d8b4fe; }
+.filter-btn.filter-t5 { background: #fffbeb; color: #b45309; border-color: #fcd34d; }
+
+.filter-btn.active {
+    box-shadow: 0 0 0 2px #18181b;
+}
+
+/* Cartes épurées */
+.ally-collection-card {
+    background: #FFFFFF;
+    border: 2px solid #e4e4e7;
+    border-radius: 12px;
+    padding: 12px 14px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 110px;
+    cursor: pointer;
+    transition: transform 0.15s ease;
+}
+
+.ally-collection-card.unlocked:hover {
+    transform: translateY(-2px);
+}
+
+.card-top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 6px;
+}
+
+.card-rarity-tag {
+    font-size: 0.72rem;
+    letter-spacing: 0.3px;
+}
+
+.card-name-title {
+    font-size: 0.95rem;
+    font-weight: 800;
+    color: #18181b;
+}
+
+.card-role-sub {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: #71717a;
+    margin-top: 2px;
+}
+
+.card-click-hint {
+    font-size: 0.68rem;
+    font-weight: 700;
+    color: #a1a1aa;
+    margin-top: 8px;
+    text-align: right;
+}
+
+/* Carte verrouillée avec teinte douce */
+.ally-collection-card.locked {
+    cursor: default;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+}
+
+.locked-icon {
+    font-size: 1.2rem;
+}
+
+.locked-text {
+    font-size: 1rem;
+    font-weight: 800;
+}
+
+.locked-tier-label {
+    font-size: 0.68rem;
+    font-weight: 700;
+    opacity: 0.85;
+}
+
+/* MODALE DE FICHE DÉTAILLÉE */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    backdrop-filter: blur(2px);
+}
+
+.modal-card {
+    background: #FFFFFF;
+    border-radius: 16px;
+    padding: 24px;
+    max-width: 440px;
+    width: 90%;
+    position: relative;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.btn-close-corner {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    background: #f4f4f5;
+    border: none;
+    border-radius: 50%;
+    width: 28px;
+    height: 28px;
+    font-size: 0.85rem;
+    font-weight: 800;
+    cursor: pointer;
+}
+
+.modal-badge-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.modal-ally-name {
+    font-size: 1.3rem;
+    font-weight: 900;
+    color: #18181b;
+    margin: 4px 0;
+}
+
+.modal-ally-role {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #71717a;
+    margin-bottom: 14px;
+}
+
+.modal-ally-bio {
+    font-size: 0.88rem;
+    line-height: 1.45;
+    color: #3f3f46;
+    font-style: italic;
+    background: #fcf8f2;
+    padding: 12px;
+    border-radius: 8px;
+    border-left: 3px solid var(--primary);
+    margin-bottom: 14px;
+}
+
+.modal-bonus-box {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(34, 197, 94, 0.08);
+    border: 1px solid rgba(34, 197, 94, 0.3);
+    padding: 8px 12px;
+    border-radius: 8px;
+}
+
+.modal-bonus-title {
+    font-size: 0.80rem;
+    font-weight: 700;
+    color: #15803d;
+}
+
+.modal-bonus-val {
+    font-size: 0.90rem;
+    font-weight: 900;
+    color: #15803d;
+}
+/* =========================================================
+   NOUVEAU LAYOUT DES CARTES DÉBLOQUÉES
+   ========================================================= */
+.ally-collection-card.unlocked {
+    padding: 0 !important;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 125px;
+    background: #FFFFFF;
+    border-radius: 12px;
+}
+
+/* Bandeau pleine largeur tout en haut de la carte */
+.card-status-banner {
+    width: 100%;
+    color: #FFFFFF;
+    font-size: 0.68rem;
+    font-weight: 900;
+    letter-spacing: 0.8px;
+    padding: 5px 10px;
+    text-align: center;
+    box-sizing: border-box;
+}
+
+.card-main-info {
+    padding: 10px 12px 4px 12px;
+    flex-grow: 1;
+}
+
+.card-name-title {
+    font-size: 0.95rem;
+    font-weight: 800;
+    color: #18181b;
+    line-height: 1.25;
+}
+
+.card-role-sub {
+    font-size: 0.76rem;
+    font-weight: 600;
+    color: #71717a;
+    margin-top: 3px;
+    line-height: 1.3;
+}
+
+/* Le Top % calé tout en bas à droite */
+.card-footer-rarity {
+    display: flex;
+    justify-content: flex-end;
+    padding: 4px 12px 8px 12px;
+}
+
+.card-footer-rarity .card-rarity-tag {
+    font-size: 0.72rem;
+    font-weight: 900;
+    letter-spacing: 0.4px;
+}
+
+/* =========================================================
+   MODALE : SÉCURISATION DU BOUTON FERMER ET DU TOP %
+   ========================================================= */
+.modal-card {
+    position: relative;
+    padding-top: 20px !important;
+}
+
+.modal-header-layout {
+    margin-bottom: 8px;
+    padding-right: 42px; /* Laisse l'espace libre pour la croix de fermeture */
+}
+
+.modal-badge-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.modal-top-tag {
+    font-size: 0.76rem;
+    font-weight: 900;
+}
+
+.btn-close-corner {
+    position: absolute !important;
+    top: 12px !important;
+    right: 14px !important;
+    background: transparent !important;
+    background-color: transparent !important;
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+    width: auto !important;
+    height: auto !important;
+    padding: 4px !important;
+    font-size: 1.25rem !important;
+    font-weight: 700 !important;
+    line-height: 1 !important;
+    color: #71717a !important;
+    cursor: pointer !important;
+    transition: color 0.15s ease, transform 0.15s ease !important;
+    z-index: 20 !important;
+}
+
+.btn-close-corner:hover {
+    color: #18181b !important;
+    transform: scale(1.15) !important;
+}
+/* Désactive le double-tap to zoom sur toute l'interface */
+html,
+body,
+#game-container,
+button,
+.screen {
+    touch-action: manipulation;
+}
+.btn-tab {
+    background: #f4f4f5;
+    border: 1.5px solid rgba(0, 0, 0, 0.1);
+    color: #3f3f46;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 0.82rem;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.btn-tab.active {
+    background: var(--primary, #770720);
+    color: #FFFFFF;
+    border-color: var(--primary, #770720);
+}
+/* =========================================================
+   ÉCRAN CLASSEMENT CALÉ EN HAUT AVEC FOOTER COMPACT
+   ========================================================= */
+#screen-leaderboard {
+    align-items: flex-start !important;
+    padding: 10px 8px !important;
+    height: 100vh;
+    box-sizing: border-box;
+}
+
+.leaderboard-full-wrapper {
+    background: #FFFFFF;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: 14px;
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+    height: 96vh;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+    overflow: hidden;
+}
+
+.leaderboard-header-top {
+    padding: 12px 16px 8px 16px;
+    text-align: center;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+    flex-shrink: 0;
+}
+
+.leaderboard-header-top h2 {
+    font-size: 1.25rem;
+    color: var(--primary);
+    margin: 0 0 6px 0;
+}
+
+.leaderboard-header-top .subtitle {
+    margin-bottom: 0 !important;
+    font-size: 0.74rem !important;
+    letter-spacing: 1px !important;
+}
+
+/* Zone avec ascenseur pour le tableau */
+.leaderboard-scroll-area {
+    flex-grow: 1;
+    overflow-y: auto;
+    padding: 0 4px;
+}
+
+.leaderboard-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.82rem;
+}
+
+.leaderboard-table th {
+    position: sticky;
+    top: 0;
+    background: #FAFAFA;
+    z-index: 2;
+    padding: 8px 6px;
+    border-bottom: 2px solid rgba(0,0,0,0.06);
+}
+
+.leaderboard-table td {
+    padding: 8px 6px;
+    border-bottom: 1px solid rgba(0,0,0,0.04);
+}
+
+/* Ligne mise en avant pour le joueur */
+.leaderboard-my-row {
+    background-color: rgba(217, 119, 6, 0.12) !important;
+    font-weight: 800;
+}
+
+/* Barre basse compacte */
+.leaderboard-footer-bar {
+    padding: 10px 16px;
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    border-top: 1px solid rgba(0, 0, 0, 0.06);
+    background: #FAFAFA;
+    flex-shrink: 0;
+}
+
+.btn-compact {
+    padding: 6px 14px !important;
+    font-size: 0.80rem !important;
+    border-radius: 8px !important;
+}
+
+@media (max-width: 650px) {
+    .leaderboard-full-wrapper {
+        height: 98vh;
+    }
+    
+    .leaderboard-table {
+        font-size: 0.72rem;
+    }
+    
+    .leaderboard-table th, .leaderboard-table td {
+        padding: 6px 4px;
+    }
+}
+/* =========================================================
+   AJUSTEMENTS DU CLASSEMENT : PLUS COMPACT & ONGLETS CÔTE À CÔTE
+   ========================================================= */
+
+/* Cadre principal : un peu moins haut et plus resserré */
+.leaderboard-full-wrapper {
+    max-width: 780px !important;
+    height: 82vh !important;       /* Réduit la hauteur pour ne pas écraser l'écran */
+    max-height: 720px !important;
+    margin: 20px auto !important;
+    border-radius: 12px !important;
+}
+
+/* Alignement strict des onglets côte à côte sur la même ligne */
+.leaderboard-tabs {
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: center !important;
+    align-items: center !important;
+    gap: 10px !important;
+    margin: 8px 0 !important;
+    flex-wrap: nowrap !important;
+}
+
+.btn-tab {
+    flex: 0 1 auto !important;
+    min-width: 140px !important;
+    text-align: center !important;
+    white-space: nowrap !important;
+    padding: 6px 16px !important;
+}
+
+/* Tableau un poil plus compact */
+.leaderboard-table th, 
+.leaderboard-table td {
+    padding: 6px 8px !important;
+}
