@@ -4521,36 +4521,51 @@ button,
     padding: 6px 8px !important;
 }
 /* =========================================================
-   CORRECTION RESPONSIVE : ÉCRAN DE FIN DE PARTIE MOBILE
+   CORRECTION FINALE RESPONSIVE : ÉCRAN DE FIN MOBILE
    ========================================================= */
 @media (max-width: 650px) {
-    /* 1. Suppression des marges externes excessives (fini le double rectangle vide) */
     body {
-        padding: 8px 4px !important;
+        padding: 6px 4px !important;
+        align-items: stretch !important;
     }
 
     #game-container {
         border-width: 2px !important;
-        border-radius: 10px !important;
+        border-radius: 12px !important;
+        min-height: auto !important;
+        display: flex !important;
+        flex-direction: column !important;
     }
 
     #screen-end {
         padding: 8px 6px !important;
         min-height: auto !important;
+        flex: 1 !important;
+        display: flex !important;
+        justify-content: flex-start !important;
     }
 
-    /* Le rectangle intérieur prend toute la largeur utile sans flotter */
+    /* Le rectangle intérieur s'étire vers le bas pour occuper l'espace */
     .end-compact-container {
         width: 100% !important;
         max-width: 100% !important;
+        flex: 1 !important;
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: space-between !important;
         padding: 12px 10px !important;
-        gap: 8px !important;
-        border-radius: 8px !important;
+        gap: 10px !important;
+        border-radius: 10px !important;
+        box-sizing: border-box !important;
     }
 
-    /* 2. En-tête et score compacts */
+    /* En-tête et score */
+    .end-header {
+        gap: 2px !important;
+    }
+
     .end-pre-tag {
-        font-size: 0.60rem !important;
+        font-size: 0.62rem !important;
     }
 
     .end-main-title {
@@ -4558,12 +4573,13 @@ button,
     }
 
     .end-verdict-pill {
-        font-size: 0.70rem !important;
-        padding: 2px 8px !important;
+        font-size: 0.72rem !important;
+        padding: 2px 10px !important;
     }
 
     .end-score-hero {
         padding: 8px 10px !important;
+        margin: 2px 0 !important;
     }
 
     .score-hero-label {
@@ -4571,64 +4587,71 @@ button,
     }
 
     .score-hero-number {
-        font-size: 1.45rem !important;
+        font-size: 1.5rem !important;
     }
 
     .score-hero-sub {
         font-size: 0.68rem !important;
     }
 
-    /* 3. Les 4 cartes d'infos : grille 2x2 propre (ne sort plus de l'écran) */
+    /* Les 4 cartes s'empilent en 1 colonne sur toute la largeur : zéro débordement */
     .end-stats-dashboard {
-        display: grid !important;
-        grid-template-columns: 1fr 1fr !important;
+        display: flex !important;
+        flex-direction: column !important;
         gap: 6px !important;
+        width: 100% !important;
     }
 
     .dash-card {
-        padding: 6px 8px !important;
-        border-radius: 6px !important;
-        gap: 2px !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+        padding: 6px 10px !important;
+        border-radius: 8px !important;
     }
 
     .dash-label {
-        font-size: 0.60rem !important;
+        font-size: 0.62rem !important;
     }
 
     .dash-value {
-        font-size: 0.72rem !important;
+        font-size: 0.76rem !important;
+        white-space: normal !important; /* Permet au texte long de passer à la ligne */
     }
 
-    /* 4. Formulaire d'enregistrement compact */
+    /* Enregistrement du pseudo */
     .end-save-row {
+        display: flex !important;
         flex-direction: row !important;
         gap: 6px !important;
+        width: 100% !important;
     }
 
     .input-save-compact {
-        padding: 6px 8px !important;
-        font-size: 0.78rem !important;
+        flex: 1 !important;
+        padding: 8px 10px !important;
+        font-size: 0.80rem !important;
     }
 
     .btn-save-compact {
-        padding: 6px 10px !important;
-        font-size: 0.78rem !important;
+        padding: 8px 12px !important;
+        font-size: 0.80rem !important;
+        white-space: nowrap !important;
         width: auto !important;
     }
 
-    /* 5. Les 3 boutons du bas : flexibles et protégés contre le débordement */
+    /* Les 3 boutons du bas bien calés */
     .end-footer-actions {
         display: flex !important;
-        flex-wrap: wrap !important;
+        flex-direction: row !important;
         gap: 6px !important;
-        margin-top: 2px !important;
+        width: 100% !important;
+        margin-top: 4px !important;
     }
 
     .btn-action-ghost {
-        flex: 1 1 30% !important;
-        padding: 6px 4px !important;
+        flex: 1 !important;
+        padding: 8px 4px !important;
         font-size: 0.74rem !important;
-        white-space: nowrap !important;
-        border-radius: 6px !important;
+        text-align: center !important;
     }
 }
