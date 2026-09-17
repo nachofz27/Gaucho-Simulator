@@ -4521,7 +4521,7 @@ button,
     padding: 6px 8px !important;
 }
 /* =========================================================
-   CORRECTION FINALE RESPONSIVE : ÉCRAN DE FIN MOBILE
+   CORRECTION RESPONSIVE : ÉCRAN DE FIN MOBILE (SANS BUG MENU)
    ========================================================= */
 @media (max-width: 650px) {
     body {
@@ -4537,15 +4537,16 @@ button,
         flex-direction: column !important;
     }
 
-    #screen-end {
+    /* L'écran s'affiche UNIQUEMENT quand il a la classe active */
+    #screen-end.active {
+        display: flex !important;
         padding: 8px 6px !important;
         min-height: auto !important;
         flex: 1 !important;
-        display: flex !important;
         justify-content: flex-start !important;
     }
 
-    /* Le rectangle intérieur s'étire vers le bas pour occuper l'espace */
+    /* Le conteneur intérieur s'étire vers le bas */
     .end-compact-container {
         width: 100% !important;
         max-width: 100% !important;
@@ -4559,7 +4560,6 @@ button,
         box-sizing: border-box !important;
     }
 
-    /* En-tête et score */
     .end-header {
         gap: 2px !important;
     }
@@ -4594,7 +4594,7 @@ button,
         font-size: 0.68rem !important;
     }
 
-    /* Les 4 cartes s'empilent en 1 colonne sur toute la largeur : zéro débordement */
+    /* Cartes empilées en 1 colonne propre */
     .end-stats-dashboard {
         display: flex !important;
         flex-direction: column !important;
@@ -4615,10 +4615,10 @@ button,
 
     .dash-value {
         font-size: 0.76rem !important;
-        white-space: normal !important; /* Permet au texte long de passer à la ligne */
+        white-space: normal !important;
     }
 
-    /* Enregistrement du pseudo */
+    /* Pseudo */
     .end-save-row {
         display: flex !important;
         flex-direction: row !important;
@@ -4639,7 +4639,7 @@ button,
         width: auto !important;
     }
 
-    /* Les 3 boutons du bas bien calés */
+    /* 3 boutons du bas */
     .end-footer-actions {
         display: flex !important;
         flex-direction: row !important;
