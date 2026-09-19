@@ -168,6 +168,30 @@ window.supabaseClient = supabaseClient;
         });
     }
 
+    // Gestion de la boîte à idées
+    const modalFeedback = document.getElementById('modal-feedback');
+    const btnOpenFeedback = document.getElementById('btn-open-feedback');
+    const btnCloseFeedback = document.getElementById('btn-close-feedback');
+    const btnCancelFeedback = document.getElementById('btn-cancel-feedback');
+
+    if (btnOpenFeedback && modalFeedback) {
+        btnOpenFeedback.addEventListener('click', () => {
+            modalFeedback.classList.add('active');
+        });
+    }
+
+    const closeFeedbackModal = () => {
+        if (modalFeedback) modalFeedback.classList.remove('active');
+    };
+
+    if (btnCloseFeedback) btnCloseFeedback.addEventListener('click', closeFeedbackModal);
+    if (btnCancelFeedback) btnCancelFeedback.addEventListener('click', closeFeedbackModal);
+
+    if (modalFeedback) {
+        modalFeedback.addEventListener('click', (e) => {
+            if (e.target === modalFeedback) closeFeedbackModal();
+        });
+    }
     // ==========================================
     // 3. GESTION DES ÉCRANS
     // ==========================================
