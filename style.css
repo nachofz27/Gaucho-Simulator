@@ -4682,3 +4682,116 @@ button,
     right: 14px !important;
     z-index: 9999 !important; /* Reste toujours visible au-dessus du tableau */
 }
+/* =========================================================
+   FOOTER & MODALE MENTIONS LÉGALES
+   ========================================================= */
+.menu-legal-footer {
+    width: 100%;
+    text-align: center;
+    margin-top: 14px;
+    padding-bottom: 4px;
+}
+
+.btn-legal-link {
+    background: transparent;
+    border: none;
+    color: #8c7b75;
+    font-size: 0.72rem;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: color 0.2s ease;
+}
+
+.btn-legal-link:hover {
+    color: var(--primary);
+}
+
+/* Modale */
+.legal-modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.65);
+    z-index: 99999;
+    align-items: center;
+    justify-content: center;
+    padding: 14px;
+    box-sizing: border-box;
+    backdrop-filter: blur(2px);
+}
+
+.legal-modal-overlay.active {
+    display: flex;
+}
+
+.legal-modal-card {
+    background: #FFFDF9;
+    border: 2px solid var(--primary);
+    border-radius: 12px;
+    width: 100%;
+    max-width: 580px;
+    max-height: 82vh;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    animation: modalFadeIn 0.2s ease-out;
+}
+
+@keyframes modalFadeIn {
+    from { transform: scale(0.96); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+.legal-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 18px;
+    border-bottom: 1.5px solid rgba(119, 7, 32, 0.15);
+}
+
+.legal-modal-header h3 {
+    margin: 0;
+    font-size: 1.05rem;
+    color: var(--primary);
+}
+
+.legal-close-btn {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #71717a;
+    line-height: 1;
+}
+
+.legal-modal-body {
+    padding: 16px 18px;
+    overflow-y: auto;
+    font-size: 0.82rem;
+    line-height: 1.5;
+    color: #27272a;
+    text-align: left;
+}
+
+.legal-modal-body h4 {
+    margin: 12px 0 4px 0;
+    font-size: 0.88rem;
+    color: var(--primary);
+}
+
+.legal-modal-body p {
+    margin: 0 0 8px 0;
+}
+
+.legal-modal-footer {
+    padding: 10px 18px;
+    border-top: 1.5px solid rgba(119, 7, 32, 0.15);
+    display: flex;
+    justify-content: flex-end;
+}
