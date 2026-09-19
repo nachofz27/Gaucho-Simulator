@@ -95,10 +95,13 @@ h1, h2, h3 {
     font-weight: 800 !important;
     text-transform: uppercase !important;
     letter-spacing: 3px !important;
-    color: #18181b !important; /* Mis en noir au lieu de var(--primary) */
-    opacity: 0.85 !important;
+    color: #000000 !important; /* Noir total forcé */
+    opacity: 1 !important;
     margin-top: 4px !important;
     margin-bottom: 22px !important;
+    text-align: center !important; /* Recentrage strict sous le titre */
+    width: 100% !important;
+    display: block !important;
 }
 
 button {
@@ -3645,6 +3648,13 @@ html, body, button, .char-card, .btn-choice {
         margin-top: 40px !important;
     }
 }
+/* Nom de l'allié en vert dans le tableau du Panthéon (PC et Mobile) */
+.leaderboard-table td:nth-child(4),
+.leaderboard-table td:nth-child(4) span,
+.leaderboard-ally-name {
+    color: #15803d !important; /* Vert foncé bien visible */
+    font-weight: 800 !important;
+}
 /* =========================================================
    AJUSTEMENTS MOBILES : HEADER JEU & ÉCRAN PROFILS
    ========================================================= */
@@ -4659,4 +4669,16 @@ button,
     text-align: center;
     margin: 4px 0 6px 0;
     font-weight: 600;
+}
+/* Sécurisation du bouton son sur l'écran du Panthéon */
+#screen-leaderboard {
+    position: relative !important;
+}
+
+#screen-leaderboard .btn-corner-sound {
+    display: flex !important;
+    position: absolute !important;
+    top: 14px !important;
+    right: 14px !important;
+    z-index: 9999 !important; /* Reste toujours visible au-dessus du tableau */
 }
