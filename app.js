@@ -211,6 +211,15 @@ window.supabaseClient = supabaseClient;
         playTurn();
     }
 
+    const tweetsContainer = document.getElementById('tweets-container');
+        if (tweetsContainer) {
+            tweetsContainer.innerHTML = `
+                <div id="feed-placeholder" style="text-align: center; padding: 24px 10px; color: #7A6662; font-style: italic; font-size: 0.84rem; line-height: 1.4;">
+                    📢 Les réseaux sont calmes pour l'instant... Les premières réactions à tes choix apparaîtront ici !
+                </div>
+            `;
+        }
+    
     function updateStatsUI() {
         if (dateDisplay) {
     const rawDate = gameState.timeline[gameState.turn] || '';
@@ -645,6 +654,10 @@ window.supabaseClient = supabaseClient;
     // ==========================================
     function updateTweetsFeed(tweetsList) {
         if (!tweetsContainer) return;
+
+        const placeholder = document.getElementById('feed-placeholder');
+        if (placeholder) placeholder.remove();
+
         tweetsContainer.innerHTML = '';
         
         const count = tweetsList ? tweetsList.length : 0;
