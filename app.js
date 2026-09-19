@@ -25,7 +25,7 @@ window.supabaseClient = supabaseClient;
             followers: 5000,
             budget: 1000,
             energy: 100,
-            credibility: 50,
+            credibility: 25,
             tension: 0
         },
         highestOpponentName: "Aucun contradicteur affronté",
@@ -185,7 +185,7 @@ window.supabaseClient = supabaseClient;
    function initGame(charType) {
         gameState.turn = 0;
         gameState.selectedCharacter = charType;
-        gameState.stats = { followers: 5000, budget: 1000, energy: 100, credibility: 50, tension: 0 };
+        gameState.stats = { followers: 5000, budget: 1000, energy: 100, credibility: 25, tension: 0 };
         
         gameState.completedDebates = [];
         gameState.historyEventsSeen = [];
