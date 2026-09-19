@@ -1084,26 +1084,13 @@ const bgAvatar = avatarColors[Math.abs(hash) % avatarColors.length];
     // DICTIONNAIRE DE TRADUCTION DES ARCHÉTYPES
     // ==========================================
     const archetypeNames = {
-        'influenceur': "📱 L'Influenceur.euse TikTok",
-        'syndicaliste': "📢 Le/La Syndicaliste CGT",
-        'intello': "📚 L'Intello Normalien.ne",
-        'zadiste': "🚜 Le/La ZADiste",
+        'syndicaliste': "📢 Syndicaliste CGT",
+        'écolo': "🍃 L'écolo extrémiste",
         'etudiant_bloqueur': "🪧 L'Étudiant.e Bloqueur.se",
         'feministe': "🟣 La Féministe Intersectionnelle",
-        'queer': "🏳️‍🌈 Le/La Queer Radical.e",
-        'avocat': "⚖️ L'Avocat.e Engagé.e",
-        'anticolonial': "✊🏾 Le/La Militant.e Anticolonial.e",
-        'soignant': "🏥 L'Infirmier.ère en Colère",
-        'podcasteur': "🎧 Le/La Podcasteur.se",
-        'black_bloc': "🏴 L'Autonome",
-        'intermittent': "🎭 L'Intermittent.e",
-        'antispeciste': "🥦 L'Antispéciste",
-        'cycliste': "🚲 Le/La Cycliste Vélo-Taf",
-        'journaliste': "🗞️ Le/La Journaliste Indé",
-        'boulanger': "🥖 Le/La Boulanger.ère en Coop",
-        'hacker': "💻 Le/La Hacker Hacktiviste",
+        'queer': "🏳️‍🌈 Queer Radical.e",
+        'anticolonial': "✊🏾 Militant.e Anticolonial.e",
         'attache_parlementaire': "🏛️ L'Attaché.e Parlementaire",
-        'batucada': "🥁 Le/La Batucada"
     };
 
     function getSelectedArchetypeName() {
