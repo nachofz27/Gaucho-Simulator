@@ -142,6 +142,32 @@ window.supabaseClient = supabaseClient;
     const btnBackMenu = document.getElementById('btn-back-menu');
     const btnClearScores = document.getElementById('btn-clear-scores');
 
+    // Gestion de la modale Mentions légales & Crédits
+    const modalLegal = document.getElementById('modal-legal');
+    const btnOpenLegal = document.getElementById('btn-open-legal');
+    const btnCloseLegal = document.getElementById('btn-close-legal');
+    const btnCloseLegalBottom = document.getElementById('btn-close-legal-bottom');
+
+    if (btnOpenLegal && modalLegal) {
+        btnOpenLegal.addEventListener('click', () => {
+            modalLegal.classList.add('active');
+        });
+    }
+
+    const closeLegal = () => {
+        if (modalLegal) modalLegal.classList.remove('active');
+    };
+
+    if (btnCloseLegal) btnCloseLegal.addEventListener('click', closeLegal);
+    if (btnCloseLegalBottom) btnCloseLegalBottom.addEventListener('click', closeLegal);
+    
+    // Fermer en cliquant en dehors de la carte
+    if (modalLegal) {
+        modalLegal.addEventListener('click', (e) => {
+            if (e.target === modalLegal) closeLegal();
+        });
+    }
+
     // ==========================================
     // 3. GESTION DES ÉCRANS
     // ==========================================
