@@ -59,6 +59,9 @@
                     <button id="btn-about" class="btn-secondary">📜 Règles</button>
                 </div>
             </div>
+            <div class="menu-legal-footer">
+    <button id="btn-open-legal" class="btn-legal-link">Mentions légales & Crédits</button>
+</div>
         </section>
 
         <!-- ==========================================
@@ -596,5 +599,37 @@
     <script src="alliesdata.js"></script>
     <script src="debatesdata.js"></script>
     <script src="app.js"></script>
+        <!-- MODALE MENTIONS LÉGALES & CRÉDITS -->
+<div id="modal-legal" class="legal-modal-overlay">
+    <div class="legal-modal-card">
+        <div class="legal-modal-header">
+            <h3>⚖️ Mentions Légales & Crédits</h3>
+            <button id="btn-close-legal" class="legal-close-btn">&times;</button>
+        </div>
+        <div class="legal-modal-body">
+            <h4>1. Édition & Anonymat</h4>
+            <p>Ce site web et ce jeu vidéo sont édités à titre strictement non professionnel par un particulier passionné de développement web. Conformément aux dispositions de l'<strong>article 6, III, 2 de la loi n° 2004-575 du 21 juin 2004 (LCEN)</strong> pour la confiance dans l'économie numérique, l'éditeur a choisi de préserver son anonymat en transmettant régulièrement ses éléments d'identification personnelle complets à son prestataire d'hébergement.</p>
+
+            <h4>2. Hébergement</h4>
+            <p>Le site est hébergé par :<br>
+            <strong>Vercel Inc.</strong><br>
+            440 N Barranca Ave #4133, Covina, CA 91723, États-Unis<br>
+            Contact : privacy@vercel.com / https://vercel.com</p>
+
+            <h4>3. Nature satirique, parodique & fictionnelle</h4>
+            <p><strong>Gaucho Simulator</strong> est une œuvre de fiction ludique et une parodie politique. Les événements, dialogues, messages et réactions fictives attribués à des personnalités publiques relèvent du droit à la caricature, à l'humour et à l'exercice de la liberté d'expression dans le cadre de l'<strong>exception de parodie (article L. 122-5, 4° du Code de la propriété intellectuelle)</strong>.</p>
+            <p>Le jeu ne constitue en aucun cas une prise de position réelle ou une déclaration officielle émanant des personnalités, mouvements, syndicats ou organisations représentés.</p>
+
+            <h4>4. Données personnelles & Cookies</h4>
+            <p>Le site ne dépose aucun cookie publicitaire ni traceur commercial. Les seules données conservées (scores, progression, pseudonyme choisi) sont stockées localement sur le terminal du joueur (via la mémoire locale du navigateur) ou envoyées à un classement public facultatif sans collecte d'adresse e-mail, d'adresse IP à des fins d'identification, ni d'informations nominatives sensibles (conformité RGPD).</p>
+
+            <h4>5. Crédits & Développement</h4>
+            <p>Jeu indépendant conçu et programmé avec des technologies web standard (HTML5, CSS3, JavaScript natif). Les visuels, typographies et pictogrammes utilisés sont issus de ressources libres de droit ou créés pour les besoins de l'univers parodique.</p>
+        </div>
+        <div class="legal-modal-footer">
+            <button id="btn-close-legal-bottom" class="btn-primary" style="padding: 6px 18px; font-size: 0.85rem;">Fermer</button>
+        </div>
+    </div>
+</div>
 </body>
 </html>
