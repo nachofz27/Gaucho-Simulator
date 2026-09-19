@@ -211,7 +211,7 @@ window.supabaseClient = supabaseClient;
         playTurn();
     }
 
-    const tweetsContainer = document.getElementById('tweets-container');
+    tweetsContainer = document.getElementById('tweets-container');
         if (tweetsContainer) {
             tweetsContainer.innerHTML = `
                 <div id="feed-placeholder" style="text-align: center; padding: 24px 10px; color: #7A6662; font-style: italic; font-size: 0.84rem; line-height: 1.4;">
