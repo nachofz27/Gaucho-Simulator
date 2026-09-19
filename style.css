@@ -4795,30 +4795,35 @@ button,
     display: flex;
     justify-content: flex-end;
 }
-/* Bouton flottant en bas à gauche sur le menu */
+/* Bouton flottant compact en bas à gauche avec fond blanchâtre */
 .btn-feedback-corner {
-    position: absolute;
-    bottom: 14px;
-    left: 14px;
-    background: rgba(119, 7, 32, 0.08);
-    border: 1px solid rgba(119, 7, 32, 0.25);
-    color: var(--primary);
-    border-radius: 20px;
-    padding: 6px 12px;
-    font-size: 0.78rem;
-    font-weight: 700;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    transition: all 0.2s ease;
-    z-index: 50;
+    position: absolute !important;
+    bottom: 14px !important;
+    left: 14px !important;
+    width: auto !important;             /* Empêche le bouton de s'étaler sur toute la ligne */
+    max-width: fit-content !important;  /* Verrouille la largeur à la taille du texte */
+    display: inline-flex !important;    /* Aligne l'icône et le texte proprement */
+    align-items: center !important;
+    gap: 6px !important;
+    background: rgba(255, 253, 249, 0.92) !important; /* Fond blanchâtre / crème très propre */
+    border: 1.5px solid rgba(119, 7, 32, 0.3) !important;
+    color: var(--primary) !important;
+    border-radius: 20px !important;
+    padding: 6px 14px !important;
+    font-size: 0.78rem !important;
+    font-weight: 700 !important;
+    cursor: pointer !important;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06) !important;
+    transition: all 0.2s ease !important;
+    z-index: 50 !important;
 }
 
 .btn-feedback-corner:hover {
-    background: var(--primary);
-    color: #FFF;
-    transform: translateY(-1px);
+    background: var(--primary) !important;
+    color: #FFFFFF !important;
+    border-color: var(--primary) !important;
+    transform: translateY(-1px) !important;
+    box-shadow: 0 4px 10px rgba(119, 7, 32, 0.2) !important;
 }
 
 /* Modale */
