@@ -59,9 +59,13 @@
                     <button id="btn-about" class="btn-secondary">📜 Règles</button>
                 </div>
             </div>
+            <!-- Bouton boîte à suggestions en bas à gauche -->
+<button id="btn-open-feedback" class="btn-feedback-corner" title="Envoyer une idée ou un retour">
+    💡 <span>Boîte à idées</span>
+</button>
             <div class="menu-legal-footer">
     <button id="btn-open-legal" class="btn-legal-link">Mentions légales & Crédits</button>
-</div>
+            </div>
         </section>
 
         <!-- ==========================================
@@ -534,6 +538,39 @@
     <script src="alliesdata.js"></script>
     <script src="debatesdata.js"></script>
     <script src="app.js"></script>
+
+
+        <!-- MODALE BOÎTE À IDÉES -->
+<div id="modal-feedback" class="feedback-modal-overlay">
+    <div class="feedback-modal-card">
+        <div class="feedback-modal-header">
+            <h3>💡 Boîte à idées & Retours</h3>
+            <button id="btn-close-feedback" class="feedback-close-btn">&times;</button>
+        </div>
+
+        <form action="https://formspree.io/f/TON_ID_ICI" method="POST" class="feedback-modal-form">
+            <p class="feedback-intro-text">
+                Une proposition d'événement, un personnage à intégrer ou un bug constaté ? Envoie ton message directement au créateur.
+            </p>
+
+            <label for="feedback-category">Type de message</label>
+            <select name="category" id="feedback-category">
+                <option value="idee_evenement">Idée d'événement / punchline</option>
+                <option value="nouveau_personnage">Proposition de personnage / allié</option>
+                <option value="bug">Signalement de bug</option>
+                <option value="autre">Autre retour</option>
+            </select>
+
+            <label for="feedback-content">Ton message</label>
+            <textarea id="feedback-content" name="message" rows="4" placeholder="Décris ton idée ou ton retour..." required></textarea>
+
+            <div class="feedback-modal-actions">
+                <button type="button" id="btn-cancel-feedback" class="btn-secondary">Annuler</button>
+                <button type="submit" class="btn-primary">Envoyer</button>
+            </div>
+        </form>
+    </div>
+</div>
         <!-- MODALE MENTIONS LÉGALES & CRÉDITS -->
 <div id="modal-legal" class="legal-modal-overlay">
     <div class="legal-modal-card">
