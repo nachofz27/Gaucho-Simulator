@@ -1496,12 +1496,12 @@ html, body, button, .char-card, .btn-choice {
 }
 
 .dash-card.ally-theme {
-    border-left: 3px solid #d97706;
-    background: #fffdf5;
+    border-left: 3px solid #15803d; /* Remplacer #d97706 par du vert */
+    background: #f0fdf4;            /* Remplacer #fffdf5 par un fond vert très clair */
 }
 
 .dash-card.ally-theme .dash-value {
-    color: #b45309;
+    color: #15803d;                 /* Remplacer #b45309 par du vert */
 }
 
 /* ROW DE SAUVEGARDE COMPACTE */
