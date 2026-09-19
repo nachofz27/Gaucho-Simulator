@@ -1085,7 +1085,7 @@ const bgAvatar = avatarColors[Math.abs(hash) % avatarColors.length];
     // ==========================================
     const archetypeNames = {
         'syndicaliste': "📢 Syndicaliste CGT",
-        'écolo': "🍃 L'écolo extrémiste",
+        'écolo': "🍃 L'Écolo Extrémiste",
         'etudiant_bloqueur': "🪧 L'Étudiant.e Bloqueur.se",
         'feministe': "🟣 La Féministe Intersectionnelle",
         'queer': "🏳️‍🌈 Queer Radical.e",
