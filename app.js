@@ -336,6 +336,24 @@ window.supabaseClient = supabaseClient;
         }
     }
 
+    function pickWeightedDebate(debatesList) {
+        if (!debatesList || debatesList.length === 0) return null;
+        if (debatesList.length === 1) return debatesList[0];
+
+        // Tirage au sort basé sur le poids 'weight' de chaque ennemi
+        const totalWeight = debatesList.reduce((sum, d) => sum + (d.weight || 10), 0);
+        let randomNum = Math.random() * totalWeight;
+
+        for (const item of debatesList) {
+            const w = item.weight || 10;
+            if (randomNum < w) {
+                return item;
+            }
+            randomNum -= w;
+        }
+        return debatesList[debatesList.length - 1];
+    }
+
     function playTurn() {
         updateStatsUI();
 
@@ -362,15 +380,15 @@ window.supabaseClient = supabaseClient;
         const tension = gameState.stats.tension || 0;
         const currentTier = getCurrentTierNumber();
 
+        // 4 seuils de tension correspondant aux 4 paliers de débat
         const debateThresholds = [
-            { level: 1, minTension: 12 },
-            { level: 2, minTension: 30 },
-            { level: 3, minTension: 55 },
-            { level: 4, minTension: 80 },
-            { level: 5, minTension: 100 }
+            { level: 1, minTension: 15 },
+            { level: 2, minTension: 35 },
+            { level: 3, minTension: 60 },
+            { level: 4, minTension: 85 }
         ];
 
-        // Vérifie si un palier de débat est débloqué et non encore joué
+        // Détection du palier de débat éligible non encore disputé
         const eligibleDebate = debateThresholds
             .filter(d => tension >= d.minTension && !gameState.completedDebates.includes(d.level))
             .pop();
@@ -379,23 +397,43 @@ window.supabaseClient = supabaseClient;
             const rawTierData = DEBATES_DATABASE[eligibleDebate.level];
             let pickedDebate = null;
 
-            // Gère si le palier est un tableau de débats ou un objet unique
             if (Array.isArray(rawTierData)) {
+                // Priorité aux adversaires du palier non encore affrontés
                 const unplayed = rawTierData.filter(d => !gameState.completedDebates.includes(d.id));
-                pickedDebate = (unplayed.length > 0) 
-                    ? unplayed[Math.floor(Math.random() * unplayed.length)] 
-                    : rawTierData[Math.floor(Math.random() * rawTierData.length)];
-                gameState.completedDebates.push(pickedDebate.id);
+                const pool = unplayed.length > 0 ? unplayed : rawTierData;
+
+                // Tirage aléatoire pondéré selon la rareté interne (propriété 'weight')
+                if (typeof pickWeightedDebate === 'function') {
+                    pickedDebate = pickWeightedDebate(pool);
+                } else {
+                    const totalWeight = pool.reduce((sum, d) => sum + (d.weight || 10), 0);
+                    let randomNum = Math.random() * totalWeight;
+                    for (const item of pool) {
+                        const w = item.weight || 10;
+                        if (randomNum < w) {
+                            pickedDebate = item;
+                            break;
+                        }
+                        randomNum -= w;
+                    }
+                    if (!pickedDebate) pickedDebate = pool[pool.length - 1];
+                }
+
+                if (pickedDebate && pickedDebate.id) {
+                    gameState.completedDebates.push(pickedDebate.id);
+                }
             } else {
                 pickedDebate = rawTierData;
             }
 
-            // On verrouille impérativement le niveau pour ne pas boucler à l'infini
-            gameState.completedDebates.push(eligibleDebate.level);
-            setupDebateScreen(pickedDebate, eligibleDebate.level);
-            return;
+            if (pickedDebate) {
+                gameState.completedDebates.push(eligibleDebate.level);
+                setupDebateScreen(pickedDebate, eligibleDebate.level);
+                return;
+            }
         }
 
+        // Événements narratifs filtrés sur les 4 paliers
         let availableEvents = gameEvents.filter(e => (e.tier || 1) <= currentTier && !gameState.historyEventsSeen.includes(e.id));
         if (availableEvents.length === 0) {
             gameState.historyEventsSeen = [];
@@ -412,11 +450,12 @@ window.supabaseClient = supabaseClient;
         const screenDebate = document.getElementById('screen-debate');
         if (!screenDebate || !debateObj) return;
 
-        // 1. Bascule propre des écrans pour masquer l'écran de jeu
+        // 1. Bascule propre des écrans
         showScreen('screen-debate');
 
-        // 2. Nettoyage et injection de la classe d'arène
-        screenDebate.className = `screen active arena-tier-${tier}`;
+        // 2. Injection des classes de thème : spécifique à l'adversaire ou liée au palier
+        const characterTheme = debateObj.arenaThemeClass || `arena-char-${debateObj.id || 'standard'}`;
+        screenDebate.className = `screen active arena-tier-${tier} ${characterTheme}`;
 
         const playerArchName = getSelectedArchetypeName();
         const cred = Math.max(5, Math.min(95, Math.round(gameState.stats.credibility)));
@@ -426,48 +465,17 @@ window.supabaseClient = supabaseClient;
             gameState.highestOpponentName = debateObj.characterName;
         }
 
-        // 3. Décors spécifiques au palier
+        // 3. Décor dédié au personnage s'il existe dans debatesdata.js, sinon bandeau par défaut
         let decorElementsHtml = '';
-        if (tier === 1) {
+        if (debateObj.arenaDecorHtml) {
+            decorElementsHtml = debateObj.arenaDecorHtml;
+        } else {
+            const defaultBadgeIcon = { 1: '🎓', 2: '📱', 3: '📺', 4: '👑' }[tier] || '🎙️';
             decorElementsHtml = `
-                <div class="tier-decor-badge">🎓 ${debateObj.arenaName || 'Faculté des Lettres'}</div>
-                <div class="chalk-doodle">📝 TD de Socio • Séance 7</div>
-            `;
-        } else if (tier === 2) {
-            decorElementsHtml = `
-                <div class="tier-decor-badge tiktok-badge">🔴 LIVE DIRECT • 18.5k viewers</div>
-                <div class="tiktok-floating-hearts">
-                    <span class="heart-fx h1">💖</span>
-                    <span class="heart-fx h2">🔥</span>
-                    <span class="heart-fx h3">👏</span>
+                <div class="tier-decor-badge">
+                    ${defaultBadgeIcon} ${debateObj.arenaName || 'Débat Contradictoire'}
                 </div>
-            `;
-        } else if (tier === 3) {
-            decorElementsHtml = `
-                <div class="tier-decor-badge academic-badge">🏛️ ${debateObj.arenaName || 'Amphithéâtre'}</div>
-                <div class="academic-crest">📜 TRIBUNE DES LIBERTÉS</div>
-            `;
-        } else if (tier === 4) {
-            decorElementsHtml = `
-                <div class="tier-decor-badge radio-badge">
-                    <span class="on-air-pulse">🔴 ON AIR</span>
-                    <span>${debateObj.arenaName || 'Studio Radio'}</span>
-                </div>
-                <div class="audio-vumeter-bars">
-                    <span class="vubar b1"></span><span class="vubar b2"></span>
-                    <span class="vubar b3"></span><span class="vubar b4"></span><span class="vubar b5"></span>
-                </div>
-            `;
-        } else if (tier === 5) {
-            decorElementsHtml = `
-                <div class="tier-decor-badge tv-badge">
-                    <span class="rec-dot">● REC</span>
-                    <span>ÉDITION SPÉCIALE • LE GRAND DÉBAT</span>
-                </div>
-                <div class="tv-breaking-chiron">
-                    <span class="chiron-flash">DIRECT 2027</span>
-                    <span class="chiron-text">4,2 MILLIONS DE CITOYENS CONNECTÉS • TEMPS DE PAROLE STRICT</span>
-                </div>
+                <div class="chalk-doodle">⚡ Face-à-face politique</div>
             `;
         }
 
@@ -2008,26 +2016,36 @@ const bgAvatar = avatarColors[Math.abs(hash) % avatarColors.length];
         return Math.round(baseScore * (cred / 100));
     }
 
+    function calculateUnderTheHoodScore() {
+        const followers = Math.max(0, gameState.stats.followers);
+        const budget = Math.max(0, gameState.stats.budget);
+        const cred = Math.max(0, Math.min(100, gameState.stats.credibility));
+
+        const baseScore = (followers * 1.2) + (budget * 15);
+        return Math.round(baseScore * (cred / 100));
+    }
+
     function getCurrentTierNumber() {
         const score = calculateUnderTheHoodScore();
-        if (score >= 800000) return 5;
-        if (score >= 250000) return 4;
+        // Objectif : ~5% des parties parfaites
+        if (score >= 200000) return 4;
+        // Objectif : ~15-20%
         if (score >= 60000)  return 3;
+        // Objectif : ~50%
         if (score >= 15000)  return 2;
+        // Départ
         return 1;
     }
 
     function getDynamicTier() {
         const tier = getCurrentTierNumber();
         switch(tier) {
-            case 5: return "🌍 Figure Hégémonique";
-            case 4: return "🏛️ Ténor Médiatique";
-            case 3: return "📢 Cadre National Émergent";
-            case 2: return "🚩 Réseau Fédéral & Web";
-            case 1: return "🪧 Cellule Locale & Collage";
-            default: return "🪧 Cellule Locale & Collage";
+            case 4: return "Rayonnement international (palier 4)";
+            case 3: return "Envergure nationale (palier 3)";
+            case 2: return "Influence régionale (palier 2)";
+            case 1: return "Notoriété locale (palier 1)";
+            default: return "Notoriété locale (palier 1)";
         }
-    }
 
 });
 // =========================================================
