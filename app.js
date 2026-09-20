@@ -1892,11 +1892,58 @@ const bgAvatar = avatarColors[Math.abs(hash) % avatarColors.length];
     // COLLECTION DES CAMARADES : RENDU & COMPTEURS PAR ONGLETS
     // =========================================================
     const rarityConfig = {
-        1: { name: "Militant de Terrain", color: "#16a34a", topPct: "Palier 1" },      // Vert
-        2: { name: "Cadre de Lutte",       color: "#2563eb", topPct: "Palier 2" },      // Bleu
-        3: { name: "Poids Lourd",          color: "#9333ea", topPct: "Palier 3" },      // Violet
-        4: { name: "Légende Historique",   color: "#d97706", topPct: "Palier 4" }       // Doré
+        1: { name: "Militant de Terrain", color: "#16a34a" },  // Vert
+        2: { name: "Cadre de Lutte",       color: "#2563eb" },  // Bleu
+        3: { name: "Poids Lourd",          color: "#9333ea" },  // Violet
+        4: { name: "Légende Historique",   color: "#d97706" }   // Doré
     };
+
+    // Applique immédiatement la bordure et la couleur à chaque bouton
+    collectionFilters.forEach(btn => {
+        const tier = btn.dataset.tier;
+        if (tier !== 'all' && rarityConfig[tier]) {
+            const conf = rarityConfig[tier];
+            btn.style.border = `2px solid ${conf.color}`;
+            btn.style.color = conf.color;
+            btn.style.backgroundColor = 'transparent';
+        } else {
+            btn.style.border = '2px solid var(--primary)';
+            btn.style.color = '#FFFFFF';
+            btn.style.backgroundColor = 'var(--primary)';
+        }
+
+        btn.addEventListener('click', (e) => {
+            const targetBtn = e.currentTarget;
+
+            // Réinitialise l'état inactif tout en conservant les bordures colorées
+            collectionFilters.forEach(b => {
+                b.classList.remove('active');
+                const bTier = b.dataset.tier;
+                if (bTier !== 'all' && rarityConfig[bTier]) {
+                    b.style.backgroundColor = 'transparent';
+                    b.style.color = rarityConfig[bTier].color;
+                } else {
+                    b.style.backgroundColor = 'transparent';
+                    b.style.color = '#a1a1aa';
+                }
+            });
+
+            // Active le bouton sélectionné avec un fond plein ou teinté
+            targetBtn.classList.add('active');
+            const clickedTier = targetBtn.dataset.tier;
+
+            if (clickedTier !== 'all' && rarityConfig[clickedTier]) {
+                const conf = rarityConfig[clickedTier];
+                targetBtn.style.backgroundColor = conf.color;
+                targetBtn.style.color = '#FFFFFF';
+            } else {
+                targetBtn.style.backgroundColor = 'var(--primary)';
+                targetBtn.style.color = '#FFFFFF';
+            }
+
+            renderCollectionGrid(clickedTier);
+        });
+    });
 
     function renderCollectionGrid(tierFilter = 'all') {
         if (typeof ALLIES_DATABASE === 'undefined') return;
