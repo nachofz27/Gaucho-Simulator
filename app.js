@@ -1857,9 +1857,29 @@ const bgAvatar = avatarColors[Math.abs(hash) % avatarColors.length];
 
     collectionFilters.forEach(btn => {
         btn.addEventListener('click', (e) => {
-            collectionFilters.forEach(b => b.classList.remove('active'));
-            e.target.classList.add('active');
-            renderCollectionGrid(e.target.dataset.tier);
+            collectionFilters.forEach(b => {
+                b.classList.remove('active');
+                b.style.borderColor = '';
+                b.style.backgroundColor = '';
+                b.style.color = '';
+            });
+
+            const targetBtn = e.currentTarget;
+            targetBtn.classList.add('active');
+
+            const tier = targetBtn.dataset.tier;
+            if (tier !== 'all' && rarityConfig[tier]) {
+                const conf = rarityConfig[tier];
+                targetBtn.style.borderColor = conf.color;
+                targetBtn.style.backgroundColor = `${conf.color}18`;
+                targetBtn.style.color = conf.color;
+            } else {
+                targetBtn.style.borderColor = 'var(--primary)';
+                targetBtn.style.backgroundColor = 'var(--primary)';
+                targetBtn.style.color = '#FFFFFF';
+            }
+
+            renderCollectionGrid(tier);
         });
     });
 
@@ -1872,10 +1892,10 @@ const bgAvatar = avatarColors[Math.abs(hash) % avatarColors.length];
     // COLLECTION DES CAMARADES : RENDU & COMPTEURS PAR ONGLETS
     // =========================================================
     const rarityConfig = {
-        1: { name: "Notoriété Locale", color: "#64748b", topPct: "Palier 1" },
-        2: { name: "Influence Régionale", color: "#16a34a", topPct: "Palier 2" },
-        3: { name: "Envergure Nationale", color: "#2563eb", topPct: "Palier 3" },
-        4: { name: "Rayonnement International", color: "#9333ea", topPct: "Palier 4" }
+        1: { name: "Militant de Terrain", color: "#16a34a", topPct: "Palier 1" },      // Vert
+        2: { name: "Cadre de Lutte",       color: "#2563eb", topPct: "Palier 2" },      // Bleu
+        3: { name: "Poids Lourd",          color: "#9333ea", topPct: "Palier 3" },      // Violet
+        4: { name: "Légende Historique",   color: "#d97706", topPct: "Palier 4" }       // Doré
     };
 
     function renderCollectionGrid(tierFilter = 'all') {
