@@ -1,71 +1,29 @@
 // =============================================================
-// BASE DE DONNÉES DES ALLIÉS (alliesdata.js)
-// 4 Paliers de rareté x 10 Alliés = 40 Figures de Lutte
-// 4 Luttes équilibrées (10 cartes chacune) :
-// 🔴 Travail, Social & Anticapitalisme
-// 🌿 Écologie, Vivant & Territoires
-// 🟣 Émancipation, Féminisme & Droits Civiques
-// 📢 Contre-Pouvoir, Médias & Antifascisme
+// BASE DE DONNÉES OFFICIELLE DES 40 ALLIÉS (alliesdata.js)
+// 4 Paliers x 10 Camarades = 40 Figures de Lutte
+// 4 Thématiques équilibrées à 10 chacune
 // =============================================================
 
 const ALLIES_DATABASE = [
 
     // =============================================================
-    // PALIER 1 : MILITANT DE TERRAIN (Indices 1 à 10)
-    // Rareté : Vert (#16a34a)
-    // Bonus : Apport fixe (+5 000 à +15 000 manifestants)
+    // PALIER 1 : MILITANT DE TERRAIN (Top 60% à 96%)
+    // Couleur : Vert (#16a34a) | Bonus fixe : +5 000 à +15 000
     // =============================================================
     {
-        id: "zawa_prod",
-        name: "Zawa Prod (Dany & Raz)",
-        role: "Duettistes du Live Twitch",
+        id: "raphael_arnault",
+        name: "Raphaël Arnault",
+        role: "Militant Antifasciste",
         tier: 1,
         rarityName: "Militant de Terrain",
         rarityColor: "#16a34a",
+        topPct: "Top 60%",
+        dropWeight: 10,
         scoreIndex: 1,
         archetype: "Contre-Pouvoir, Médias & Antifascisme",
         bonusType: "flat",
-        bonusValue: 5000,
-        bio: "Pionniers des lives politiques interactifs et nocturnes, maîtres de la déconstruction des récits dominants."
-    },
-    {
-        id: "glupatate",
-        name: "Glupatate",
-        role: "Monteur Satirique",
-        tier: 1,
-        rarityName: "Militant de Terrain",
-        rarityColor: "#16a34a",
-        scoreIndex: 2,
-        archetype: "Contre-Pouvoir, Médias & Antifascisme",
-        bonusType: "flat",
-        bonusValue: 6000,
-        bio: "Monteur indépendant, créateur des zappings mèmes les plus viraux pour ridiculiser les éditorialistes réactionnaires."
-    },
-    {
-        id: "regelegorila",
-        name: "Regelegorila",
-        role: "Streamer Populaire",
-        tier: 1,
-        rarityName: "Militant de Terrain",
-        rarityColor: "#16a34a",
-        scoreIndex: 3,
-        archetype: "Contre-Pouvoir, Médias & Antifascisme",
-        bonusType: "flat",
-        bonusValue: 7000,
-        bio: "Streamer et créateur web, célèbre pour ses réactions directes, ses tier-lists politiques tranchées et sans filtre."
-    },
-    {
-        id: "histoires_crepues",
-        name: "Histoires Crépues",
-        role: "Pédagogue Décolonial",
-        tier: 1,
-        rarityName: "Militant de Terrain",
-        rarityColor: "#16a34a",
-        scoreIndex: 4,
-        archetype: "Émancipation, Féminisme & Droits Civiques",
-        bonusType: "flat",
-        bonusValue: 8000,
-        bio: "Créateur de formats vidéo percutants dédiés à l'histoire coloniale, à l'antiracisme et à la mémoire des luttes."
+        bonusValue: 15000,
+        bio: "Porte-parole de la Jeune Garde devenu député, figure de l'autodéfense populaire face à l'extrême droite."
     },
     {
         id: "alma_dufour",
@@ -74,37 +32,13 @@ const ALLIES_DATABASE = [
         tier: 1,
         rarityName: "Militant de Terrain",
         rarityColor: "#16a34a",
-        scoreIndex: 5,
+        topPct: "Top 64%",
+        dropWeight: 14,
+        scoreIndex: 2,
         archetype: "Écologie, Vivant & Territoires",
         bonusType: "flat",
-        bonusValue: 9000,
-        bio: "Ancienne porte-parole écologiste, stratège des blocages d'entrepôts Amazon devenue députée de rupture."
-    },
-    {
-        id: "banlieue_climat",
-        name: "Banlieue Climat",
-        role: "Écologistes Populaires",
-        tier: 1,
-        rarityName: "Militant de Terrain",
-        rarityColor: "#16a34a",
-        scoreIndex: 6,
-        archetype: "Écologie, Vivant & Territoires",
-        bonusType: "flat",
-        bonusValue: 10000,
-        bio: "Association formatrice de la jeunesse des quartiers aux enjeux climatiques, alliant justice environnementale et sociale."
-    },
-    {
-        id: "clement_viktorovitch",
-        name: "Clément Viktorovitch",
-        role: "Analyste Rhétorique",
-        tier: 1,
-        rarityName: "Militant de Terrain",
-        rarityColor: "#16a34a",
-        scoreIndex: 7,
-        archetype: "Contre-Pouvoir, Médias & Antifascisme",
-        bonusType: "flat",
-        bonusValue: 11000,
-        bio: "Docteur en sciences politiques, spécialiste du décryptage de la parole politique et de la novlangue autoritaire."
+        bonusValue: 13500,
+        bio: "Ancienne porte-parole écologiste, stratège des blocages d'entrepôts Amazon devenue députée de rupture."[cite: 1]
     },
     {
         id: "ludovic_franceschet",
@@ -113,11 +47,103 @@ const ALLIES_DATABASE = [
         tier: 1,
         rarityName: "Militant de Terrain",
         rarityColor: "#16a34a",
-        scoreIndex: 8,
+        topPct: "Top 68%",
+        dropWeight: 18,
+        scoreIndex: 3,
         archetype: "Écologie, Vivant & Territoires",
         bonusType: "flat",
         bonusValue: 12000,
-        bio: "Agent de propreté parisien et figure des réseaux, sensibilisateur populaire infatigable à la propreté urbaine et au respect des agents."
+        bio: "Agent de propreté parisien très populaire sur les réseaux, défenseur de l'écologie urbaine et du respect des travailleurs."
+    },
+    {
+        id: "banlieue_climat",
+        name: "Banlieue Climat",
+        role: "Écologistes Populaires",
+        tier: 1,
+        rarityName: "Militant de Terrain",
+        rarityColor: "#16a34a",
+        topPct: "Top 72%",
+        dropWeight: 22,
+        scoreIndex: 4,
+        archetype: "Écologie, Vivant & Territoires",
+        bonusType: "flat",
+        bonusValue: 11000,
+        bio: "Collectif formant la jeunesse des cités populaires aux enjeux climatiques, alliant justice écologique et sociale."
+    },
+    {
+        id: "histoires_crepues",
+        name: "Histoires Crépues",
+        role: "Pédagogue Décolonial",
+        tier: 1,
+        rarityName: "Militant de Terrain",
+        rarityColor: "#16a34a",
+        topPct: "Top 76%",
+        dropWeight: 26,
+        scoreIndex: 5,
+        archetype: "Émancipation, Féminisme & Droits Civiques",
+        bonusType: "flat",
+        bonusValue: 10000,
+        bio: "Vidéaste vulgarisateur de l'histoire coloniale, engagé contre le racisme institutionnel et pour les mémoires populaires."
+    },
+    {
+        id: "glupatate",
+        name: "Glupatate",
+        role: "Monteur Satirique",
+        tier: 1,
+        rarityName: "Militant de Terrain",
+        rarityColor: "#16a34a",
+        topPct: "Top 80%",
+        dropWeight: 30,
+        scoreIndex: 6,
+        archetype: "Contre-Pouvoir, Médias & Antifascisme",
+        bonusType: "flat",
+        bonusValue: 9000,
+        bio: "Monteur indépendant, créateur des zappings mèmes les plus viraux contre les éditorialistes conservateurs."[cite: 1]
+    },
+    {
+        id: "regelegorila",
+        name: "Regelegorila",
+        role: "Streamer Populaire",
+        tier: 1,
+        rarityName: "Militant de Terrain",
+        rarityColor: "#16a34a",
+        topPct: "Top 84%",
+        dropWeight: 35,
+        scoreIndex: 7,
+        archetype: "Contre-Pouvoir, Médias & Antifascisme",
+        bonusType: "flat",
+        bonusValue: 8000,
+        bio: "Streamer et créateur web, connu pour ses réactions franches et ses tier-lists politiques tranchées."[cite: 1]
+    },
+    {
+        id: "zawa_prod",
+        name: "Zawa Prod (Dany & Raz)",
+        role: "Duettistes du Live Twitch",
+        tier: 1,
+        rarityName: "Militant de Terrain",
+        rarityColor: "#16a34a",
+        topPct: "Top 88%",
+        dropWeight: 40,
+        scoreIndex: 8,
+        archetype: "Contre-Pouvoir, Médias & Antifascisme",
+        bonusType: "flat",
+        bonusValue: 7000,
+        bio: "Pionniers des diffusions militantes interactives, maîtres du débat d'actualité et de la contre-culture sur le web."
+    },
+    {
+        id: "clement_viktorovitch",
+        name: "Clément Viktorovitch",
+        role: "Analyste Rhétorique",
+        tier: 1,
+        rarityName: "Militant de Terrain",
+        rarityColor: "#16a34a",
+        topPct: "Top 92%",
+        dropWeight: 45,
+        scoreIndex: 9,
+        archetype: "Contre-Pouvoir, Médias & Antifascisme",
+        bonusType: "flat",
+        bonusValue: 6000,
+        bio: "Docteur en sciences politiques, spécialiste du décryptage de la langue de bois et de la propagande étatique."[cite: 1]
     },
     {
         id: "contre_attaque",
@@ -126,95 +152,48 @@ const ALLIES_DATABASE = [
         tier: 1,
         rarityName: "Militant de Terrain",
         rarityColor: "#16a34a",
-        scoreIndex: 9,
-        archetype: "Contre-Pouvoir, Médias & Antifascisme",
-        bonusType: "flat",
-        bonusValue: 13500,
-        bio: "Collectif d'information de rue et d'investigation militante, sentinelle contre les dérives policières et autoritaires."
-    },
-    {
-        id: "raphael_arnault",
-        name: "Raphaël Arnault",
-        role: "Militant Antifasciste",
-        tier: 1,
-        rarityName: "Militant de Terrain",
-        rarityColor: "#16a34a",
+        topPct: "Top 96%",
+        dropWeight: 50,
         scoreIndex: 10,
         archetype: "Contre-Pouvoir, Médias & Antifascisme",
         bonusType: "flat",
-        bonusValue: 15000,
-        bio: "Porte-parole de la Jeune Garde devenu député, artisan de l'autodéfense populaire face aux violences d'extrême droite."
+        bonusValue: 5000,
+        bio: "Média d'investigation militante de terrain, sentinelle contre les violences d'État et les dérives sécuritaires."
     },
 
     // =============================================================
-    // PALIER 2 : CADRE DE LUTTE (Indices 11 à 20)
-    // Rareté : Bleu (#2563eb)
-    // Bonus : Multiplicateur modéré (+15% à +25% de manifestants)
+    // PALIER 2 : CADRE DE LUTTE (Top 25% à 55%)
+    // Couleur : Bleu (#2563eb) | Bonus multiplicateur : +15% à +25%
     // =============================================================
     {
-        id: "jean_jouzel",
-        name: "Jean Jouzel",
-        role: "Climatologue Prix Nobel",
+        id: "jean_marc_jancovici",
+        name: "Jean-Marc Jancovici",
+        role: "Ingénieur de la Contrainte Carbone",
         tier: 2,
         rarityName: "Cadre de Lutte",
         rarityColor: "#2563eb",
+        topPct: "Top 25%",
+        dropWeight: 10,
         scoreIndex: 11,
         archetype: "Écologie, Vivant & Territoires",
         bonusType: "multiplier",
-        bonusValue: 0.15,
-        bio: "Glaciologue émérite, ancien vice-président du GIEC et pionnier de la preuve scientifique du réchauffement par les carottes de glace."
+        bonusValue: 0.25,
+        bio: "Créateur du Bilan Carbone et du Shift Project, vulgarisateur de la contrainte physique des ressources."
     },
     {
-        id: "youssef_swatts",
-        name: "Youssef Swatt's",
-        role: "Plume Poétique & Rap",
+        id: "rima_hassan",
+        name: "Rima Hassan",
+        role: "Juriste Internationale",
         tier: 2,
         rarityName: "Cadre de Lutte",
         rarityColor: "#2563eb",
+        topPct: "Top 28%",
+        dropWeight: 14,
         scoreIndex: 12,
         archetype: "Émancipation, Féminisme & Droits Civiques",
         bonusType: "multiplier",
-        bonusValue: 0.16,
-        bio: "Rappeur et auteur humaniste, vainqueur de Nouvelle École, maniant la sincérité textuelle et la dignité des quartiers."
-    },
-    {
-        id: "medine",
-        name: "Médine",
-        role: "Poète Contestataire",
-        tier: 2,
-        rarityName: "Cadre de Lutte",
-        rarityColor: "#2563eb",
-        scoreIndex: 13,
-        archetype: "Contre-Pouvoir, Médias & Antifascisme",
-        bonusType: "multiplier",
-        bonusValue: 0.18,
-        bio: "Rappeur havrais indépendant, cible privilégiée des plateaux réactionnaires pour sa plume subversive et ses concerts engagés."
-    },
-    {
-        id: "waly_dia",
-        name: "Waly Dia",
-        role: "Satiriste sans Concession",
-        tier: 2,
-        rarityName: "Cadre de Lutte",
-        rarityColor: "#2563eb",
-        scoreIndex: 14,
-        archetype: "Contre-Pouvoir, Médias & Antifascisme",
-        bonusType: "multiplier",
-        bonusValue: 0.19,
-        bio: "Humoriste sniper du système politique, bête noire des oligarques et des directeurs d'antenne frileux."
-    },
-    {
-        id: "salome_saque",
-        name: "Salomé Saqué",
-        role: "Journaliste de Combat",
-        tier: 2,
-        rarityName: "Cadre de Lutte",
-        rarityColor: "#2563eb",
-        scoreIndex: 15,
-        archetype: "Écologie, Vivant & Territoires",
-        bonusType: "multiplier",
-        bonusValue: 0.20,
-        bio: "Grand reporter chez Blast, voix de la jeunesse précarisée et vulgarisatrice implacable des crises climatiques."
+        bonusValue: 0.24,
+        bio: "Juriste en droit international, réfugiée palestinienne et députée portant sans relâche la cause des peuples sous occupation."[cite: 1]
     },
     {
         id: "camille_etienne",
@@ -223,24 +202,43 @@ const ALLIES_DATABASE = [
         tier: 2,
         rarityName: "Cadre de Lutte",
         rarityColor: "#2563eb",
-        scoreIndex: 16,
+        topPct: "Top 31%",
+        dropWeight: 18,
+        scoreIndex: 13,
         archetype: "Écologie, Vivant & Territoires",
         bonusType: "multiplier",
-        bonusValue: 0.21,
-        bio: "Militante pour la justice climatique et contre les fonds fossiles, adepte de la désobéissance civile ciblée."
+        bonusValue: 0.23,
+        bio: "Militante écologiste de terrain engagée contre les projets pétroliers et l'inaction climatique des multinationales."
     },
     {
         id: "bally_bagayoko",
         name: "Bally Bagayoko",
-        role: "Maire Populaire de Saint-Denis",
+        role: "Militant Populaire de Saint-Denis",
         tier: 2,
         rarityName: "Cadre de Lutte",
         rarityColor: "#2563eb",
-        scoreIndex: 17,
+        topPct: "Top 34%",
+        dropWeight: 22,
+        scoreIndex: 14,
         archetype: "Travail, Social & Anticapitalisme",
         bonusType: "multiplier",
         bonusValue: 0.22,
-        bio: "Militant associatif et élu de Seine-Saint-Denis, défenseur historique du service public et des habitants des cités populaires."
+        bio: "Militant de Seine-Saint-Denis, défenseur historique des services publics et du logement digne en banlieue."
+    },
+    {
+        id: "jean_jouzel",
+        name: "Jean Jouzel",
+        role: "Climatologue Prix Nobel",
+        tier: 2,
+        rarityName: "Cadre de Lutte",
+        rarityColor: "#2563eb",
+        topPct: "Top 37%",
+        dropWeight: 26,
+        scoreIndex: 15,
+        archetype: "Écologie, Vivant & Territoires",
+        bonusType: "multiplier",
+        bonusValue: 0.21,
+        bio: "Glaciologue de renommée mondiale, ancien vice-président du GIEC, artisan de l'alerte sur le dérèglement thermique."
     },
     {
         id: "sandrine_rousseau",
@@ -249,43 +247,78 @@ const ALLIES_DATABASE = [
         tier: 2,
         rarityName: "Cadre de Lutte",
         rarityColor: "#2563eb",
+        topPct: "Top 40%",
+        dropWeight: 30,
+        scoreIndex: 16,
+        archetype: "Écologie, Vivant & Territoires",
+        bonusType: "multiplier",
+        bonusValue: 0.20,
+        bio: "Économiste et parlementaire, théoricienne du ralentissement écologique et de la fin de l'accaparement patriarcal."[cite: 1]
+    },
+    {
+        id: "medine",
+        name: "Médine",
+        role: "Poète Contestataire",
+        tier: 2,
+        rarityName: "Cadre de Lutte",
+        rarityColor: "#2563eb",
+        topPct: "Top 43%",
+        dropWeight: 35,
+        scoreIndex: 17,
+        archetype: "Contre-Pouvoir, Médias & Antifascisme",
+        bonusType: "multiplier",
+        bonusValue: 0.19,
+        bio: "Rappeur havrais au style percutant, cible des polémistes pour sa dénonciation des injustices de classe et des dérives policières."[cite: 1]
+    },
+    {
+        id: "salome_saque",
+        name: "Salomé Saqué",
+        role: "Journaliste d'Impact",
+        tier: 2,
+        rarityName: "Cadre de Lutte",
+        rarityColor: "#2563eb",
+        topPct: "Top 46%",
+        dropWeight: 40,
         scoreIndex: 18,
         archetype: "Écologie, Vivant & Territoires",
         bonusType: "multiplier",
-        bonusValue: 0.23,
-        bio: "Économiste et députée, théoricienne du ralentissement écologique, de la grève des devoirs et de la déconstruction patriarcale."
+        bonusValue: 0.18,
+        bio: "Grand reporter chez Blast, enquêtrice sur la précarité des jeunes et les mensonges des lobbys climaticides."[cite: 1]
     },
     {
-        id: "jean_marc_jancovici",
-        name: "Jean-Marc Jancovici",
-        role: "Ingénieur de la Contrainte Carbone",
+        id: "youssef_swatts",
+        name: "Youssef Swatt's",
+        role: "Plume Poétique & Rap",
         tier: 2,
         rarityName: "Cadre de Lutte",
         rarityColor: "#2563eb",
+        topPct: "Top 50%",
+        dropWeight: 45,
         scoreIndex: 19,
-        archetype: "Écologie, Vivant & Territoires",
-        bonusType: "multiplier",
-        bonusValue: 0.24,
-        bio: "Créateur du Bilan Carbone et du Shift Project, vulgarisateur de la finitude énergétique et de la sobriété matérielle."
-    },
-    {
-        id: "rima_hassan",
-        name: "Rima Hassan",
-        role: "Juriste des Peuples Opprimés",
-        tier: 2,
-        rarityName: "Cadre de Lutte",
-        rarityColor: "#2563eb",
-        scoreIndex: 20,
         archetype: "Émancipation, Féminisme & Droits Civiques",
         bonusType: "multiplier",
-        bonusValue: 0.25,
-        bio: "Juriste en droit international, réfugiée palestinienne et eurodéputée portant sans faillir la voix des colonisés."
+        bonusValue: 0.16,
+        bio: "Rappeur et auteur, chantre d'une écriture sincère, humaniste et solidaire envers les réalités de terrain."
+    },
+    {
+        id: "waly_dia",
+        name: "Waly Dia",
+        role: "Satiriste sans Concession",
+        tier: 2,
+        rarityName: "Cadre de Lutte",
+        rarityColor: "#2563eb",
+        topPct: "Top 55%",
+        dropWeight: 50,
+        scoreIndex: 20,
+        archetype: "Contre-Pouvoir, Médias & Antifascisme",
+        bonusType: "multiplier",
+        bonusValue: 0.15,
+        bio: "Humoriste engagé, pourfendeur sans détour des compromissions des puissants et des discours réactionnaires."
     },
 
     // =============================================================
-    // PALIER 3 : POIDS LOURD (Indices 21 à 30)
-    // Rareté : Violet (#9333ea)
-    // Bonus : Multiplicateur solide (+35% à +50% de manifestants)
+    // PALIER 3 : POIDS LOURD (Top 6% à 22%)
+    // Couleur : Violet (#9333ea) | Bonus multiplicateur : +35% à +50%
     // =============================================================
     {
         id: "jean_luc_melenchon",
@@ -294,115 +327,13 @@ const ALLIES_DATABASE = [
         tier: 3,
         rarityName: "Poids Lourd",
         rarityColor: "#9333ea",
+        topPct: "Top 6%",
+        dropWeight: 10,
         scoreIndex: 21,
         archetype: "Travail, Social & Anticapitalisme",
         bonusType: "multiplier",
-        bonusValue: 0.35,
-        bio: "Orateur de masse et théoricien de l'ère du peuple, promoteur de la 6e République et de la bifurcation écologique."
-    },
-    {
-        id: "greta_thunberg",
-        name: "Greta Thunberg",
-        role: "Voix Planétaire du Climat",
-        tier: 3,
-        rarityName: "Poids Lourd",
-        rarityColor: "#9333ea",
-        scoreIndex: 22,
-        archetype: "Écologie, Vivant & Territoires",
-        bonusType: "multiplier",
-        bonusValue: 0.36,
-        bio: "Instigatrice des grèves scolaires mondiales pour le climat, visage de la désobéissance internationale contre les lobbys fossiles."
-    },
-    {
-        id: "nathalie_arthaud",
-        name: "Nathalie Arthaud",
-        role: "Porte-Voix des Travailleurs",
-        tier: 3,
-        rarityName: "Poids Lourd",
-        rarityColor: "#9333ea",
-        scoreIndex: 23,
-        archetype: "Travail, Social & Anticapitalisme",
-        bonusType: "multiplier",
-        bonusValue: 0.38,
-        bio: "Enseignante d'économie et porte-parole de Lutte Ouvrière, intransigeante sur l'expropriation des banques et le contrôle ouvrier."
-    },
-    {
-        id: "renaud",
-        name: "Renaud",
-        role: "Chanteur Enragé du Peuple",
-        tier: 3,
-        rarityName: "Poids Lourd",
-        rarityColor: "#9333ea",
-        scoreIndex: 24,
-        archetype: "Travail, Social & Anticapitalisme",
-        bonusType: "multiplier",
-        bonusValue: 0.40,
-        bio: "Poète gouailleur des pavés, auteur d'Hexagone et de Germinal, symbole intemporel de l'antimilitarisme ouvrier."
-    },
-    {
-        id: "philippe_poutou",
-        name: "Philippe Poutou",
-        role: "Ouvrier sans Filtre",
-        tier: 3,
-        rarityName: "Poids Lourd",
-        rarityColor: "#9333ea",
-        scoreIndex: 25,
-        archetype: "Travail, Social & Anticapitalisme",
-        bonusType: "multiplier",
-        bonusValue: 0.42,
-        bio: "Ouvrier de l'usine Ford Blanquefort, porte-parole anticapitaliste légendaire pour ses clims mémorables aux corrompus."
-    },
-    {
-        id: "gabriel_zucman",
-        name: "Gabriel Zucman",
-        role: "Traqueur des Paradis Fiscaux",
-        tier: 3,
-        rarityName: "Poids Lourd",
-        rarityColor: "#9333ea",
-        scoreIndex: 26,
-        archetype: "Travail, Social & Anticapitalisme",
-        bonusType: "multiplier",
-        bonusValue: 0.44,
-        bio: "Économiste mondialement primé, artisan du projet d'impôt mondial sur les ultra-milliardaires et pourfendeur de l'évasion fiscale."
-    },
-    {
-        id: "ambroise_croizat",
-        name: "Ambroise Croizat",
-        role: "Bâtisseur de la Sécu",
-        tier: 3,
-        rarityName: "Poids Lourd",
-        rarityColor: "#9333ea",
-        scoreIndex: 27,
-        archetype: "Travail, Social & Anticapitalisme",
-        bonusType: "multiplier",
-        bonusValue: 0.46,
-        bio: "Ouvrier métallurgiste et ministre communiste du Travail, architecte et fondateur du système universel de Sécurité Sociale en 1945."
-    },
-    {
-        id: "zohran_mamdani",
-        name: "Zohran Mamdani",
-        role: "Socialiste Municipal US",
-        tier: 3,
-        rarityName: "Poids Lourd",
-        rarityColor: "#9333ea",
-        scoreIndex: 28,
-        archetype: "Travail, Social & Anticapitalisme",
-        bonusType: "multiplier",
-        bonusValue: 0.48,
-        bio: "Élu de New York, fer de lance de la gratuité des transports en commun, du gel des loyers et des droits syndicaux."
-    },
-    {
-        id: "theodora",
-        name: "Theodora",
-        role: "Boss Lady de la Pop Urbaine",
-        tier: 3,
-        rarityName: "Poids Lourd",
-        rarityColor: "#9333ea",
-        scoreIndex: 29,
-        archetype: "Émancipation, Féminisme & Droits Civiques",
-        bonusType: "multiplier",
-        bonusValue: 0.49,
-        bio: "Artiste novatrice et indépendante, pulvérisant les codes de la musique urbaine par l'affirmation féministe et la liberté stylistique."
+        bonusValue: 0.50,
+        bio: "Orateur de masse et théoricien politique, porte-voix de la 6e République et de la bifurcation écologique."
     },
     {
         id: "svante_arrhenius",
@@ -411,18 +342,154 @@ const ALLIES_DATABASE = [
         tier: 3,
         rarityName: "Poids Lourd",
         rarityColor: "#9333ea",
-        scoreIndex: 30,
+        topPct: "Top 7%",
+        dropWeight: 13,
+        scoreIndex: 22,
         archetype: "Écologie, Vivant & Territoires",
         bonusType: "multiplier",
-        bonusValue: 0.50,
-        bio: "Prix Nobel suédois ayant modélisé et démontré dès 1896 le lien direct entre rejets industriels de carbone et hausse des températures."
+        bonusValue: 0.48,
+        bio: "Physicien et chimiste suédois ayant calculé dès 1896 l'impact des émissions de dioxyde de carbone sur le réchauffement."
+    },
+    {
+        id: "greta_thunberg",
+        name: "Greta Thunberg",
+        role: "Voix Planétaire du Climat",
+        tier: 3,
+        rarityName: "Poids Lourd",
+        rarityColor: "#9333ea",
+        topPct: "Top 9%",
+        dropWeight: 17,
+        scoreIndex: 23,
+        archetype: "Écologie, Vivant & Territoires",
+        bonusType: "multiplier",
+        bonusValue: 0.46,
+        bio: "Instigatrice des grèves scolaires pour le climat, visage de la jeunesse en lutte contre les industries fossiles."[cite: 1]
+    },
+    {
+        id: "ambroise_croizat",
+        name: "Ambroise Croizat",
+        role: "Bâtisseur de la Sécu",
+        tier: 3,
+        rarityName: "Poids Lourd",
+        rarityColor: "#9333ea",
+        topPct: "Top 11%",
+        dropWeight: 21,
+        scoreIndex: 24,
+        archetype: "Travail, Social & Anticapitalisme",
+        bonusType: "multiplier",
+        bonusValue: 0.44,
+        bio: "Ouvrier métallurgiste et ministre communiste du Travail, architecte fondateur de la Sécurité Sociale en 1945."[cite: 1]
+    },
+    {
+        id: "zohran_mamdani",
+        name: "Zohran Mamdani",
+        role: "Socialiste Municipal NYC",
+        tier: 3,
+        rarityName: "Poids Lourd",
+        rarityColor: "#9333ea",
+        topPct: "Top 13%",
+        dropWeight: 25,
+        scoreIndex: 25,
+        archetype: "Travail, Social & Anticapitalisme",
+        bonusType: "multiplier",
+        bonusValue: 0.42,
+        bio: "Député de l'État de New York, promoteur de la gratuité totale des bus et de l'encadrement strict des loyers."[cite: 1]
+    },
+    {
+        id: "philippe_poutou",
+        name: "Philippe Poutou",
+        role: "Tribune Ouvrière sans Filtre",
+        tier: 3,
+        rarityName: "Poids Lourd",
+        rarityColor: "#9333ea",
+        topPct: "Top 15%",
+        dropWeight: 30,
+        scoreIndex: 26,
+        archetype: "Travail, Social & Anticapitalisme",
+        bonusType: "multiplier",
+        bonusValue: 0.40,
+        bio: "Ancien ouvrier de l'automobile et syndicaliste, célèbre pour ses réparties directes face aux représentants du patronat."[cite: 1]
+    },
+    {
+        id: "gabriel_zucman",
+        name: "Gabriel Zucman",
+        role: "Traqueur de l'Évasion Fiscale",
+        tier: 3,
+        rarityName: "Poids Lourd",
+        rarityColor: "#9333ea",
+        topPct: "Top 17%",
+        dropWeight: 35,
+        scoreIndex: 27,
+        archetype: "Travail, Social & Anticapitalisme",
+        bonusType: "multiplier",
+        bonusValue: 0.38,
+        bio: "Économiste primé mondialement, promoteur d'une imposition universelle sur les patrimoines des ultra-riches."
+    },
+    {
+        id: "nathalie_arthaud",
+        name: "Nathalie Arthaud",
+        role: "Porte-Voix Prolétarien",
+        tier: 3,
+        rarityName: "Poids Lourd",
+        rarityColor: "#9333ea",
+        topPct: "Top 19%",
+        dropWeight: 40,
+        scoreIndex: 28,
+        archetype: "Travail, Social & Anticapitalisme",
+        bonusType: "multiplier",
+        bonusValue: 0.36,
+        bio: "Porte-parole de Lutte Ouvrière, intransigeante sur le contrôle ouvrier des usines et l'abolition du secret commercial."
+    },
+    {
+        id: "renaud",
+        name: "Renaud",
+        role: "Chanteur Enragé du Peuple",
+        tier: 3,
+        rarityName: "Poids Lourd",
+        rarityColor: "#9333ea",
+        topPct: "Top 21%",
+        dropWeight: 45,
+        scoreIndex: 29,
+        archetype: "Travail, Social & Anticapitalisme",
+        bonusType: "multiplier",
+        bonusValue: 0.35,
+        bio: "Poète populaire de la rue, symbole de l'insoumission, des caisses de grève et de l'antimilitarisme."
+    },
+    {
+        id: "theodora",
+        name: "Theodora",
+        role: "Figure Féministe Urbaine",
+        tier: 3,
+        rarityName: "Poids Lourd",
+        rarityColor: "#9333ea",
+        topPct: "Top 22%",
+        dropWeight: 50,
+        scoreIndex: 30,
+        archetype: "Émancipation, Féminisme & Droits Civiques",
+        bonusType: "multiplier",
+        bonusValue: 0.35,
+        bio: "Artiste novatrice de la scène contemporaine, bousculant les codes patriarcaux de la musique urbaine."
     },
 
     // =============================================================
-    // PALIER 4 : LÉGENDE HISTORIQUE (Indices 31 à 40)
-    // Rareté : Doré (#d97706)
-    // Bonus : Multiplicateur historique (+55% à +100% de cortège)
+    // PALIER 4 : LÉGENDE HISTORIQUE (Top 0.1% à 5%)
+    // Couleur : Doré (#d97706) | Bonus multiplicateur : +60% à +100%
     // =============================================================
+    {
+        id: "karl_marx",
+        name: "Karl Marx",
+        role: "Théoricien du Capital",
+        tier: 4,
+        rarityName: "Légende Historique",
+        rarityColor: "#d97706",
+        topPct: "Top 0.1%",
+        dropWeight: 5,
+        scoreIndex: 31,
+        archetype: "Travail, Social & Anticapitalisme",
+        bonusType: "multiplier",
+        bonusValue: 1.00,
+        bio: "Philosophe et économiste, auteur du Capital, théoricien de la lutte des classes et du communisme scientifique."[cite: 1]
+    },
     {
         id: "gisele_halimi",
         name: "Gisèle Halimi",
@@ -430,37 +497,28 @@ const ALLIES_DATABASE = [
         tier: 4,
         rarityName: "Légende Historique",
         rarityColor: "#d97706",
-        scoreIndex: 31,
+        topPct: "Top 0.5%",
+        dropWeight: 8,
+        scoreIndex: 32,
         archetype: "Émancipation, Féminisme & Droits Civiques",
         bonusType: "multiplier",
-        bonusValue: 0.60,
-        bio: "Avocate historique du procès de Bobigny, signataire du Manifeste des 343 et pionnière de la dépénalisation de l'avortement."
+        bonusValue: 0.95,
+        bio: "Avocate historique du procès de Bobigny, signataire du Manifeste des 343, pionnière du droit à l'avortement."[cite: 1]
     },
     {
-        id: "thomas_sankara",
-        name: "Thomas Sankara",
-        role: "Président Martyr Panafricain",
+        id: "rosa_parks",
+        name: "Rosa Parks",
+        role: "Étincelle de la Liberté",
         tier: 4,
         rarityName: "Légende Historique",
         rarityColor: "#d97706",
-        scoreIndex: 32,
-        archetype: "Travail, Social & Anticapitalisme",
-        bonusType: "multiplier",
-        bonusValue: 0.65,
-        bio: "Leader révolutionnaire burkinabé, champion de l'auto-suffisance alimentaire, de la reforestation et du refus de la dette coloniale."
-    },
-    {
-        id: "patrice_lumumba",
-        name: "Patrice Lumumba",
-        role: "Flambeau de l'Indépendance",
-        tier: 4,
-        rarityName: "Légende Historique",
-        rarityColor: "#d97706",
+        topPct: "Top 1%",
+        dropWeight: 12,
         scoreIndex: 33,
         archetype: "Émancipation, Féminisme & Droits Civiques",
         bonusType: "multiplier",
-        bonusValue: 0.70,
-        bio: "Héros national de l'indépendance congolaise, assassiné pour avoir refusé la mainmise néocoloniale sur les richesses de son pays."
+        bonusValue: 0.90,
+        bio: "Militante dont le refus courageux de céder sa place dans un bus ségrégué initia le grand boycott de Montgomery."[cite: 1]
     },
     {
         id: "martin_luther_king",
@@ -469,76 +527,88 @@ const ALLIES_DATABASE = [
         tier: 4,
         rarityName: "Légende Historique",
         rarityColor: "#d97706",
+        topPct: "Top 1.5%",
+        dropWeight: 16,
         scoreIndex: 34,
         archetype: "Émancipation, Féminisme & Droits Civiques",
         bonusType: "multiplier",
-        bonusValue: 0.75,
-        bio: "Pasteur et figure monumentale de la lutte pour les droits civiques, de la non-violence radicale et de la marche des pauvres."
+        bonusValue: 0.85,
+        bio: "Pasteur et monument des droits civiques, apôtre de l'action directe non-violente contre le racisme d'État."[cite: 1]
     },
     {
-        id: "salvador_allende",
-        name: "Salvador Allende",
-        role: "Président de la Voie Démocratique",
+        id: "patrice_lumumba",
+        name: "Patrice Lumumba",
+        role: "Flambeau de l'Indépendance",
         tier: 4,
         rarityName: "Légende Historique",
         rarityColor: "#d97706",
+        topPct: "Top 2%",
+        dropWeight: 20,
         scoreIndex: 35,
-        archetype: "Travail, Social & Anticapitalisme",
-        bonusType: "multiplier",
-        bonusValue: 0.80,
-        bio: "Président socialiste chilien démocratiquement élu, mort l'arme à la main lors du coup d'État militaire appuyé par la CIA en 1973."
-    },
-    {
-        id: "rosa_parks",
-        name: "Rosa Parks",
-        role: "Étincelle de la Dignité Civique",
-        tier: 4,
-        rarityName: "Légende Historique",
-        rarityColor: "#d97706",
-        scoreIndex: 36,
         archetype: "Émancipation, Féminisme & Droits Civiques",
         bonusType: "multiplier",
-        bonusValue: 0.85,
-        bio: "Couturière et militante dont le refus historique de céder sa place dans un bus ségrégué déclencha le boycott de Montgomery."
+        bonusValue: 0.80,
+        bio: "Premier ministre martyr du Congo, figure de la libération africaine assassiné pour son refus du néocolonialisme."
     },
     {
-        id: "karl_marx",
-        name: "Karl Marx",
-        role: "Théoricien de l'Émancipation Prolétarienne",
+        id: "thomas_sankara",
+        name: "Thomas Sankara",
+        role: "Révolutionnaire Panafricain",
         tier: 4,
         rarityName: "Légende Historique",
         rarityColor: "#d97706",
-        scoreIndex: 37,
+        topPct: "Top 2.5%",
+        dropWeight: 25,
+        scoreIndex: 36,
         archetype: "Travail, Social & Anticapitalisme",
         bonusType: "multiplier",
-        bonusValue: 0.90,
-        bio: "Philosophe et économiste, auteur du Capital, théoricien de la lutte des classes et du renversement du mode de production capitaliste."
-    },
-    {
-        id: "louise_michel",
-        name: "Louise Michel",
-        role: "La Vierge Rouge de la Commune",
-        tier: 4,
-        rarityName: "Légende Historique",
-        rarityColor: "#d97706",
-        scoreIndex: 38,
-        archetype: "Travail, Social & Anticapitalisme",
-        bonusType: "multiplier",
-        bonusValue: 0.95,
-        bio: "Institutrice révolutionnaire, héroïne des barricades de la Commune de Paris 1871, militante anarchiste et pédagogue populaire."
+        bonusValue: 0.75,
+        bio: "Président du Burkina Faso, champion de l'émancipation des femmes, de la reforestation et de l'annulation de la dette."[cite: 1]
     },
     {
         id: "angela_davis",
         name: "Angela Davis",
-        role: "Icône Révolutionnaire Abolitionniste",
+        role: "Icône Révolutionnaire",
         tier: 4,
         rarityName: "Légende Historique",
         rarityColor: "#d97706",
-        scoreIndex: 39,
+        topPct: "Top 3%",
+        dropWeight: 30,
+        scoreIndex: 37,
         archetype: "Émancipation, Féminisme & Droits Civiques",
         bonusType: "multiplier",
-        bonusValue: 1.00,
-        bio: "Philosophe marxiste, figure des Black Panthers et théoricienne mondiale de l'abolitionnisme carcéral et de l'antiracisme."
+        bonusValue: 0.70,
+        bio: "Philosophe marxiste, militante des droits civiques et théoricienne majeure de l'abolitionnisme carcéral."[cite: 1]
+    },
+    {
+        id: "louise_michel",
+        name: "Louise Michel",
+        role: "La Vierge Rouge",
+        tier: 4,
+        rarityName: "Légende Historique",
+        rarityColor: "#d97706",
+        topPct: "Top 3.5%",
+        dropWeight: 35,
+        scoreIndex: 38,
+        archetype: "Travail, Social & Anticapitalisme",
+        bonusType: "multiplier",
+        bonusValue: 0.65,
+        bio: "Institutrice et militante anarchiste, héroïne emblématique des barricades de la Commune de Paris de 1871."[cite: 1]
+    },
+    {
+        id: "salvador_allende",
+        name: "Salvador Allende",
+        role: "Président de la Voie Pacifique",
+        tier: 4,
+        rarityName: "Légende Historique",
+        rarityColor: "#d97706",
+        topPct: "Top 4%",
+        dropWeight: 40,
+        scoreIndex: 39,
+        archetype: "Travail, Social & Anticapitalisme",
+        bonusType: "multiplier",
+        bonusValue: 0.60,
+        bio: "Président socialiste chilien démocratiquement élu, mort l'arme à la main face au putsch militaire en 1973."[cite: 1]
     },
     {
         id: "jean_moulin",
@@ -547,10 +617,12 @@ const ALLIES_DATABASE = [
         tier: 4,
         rarityName: "Légende Historique",
         rarityColor: "#d97706",
+        topPct: "Top 5%",
+        dropWeight: 50,
         scoreIndex: 40,
         archetype: "Contre-Pouvoir, Médias & Antifascisme",
         bonusType: "multiplier",
-        bonusValue: 1.00,
-        bio: "Préfet républicain et président du Conseil national de la Résistance, mort sous la torture sans jamais trahir ses camarades."
+        bonusValue: 0.60,
+        bio: "Président du Conseil national de la Résistance, mort en héros sous la torture sans jamais livrer un secret."
     }
 ];
