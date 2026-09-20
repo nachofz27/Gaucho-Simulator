@@ -1540,10 +1540,10 @@ const bgAvatar = avatarColors[Math.abs(hash) % avatarColors.length];
         if (packZone) packZone.style.display = 'block';
 
         const playerTier = getCurrentTierNumber();
-        const standardPrices = { 1: 100, 2: 150, 3: 250, 4: 400, 5: 600 };
-        const costPack1 = standardPrices[playerTier] || 150;
-        const premiumPrices = { 1: 500, 2: 800, 3: 1200, 4: 1800, 5: 2500 };
-        const costPack2 = premiumPrices[playerTier] || 800;
+        const standardPrices = { 1: 100, 2: 200, 3: 350, 4: 600 };
+        const costPack1 = standardPrices[playerTier] || 200;
+        const premiumPrices = { 1: 400, 2: 750, 3: 1300, 4: 2200 };
+        const costPack2 = premiumPrices[playerTier] || 750;
 
         const priceTag1 = document.querySelector('#btn-pack-standard .pack-price');
         const priceTag2 = document.querySelector('#btn-pack-premium .pack-price');
@@ -1872,11 +1872,10 @@ const bgAvatar = avatarColors[Math.abs(hash) % avatarColors.length];
     // COLLECTION DES CAMARADES : RENDU & COMPTEURS PAR ONGLETS
     // =========================================================
     const rarityConfig = {
-        1: { name: "Militant de Terrain", color: "#64748b", topPct: "Top 50%" },
-        2: { name: "Cadre de Lutte", color: "#16a34a", topPct: "Top 25%" },
-        3: { name: "Figure Reconnue", color: "#2563eb", topPct: "Top 12%" },
-        4: { name: "Poids Lourd", color: "#9333ea", topPct: "Top 5%" },
-        5: { name: "Icône Historique", color: "#d97706", topPct: "Top 1%" }
+        1: { name: "Notoriété Locale", color: "#64748b", topPct: "Palier 1" },
+        2: { name: "Influence Régionale", color: "#16a34a", topPct: "Palier 2" },
+        3: { name: "Envergure Nationale", color: "#2563eb", topPct: "Palier 3" },
+        4: { name: "Rayonnement International", color: "#9333ea", topPct: "Palier 4" }
     };
 
     function renderCollectionGrid(tierFilter = 'all') {
