@@ -2025,12 +2025,12 @@ const DEBATES_DATABASE = {
     },
 
     // =========================================================
-    // DÉBAT PALIER 5 : JORDAN BARDELLA (Score : 95)
+    // DÉBAT PALIER 4 : JORDAN BARDELLA (Score : 95)
     // Lieu : Le Grand Débat Décisif d'Entre-Deux-Tours (21h00)
     // =========================================================
     5: {
-        id: "debate_tier_5_bardella",
-        tier: 5,
+        id: "debate_tier_4_bardella",
+        tier: 4,
         arena: "👑 Le Grand Débat Décisif — Face-à-Face Historique de Finale",
         title: "L'affrontement suprême face à Jordan Bardella",
         characterName: "Jordan Bardella",
