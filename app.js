@@ -1944,16 +1944,22 @@ const bgAvatar = avatarColors[Math.abs(hash) % avatarColors.length];
             renderCollectionGrid(clickedTier);
         });
     });
-
-    function renderCollectionGrid(tierFilter = 'all') {
+function renderCollectionGrid(tierFilter = 'all') {
         if (typeof ALLIES_DATABASE === 'undefined') return;
 
         const grid = document.getElementById('collection-grid');
         const countText = document.getElementById('collection-count-text');
-        const unlockedIds = JSON.parse(localStorage.getItem('unlocked_allies_collection') || '[]');
 
-        // Compteurs globaux et par onglet
-        const totalUnlocked = unlockedIds.length;
+        // Récupère et filtre uniquement les IDs valides de la base actuelle
+        const rawUnlockedIds = JSON.parse(localStorage.getItem('unlocked_allies_collection') || '[]');
+        const validUnlockedIds = rawUnlockedIds.filter(id => ALLIES_DATABASE.some(a => a.id === id));
+
+        // Si des anciens IDs périmés traînaient, on nettoie silencieusement le stockage
+        if (validUnlockedIds.length !== rawUnlockedIds.length) {
+            localStorage.setItem('unlocked_allies_collection', JSON.stringify(validUnlockedIds));
+        }
+
+        const totalUnlocked = validUnlockedIds.length;
         const totalAllies = ALLIES_DATABASE.length;
 
         if (countText) {
@@ -1963,7 +1969,7 @@ const bgAvatar = avatarColors[Math.abs(hash) % avatarColors.length];
                 const tierNum = parseInt(tierFilter, 10);
                 const conf = rarityConfig[tierNum] || { name: "Catégorie", color: "#770720" };
                 const tierAllies = ALLIES_DATABASE.filter(a => a.tier === tierNum);
-                const tierUnlockedCount = tierAllies.filter(a => unlockedIds.includes(a.id)).length;
+                const tierUnlockedCount = tierAllies.filter(a => validUnlockedIds.includes(a.id)).length;
                 
                 countText.innerHTML = `
                     <span style="color: ${conf.color}; font-weight: 800;">${conf.name} :</span>
@@ -1982,16 +1988,18 @@ const bgAvatar = avatarColors[Math.abs(hash) % avatarColors.length];
         grid.innerHTML = '';
 
         list.forEach(ally => {
-            const isUnlocked = unlockedIds.includes(ally.id);
-            const conf = rarityConfig[ally.tier] || { name: "Allié", color: "#64748b", topPct: "Top 50%" };
+            const isUnlocked = validUnlockedIds.includes(ally.id);
+            const conf = rarityConfig[ally.tier] || { name: "Allié", color: "#64748b" };
             const card = document.createElement('div');
+
+            // Récupère le pourcentage individuel de l'allié (ex: "Top 60%")
+            const displayTopPct = ally.topPct || "Top 50%";
 
             if (isUnlocked) {
                 card.className = 'ally-collection-card unlocked';
                 card.style.borderColor = conf.color;
                 card.style.boxShadow = `0 2px 10px ${conf.color}22`;
 
-                // Badge de statut en bandeau supérieur, nom, rôle, et top en bas à droite
                 card.innerHTML = `
                     <div class="card-status-banner" style="background-color: ${conf.color};">
                         ${conf.name.toUpperCase()}
@@ -2001,7 +2009,7 @@ const bgAvatar = avatarColors[Math.abs(hash) % avatarColors.length];
                         <div class="card-role-sub">${ally.role}</div>
                     </div>
                     <div class="card-footer-rarity">
-                        <span class="card-rarity-tag" style="color: ${conf.color};">${conf.topPct}</span>
+                        <span class="card-rarity-tag" style="color: ${conf.color}; font-weight: 700;">${displayTopPct}</span>
                     </div>
                 `;
 
@@ -2015,7 +2023,7 @@ const bgAvatar = avatarColors[Math.abs(hash) % avatarColors.length];
                     <div class="locked-icon" style="color: ${conf.color};">🔒</div>
                     <div class="locked-text" style="color: ${conf.color};">???</div>
                     <div class="locked-tier-label" style="color: ${conf.color};">
-                        ${conf.name} • ${conf.topPct}
+                        ${conf.name} • ${displayTopPct}
                     </div>
                 `;
             }
