@@ -2025,7 +2025,7 @@ const bgAvatar = avatarColors[Math.abs(hash) % avatarColors.length];
         return Math.round(baseScore * (cred / 100));
     }
 
-    function getCurrentTierNumber() {
+   function getCurrentTierNumber() {
         const score = calculateUnderTheHoodScore();
         // Objectif : ~5% des parties parfaites
         if (score >= 200000) return 4;
@@ -2046,6 +2046,7 @@ const bgAvatar = avatarColors[Math.abs(hash) % avatarColors.length];
             case 1: return "Notoriété locale (palier 1)";
             default: return "Notoriété locale (palier 1)";
         }
+    }
 
 });
 // =========================================================
