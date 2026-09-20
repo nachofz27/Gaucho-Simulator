@@ -38,7 +38,7 @@ const ALLIES_DATABASE = [
         archetype: "Écologie, Vivant & Territoires",
         bonusType: "flat",
         bonusValue: 13500,
-        bio: "Ancienne porte-parole écologiste, stratège des blocages d'entrepôts Amazon devenue députée de rupture."[cite: 1]
+        bio: "Ancienne porte-parole écologiste, stratège des blocages d'entrepôts Amazon devenue députée de rupture."
     },
     {
         id: "ludovic_franceschet",
@@ -98,7 +98,7 @@ const ALLIES_DATABASE = [
         archetype: "Contre-Pouvoir, Médias & Antifascisme",
         bonusType: "flat",
         bonusValue: 9000,
-        bio: "Monteur indépendant, créateur des zappings mèmes les plus viraux contre les éditorialistes conservateurs."[cite: 1]
+        bio: "Monteur indépendant, créateur des zappings mèmes les plus viraux contre les éditorialistes conservateurs."
     },
     {
         id: "regelegorila",
@@ -113,7 +113,7 @@ const ALLIES_DATABASE = [
         archetype: "Contre-Pouvoir, Médias & Antifascisme",
         bonusType: "flat",
         bonusValue: 8000,
-        bio: "Streamer et créateur web, connu pour ses réactions franches et ses tier-lists politiques tranchées."[cite: 1]
+        bio: "Streamer et créateur web, connu pour ses réactions franches et ses tier-lists politiques tranchées."
     },
     {
         id: "zawa_prod",
@@ -143,7 +143,7 @@ const ALLIES_DATABASE = [
         archetype: "Contre-Pouvoir, Médias & Antifascisme",
         bonusType: "flat",
         bonusValue: 6000,
-        bio: "Docteur en sciences politiques, spécialiste du décryptage de la langue de bois et de la propagande étatique."[cite: 1]
+        bio: "Docteur en sciences politiques, spécialiste du décryptage de la langue de bois et de la propagande étatique."
     },
     {
         id: "contre_attaque",
@@ -193,7 +193,7 @@ const ALLIES_DATABASE = [
         archetype: "Émancipation, Féminisme & Droits Civiques",
         bonusType: "multiplier",
         bonusValue: 0.24,
-        bio: "Juriste en droit international, réfugiée palestinienne et députée portant sans relâche la cause des peuples sous occupation."[cite: 1]
+        bio: "Juriste en droit international, réfugiée palestinienne et députée portant sans relâche la cause des peuples sous occupation."
     },
     {
         id: "camille_etienne",
@@ -253,7 +253,7 @@ const ALLIES_DATABASE = [
         archetype: "Écologie, Vivant & Territoires",
         bonusType: "multiplier",
         bonusValue: 0.20,
-        bio: "Économiste et parlementaire, théoricienne du ralentissement écologique et de la fin de l'accaparement patriarcal."[cite: 1]
+        bio: "Économiste et parlementaire, théoricienne du ralentissement écologique et de la fin de l'accaparement patriarcal."
     },
     {
         id: "medine",
@@ -268,7 +268,7 @@ const ALLIES_DATABASE = [
         archetype: "Contre-Pouvoir, Médias & Antifascisme",
         bonusType: "multiplier",
         bonusValue: 0.19,
-        bio: "Rappeur havrais au style percutant, cible des polémistes pour sa dénonciation des injustices de classe et des dérives policières."[cite: 1]
+        bio: "Rappeur havrais au style percutant, cible des polémistes pour sa dénonciation des injustices de classe et des dérives policières."
     },
     {
         id: "salome_saque",
@@ -283,7 +283,7 @@ const ALLIES_DATABASE = [
         archetype: "Écologie, Vivant & Territoires",
         bonusType: "multiplier",
         bonusValue: 0.18,
-        bio: "Grand reporter chez Blast, enquêtrice sur la précarité des jeunes et les mensonges des lobbys climaticides."[cite: 1]
+        bio: "Grand reporter chez Blast, enquêtrice sur la précarité des jeunes et les mensonges des lobbys climaticides."
     },
     {
         id: "youssef_swatts",
@@ -363,7 +363,7 @@ const ALLIES_DATABASE = [
         archetype: "Écologie, Vivant & Territoires",
         bonusType: "multiplier",
         bonusValue: 0.46,
-        bio: "Instigatrice des grèves scolaires pour le climat, visage de la jeunesse en lutte contre les industries fossiles."[cite: 1]
+        bio: "Instigatrice des grèves scolaires pour le climat, visage de la jeunesse en lutte contre les industries fossiles."
     },
     {
         id: "ambroise_croizat",
@@ -378,7 +378,7 @@ const ALLIES_DATABASE = [
         archetype: "Travail, Social & Anticapitalisme",
         bonusType: "multiplier",
         bonusValue: 0.44,
-        bio: "Ouvrier métallurgiste et ministre communiste du Travail, architecte fondateur de la Sécurité Sociale en 1945."[cite: 1]
+        bio: "Ouvrier métallurgiste et ministre communiste du Travail, architecte fondateur de la Sécurité Sociale en 1945."
     },
     {
         id: "zohran_mamdani",
@@ -393,7 +393,7 @@ const ALLIES_DATABASE = [
         archetype: "Travail, Social & Anticapitalisme",
         bonusType: "multiplier",
         bonusValue: 0.42,
-        bio: "Député de l'État de New York, promoteur de la gratuité totale des bus et de l'encadrement strict des loyers."[cite: 1]
+        bio: "Député de l'État de New York, promoteur de la gratuité totale des bus et de l'encadrement strict des loyers."
     },
     {
         id: "philippe_poutou",
@@ -408,7 +408,7 @@ const ALLIES_DATABASE = [
         archetype: "Travail, Social & Anticapitalisme",
         bonusType: "multiplier",
         bonusValue: 0.40,
-        bio: "Ancien ouvrier de l'automobile et syndicaliste, célèbre pour ses réparties directes face aux représentants du patronat."[cite: 1]
+        bio: "Ancien ouvrier de l'automobile et syndicaliste, célèbre pour ses réparties directes face aux représentants du patronat."
     },
     {
         id: "gabriel_zucman",
@@ -488,7 +488,7 @@ const ALLIES_DATABASE = [
         archetype: "Travail, Social & Anticapitalisme",
         bonusType: "multiplier",
         bonusValue: 1.00,
-        bio: "Philosophe et économiste, auteur du Capital, théoricien de la lutte des classes et du communisme scientifique."[cite: 1]
+        bio: "Philosophe et économiste, auteur du Capital, théoricien de la lutte des classes et du communisme scientifique."
     },
     {
         id: "gisele_halimi",
@@ -503,7 +503,7 @@ const ALLIES_DATABASE = [
         archetype: "Émancipation, Féminisme & Droits Civiques",
         bonusType: "multiplier",
         bonusValue: 0.95,
-        bio: "Avocate historique du procès de Bobigny, signataire du Manifeste des 343, pionnière du droit à l'avortement."[cite: 1]
+        bio: "Avocate historique du procès de Bobigny, signataire du Manifeste des 343, pionnière du droit à l'avortement."
     },
     {
         id: "rosa_parks",
@@ -518,7 +518,7 @@ const ALLIES_DATABASE = [
         archetype: "Émancipation, Féminisme & Droits Civiques",
         bonusType: "multiplier",
         bonusValue: 0.90,
-        bio: "Militante dont le refus courageux de céder sa place dans un bus ségrégué initia le grand boycott de Montgomery."[cite: 1]
+        bio: "Militante dont le refus courageux de céder sa place dans un bus ségrégué initia le grand boycott de Montgomery."
     },
     {
         id: "martin_luther_king",
@@ -533,7 +533,7 @@ const ALLIES_DATABASE = [
         archetype: "Émancipation, Féminisme & Droits Civiques",
         bonusType: "multiplier",
         bonusValue: 0.85,
-        bio: "Pasteur et monument des droits civiques, apôtre de l'action directe non-violente contre le racisme d'État."[cite: 1]
+        bio: "Pasteur et monument des droits civiques, apôtre de l'action directe non-violente contre le racisme d'État."
     },
     {
         id: "patrice_lumumba",
@@ -563,7 +563,7 @@ const ALLIES_DATABASE = [
         archetype: "Travail, Social & Anticapitalisme",
         bonusType: "multiplier",
         bonusValue: 0.75,
-        bio: "Président du Burkina Faso, champion de l'émancipation des femmes, de la reforestation et de l'annulation de la dette."[cite: 1]
+        bio: "Président du Burkina Faso, champion de l'émancipation des femmes, de la reforestation et de l'annulation de la dette."
     },
     {
         id: "angela_davis",
@@ -578,7 +578,7 @@ const ALLIES_DATABASE = [
         archetype: "Émancipation, Féminisme & Droits Civiques",
         bonusType: "multiplier",
         bonusValue: 0.70,
-        bio: "Philosophe marxiste, militante des droits civiques et théoricienne majeure de l'abolitionnisme carcéral."[cite: 1]
+        bio: "Philosophe marxiste, militante des droits civiques et théoricienne majeure de l'abolitionnisme carcéral."
     },
     {
         id: "louise_michel",
@@ -593,7 +593,7 @@ const ALLIES_DATABASE = [
         archetype: "Travail, Social & Anticapitalisme",
         bonusType: "multiplier",
         bonusValue: 0.65,
-        bio: "Institutrice et militante anarchiste, héroïne emblématique des barricades de la Commune de Paris de 1871."[cite: 1]
+        bio: "Institutrice et militante anarchiste, héroïne emblématique des barricades de la Commune de Paris de 1871."
     },
     {
         id: "salvador_allende",
@@ -608,7 +608,7 @@ const ALLIES_DATABASE = [
         archetype: "Travail, Social & Anticapitalisme",
         bonusType: "multiplier",
         bonusValue: 0.60,
-        bio: "Président socialiste chilien démocratiquement élu, mort l'arme à la main face au putsch militaire en 1973."[cite: 1]
+        bio: "Président socialiste chilien démocratiquement élu, mort l'arme à la main face au putsch militaire en 1973."
     },
     {
         id: "jean_moulin",
