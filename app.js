@@ -433,18 +433,29 @@ window.supabaseClient = supabaseClient;
             }
         }
 
-        // Événements narratifs filtrés sur les 4 paliers
-        let availableEvents = gameEvents.filter(e => (e.tier || 1) <= currentTier && !gameState.historyEventsSeen.includes(e.id));
+        // Filtrage STRICT : uniquement le palier en cours ET jamais vu
+        let availableEvents = gameEvents.filter(e => 
+            (e.tier || 1) === currentTier && !gameState.historyEventsSeen.includes(e.id)
+        );
+
+        // Si épuisé au sein du palier en cours, on autorise le palier juste en dessous sans répétition
         if (availableEvents.length === 0) {
-            gameState.historyEventsSeen = [];
-            availableEvents = gameEvents.filter(e => (e.tier || 1) <= currentTier);
+            availableEvents = gameEvents.filter(e => 
+                !gameState.historyEventsSeen.includes(e.id)
+            );
         }
 
+        // Si tout le catalogue du jeu a été joué, arrêt de sécurité
+        if (availableEvents.length === 0) {
+            triggerFinalMarchVictory();
+            return;
+        }
+
+        // Tirage aléatoire sans doublon
         const randomIndex = Math.floor(Math.random() * availableEvents.length);
         gameState.currentEvent = availableEvents[randomIndex];
         gameState.historyEventsSeen.push(gameState.currentEvent.id);
         displayEvent(gameState.currentEvent);
-    }
 
     function setupDebateScreen(debateObj, tier) {
         const screenDebate = document.getElementById('screen-debate');
@@ -627,17 +638,20 @@ window.supabaseClient = supabaseClient;
         }
     }
     // ==========================================
-    // THEMES ET TRADUCTION DE L'AFFICHAGE
+    // THEMES ET TRADUCTION DE L'AFFICHAGE & COULEURS
     // ==========================================
-    const themeLabels = {
-        'theme-antifa': '🚩 Antifascisme & Droites',
-        'theme-feminisme': '🟣 Féminisme & Droits',
-        'theme-ecolo': '🌿 Écologie & Terres',
-        'theme-repression': '🛡️ Police & Libertés',
-        'theme-medias': '📺 Médias & Clashs',
-        'theme-international': '🌍 Droit International',
-        'theme-default': '📢 Lutte Sociale'
+    const themeConfig = {
+        'theme-ecologie':     { label: '🌿 Écologie & Terres',          color: '#16a34a' }, // Vert
+        'theme-emancipation': { label: '🟣 Émancipation & Droits',       color: '#9333ea' }, // Violet
+        'theme-social':       { label: '🍞 Justice Sociale & Travail',  color: '#dc2626' }, // Rouge
+        'theme-antifa':       { label: '🏴 Antifascisme & Libertés',    color: '#18181b' }, // Noir
+        'theme-neutre':       { label: '⚖️ Société & Médias',           color: '#71717a' }, // Gris
+        'theme-default':      { label: '📢 Lutte Populaire',            color: '#dc2626' }
     };
+
+    function getThemeData(themeId) {
+        return themeConfig[themeId] || themeConfig['theme-default'];
+    }
 
     function getThemeLabel(themeId) {
         return themeLabels[themeId] || themeLabels['theme-default'];
@@ -646,13 +660,23 @@ window.supabaseClient = supabaseClient;
     function displayEvent(event) {
         if (!event) return;
 
-        // Mise à jour des textes et thèmes (CORRIGÉ : avec les bons ID du HTML)
+        const themeData = getThemeData(event.theme);
+
+        // Badge de thème
         if (eventThemeBadge) {
-            eventThemeBadge.textContent = getThemeLabel(event.theme);
+            eventThemeBadge.textContent = themeData.label;
             eventThemeBadge.className = `badge-event-theme ${event.theme || ''}`;
+            eventThemeBadge.style.backgroundColor = `${themeData.color}22`;
+            eventThemeBadge.style.color = themeData.color;
+            eventThemeBadge.style.border = `1px solid ${themeData.color}`;
         }
         
-        // On utilise eventCharacterTag (qui existe dans ton HTML) pour afficher l'adversaire
+        // Bordure dynamique du cadre de la carte selon le thème
+        if (eventCard) {
+            eventCard.style.borderColor = themeData.color;
+            eventCard.style.boxShadow = `0 4px 18px ${themeData.color}33`;
+        }
+
         if (eventCharacterTag) {
             eventCharacterTag.textContent = `👤 ${event.characterName || 'Événement'}`;
         }
@@ -660,7 +684,7 @@ window.supabaseClient = supabaseClient;
         if (eventTitle) eventTitle.textContent = event.titre;
         if (eventDescription) eventDescription.textContent = event.description;
 
-        // Nettoyage et rendu des boutons de choix
+        // Rendu des boutons
         if (choicesContainer) {
             choicesContainer.innerHTML = '';
             
