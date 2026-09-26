@@ -4996,3 +4996,26 @@ button,
         align-items: center !important;
     }
 }
+@media (max-width: 640px) {
+    /* 1. Réduire la hauteur des cadres de choix de profil et couper le bas vide */
+    .char-card, 
+    .character-card {
+        padding: 12px 16px !important;
+        min-height: auto !important;
+        margin-bottom: 8px !important;
+    }
+    
+    /* Si le contenu est trop espacé à l'intérieur du profil */
+    .char-card *, 
+    .character-card * {
+        margin-bottom: 4px !important;
+    }
+
+    /* 2. Agrandir légèrement le bouton de menu/son en haut à gauche ou haut de page */
+    .btn-sound-toggle, 
+    .menu-top-btn,
+    #btn-sound-character {
+        transform: scale(1.15) !important;
+        transform-origin: top left;
+    }
+}
