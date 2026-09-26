@@ -827,7 +827,7 @@ function displayEvent(event) {
         const multiplier = getCompatibilityMultiplier(event.theme, tier);
         const isCompat = multiplier > 1.0;
 
-       // 1. Badge de thème propre (sans le texte x1.5 collé au label)
+       // 1. Badge de thème propre
         if (eventThemeBadge) {
             eventThemeBadge.textContent = themeData.label;
             eventThemeBadge.className = `badge-event-theme ${event.theme || ''}`;
@@ -836,32 +836,31 @@ function displayEvent(event) {
             eventThemeBadge.style.borderColor = themeData.color;
         }
 
-        // 2. Gestion de la carte et du badge flottant dans l'angle supérieur gauche
+        // 2. Gestion de la carte, du fond teinté et du badge étoile
         if (eventCard) {
             eventCard.style.setProperty('border-color', themeData.color, 'important');
             eventCard.style.setProperty('box-shadow', `0 4px 20px ${themeData.color}33`, 'important');
 
+            // Nettoyage systématique : on détruit tout ancien badge présent
+            const existingBadge = eventCard.querySelector('.compat-badge-floating-tl');
+            if (existingBadge) {
+                existingBadge.remove();
+            }
+
             if (isCompat) {
+                // Fond teinté uniquement en cas de compatibilité
                 eventCard.style.setProperty('background-color', `${themeData.color}11`, 'important');
-            } else {
-                eventCard.style.setProperty('background-color', '#FFFFFF', 'important');
-            }
 
-            // Récupération ou création du badge indépendant
-            let badgeStar = eventCard.querySelector('.compat-badge-floating-tl');
-            if (!badgeStar) {
-                badgeStar = document.createElement('div');
+                // Création et injection du badge UNIQUEMENT si compatible
+                const badgeStar = document.createElement('div');
                 badgeStar.className = 'compat-badge-floating-tl';
-                eventCard.prepend(badgeStar); // Placé tout en haut du conteneur
-            }
-
-            if (isCompat) {
-                badgeStar.style.display = 'flex';
                 badgeStar.innerHTML = `⭐ <span style="font-size:0.75rem; margin-left:4px; font-weight:800;">x${multiplier}</span>`;
                 badgeStar.style.borderColor = themeData.color;
                 badgeStar.style.color = themeData.color;
+                eventCard.prepend(badgeStar);
             } else {
-                badgeStar.style.display = 'none';
+                // Fond blanc net sans badge
+                eventCard.style.setProperty('background-color', '#FFFFFF', 'important');
             }
         }
 

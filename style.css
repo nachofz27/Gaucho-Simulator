@@ -5019,29 +5019,27 @@ button,
         transform-origin: top left;
     }
 }
-/* Verrouille le cadre pour que le badge se positionne par rapport à ses bords */
 #event-card {
     position: relative !important;
     overflow: visible !important;
 }
 
-/* Badge flottant ancré exactement sur l'angle supérieur gauche */
 .compat-badge-floating-tl {
-    position: absolute !important;
-    top: -14px !important;
-    left: -14px !important;
-    background: #FFFFFF !important;
-    border: 2px solid currentColor !important;
-    padding: 4px 10px !important;
-    border-radius: 999px !important;
-    font-size: 0.9rem !important;
-    line-height: 1 !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.18) !important;
-    z-index: 100 !important;
-    pointer-events: none; /* Ne bloque pas les clics sur la carte */
+    position: absolute;
+    top: -14px;
+    left: -14px;
+    background: #FFFFFF;
+    border: 2px solid currentColor;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 0.9rem;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.18);
+    z-index: 100;
+    pointer-events: none;
     animation: pulseCompat 2s infinite ease-in-out;
 }
 
