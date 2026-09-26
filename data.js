@@ -1295,7 +1295,7 @@ const gameEvents = [
         tier: 2,
         scoreIndex: 40,
         theme: "theme-antifa",
-        titre: "En « direk » avec l'extrême droite",
+        titre: "En « dirèt » avec l'esstrême droite",
         description: "En pleine manif antifasciste, le reporter de Frontières surgit micro tendu face caméra : « Nous sommes en dirèt avec l'estrême gauche ! Dites-nous, c'est quoi un facho en fait ? Définissez-le ! »",
         choix: [
             // =========================================================
@@ -1312,7 +1312,7 @@ const gameEvents = [
                     impact: { followers: 1500, budget: 0, energy: -12, credibility: 4, tension: 3 },
                     consequenceText: "Pris de court par ta repartie directe et filmé sous tous les angles par le cortège, il perd le fil de son conducteur et coupe précipitamment son dirèt sous les cris.",
                     tweets: [
-                        { author: "Nassim", handle: "@Nassim_QG", text: "Le reporter de Frontières qui voulait piéger des gens en 'direk' et qui finit par bégayer en coupant son live 💀🎤" },
+                        { author: "Nassim", handle: "@Nassim_QG", text: "Le reporter de Frontières qui voulait piéger des gens en 'dirèt' et qui finit par bégayer en coupant son live 💀🎤" },
                         { author: "Observatoire Médias", handle: "@Acrimed_Like", text: "Rappeler calmement que Frontières est une officine de propagande réactionnaire, excellente réaction." },
                         { author: "Samy", handle: "@Samy_off", text: "Il est venu chercher du buzz, il est reparti avec une leçon de déontologie en direct." },
                         { author: "Camarade Antifa", handle: "@CortègeVénère", text: "Ne jamais laisser ces provocateurs intimider les manifestants dans nos rues." }
