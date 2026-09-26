@@ -2550,6 +2550,7 @@ const bgAvatar = avatarColors[Math.abs(hash) % avatarColors.length];
 
         return { ally: pickedAlly, isSynergy, synergyMultiplier };
     }
+
 function displayPackResult(drawResult) {
         const container = document.getElementById('pack-result-display');
         if (!container || !drawResult) return;
@@ -2599,37 +2600,6 @@ function displayPackResult(drawResult) {
                     <div class="booster-impact-box ${isSynergy ? 'synergy-impact' : ''}">
                         <div class="impact-label">
                             ${isSynergy ? `⭐ Synergie ${themeInfo.icon} activée (Bonus x${synergyMultiplier}) :` : 'Impact Standard :'}
-                        </div>
-                        <div class="impact-val">${bonusText}</div>
-                    </div>
-                </div>
-            </div>
-        `;
-    }
-        container.innerHTML = `
-            <div class="booster-card-wrapper ${isSynergy ? 'synergy-glow-effect' : ''}" style="border-color: ${conf.color};">
-                ${isSynergy ? `
-                    <div class="synergy-shining-badge">
-                        ✨ SYNERGIE PARFAITE : ${themeInfo.label.toUpperCase()} (x${synergyMultiplier}) ✨
-                    </div>
-                ` : ''}
-
-                <div class="booster-header" style="background: ${conf.color};">
-                    <span>${conf.name.toUpperCase()}</span>
-                    <span>${ally.topPct}</span>
-                </div>
-
-                <div class="booster-content">
-                    <div class="booster-theme-pill" style="color: ${themeInfo.color}; border-color: ${themeInfo.color};">
-                        ${themeInfo.icon} ${themeInfo.label}
-                    </div>
-                    <h2 class="booster-name">${ally.name}</h2>
-                    <div class="booster-role">${ally.role}</div>
-                    <p class="booster-bio">« ${ally.bio} »</p>
-
-                    <div class="booster-impact-box ${isSynergy ? 'synergy-impact' : ''}">
-                        <div class="impact-label">
-                            ${isSynergy ? `🔥 Impact Décuplé (Bonus x${synergyMultiplier}) :` : 'Impact Standard :'}
                         </div>
                         <div class="impact-val">${bonusText}</div>
                     </div>
