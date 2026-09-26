@@ -4927,78 +4927,10 @@ button,
     gap: 10px;
     margin-top: 8px;
 }
-/* =========================================================
-   AJUSTEMENTS MOBILE : MENU D'ACCUEIL HARMONISÉ
-   ========================================================= */
 @media (max-width: 640px) {
-    /* Le conteneur du menu prend tout l'écran vertical */
-    #screen-menu {
-        display: flex !important;
-        flex-direction: column;
-        justify-content: flex-start;
-        align-items: center;
-        min-height: 100dvh;
-        box-sizing: border-box;
-        padding: 24px 20px 20px 20px !important;
-    }
-
-    /* 1. Titre un peu plus bas (respiration sous la barre de statut) */
-    #screen-menu h1,
-    #screen-menu .title-zone,
-    #screen-menu .game-title {
-        margin-top: 32px !important;
-        margin-bottom: 24px !important;
-        text-align: center;
-    }
-
-    /* 2. Bloc des boutons de jeu bien centré verticalement */
-    #screen-menu .menu-buttons,
-    #screen-menu .actions-zone,
-    #screen-menu .menu-nav-list {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        width: 100%;
-        max-width: 320px;
-        gap: 12px;
-        margin: auto 0 !important; /* Centre ce bloc dans l'espace restant */
-    }
-
-    #screen-menu .menu-buttons button,
-    #screen-menu .btn-menu {
-        width: 100% !important;
-    }
-
-    /* 3. Pied de page (Mentions légales & Boîte à idées) tout en bas */
-    #screen-menu .menu-footer,
-    #screen-menu .footer-zone,
-    #screen-menu .legal-and-feedback {
-        margin-top: auto !important;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 10px;
-        width: 100%;
-        padding-bottom: 12px;
-    }
-
-    /* Centrage du bouton boîte à idées et des mentions */
-    #btn-open-feedback,
-    .btn-feedback {
-        align-self: center !important;
-        margin: 0 auto !important;
-    }
-
-    #btn-open-legal,
-    .legal-link {
-        text-align: center;
-        font-size: 0.8rem;
-    }
-}
-@media (max-width: 640px) {
-    /* 1. Le conteneur du menu occupe 100% de la fenêtre mobile */
-    #screen-menu,
-    .screen#screen-menu {
+    /* 1. Ne s'applique UNIQUEMENT quand le menu a la classe .active */
+    #screen-menu.active,
+    .screen#screen-menu.active {
         display: flex !important;
         flex-direction: column !important;
         justify-content: flex-start !important;
@@ -5042,7 +4974,7 @@ button,
     }
 
     /* Place le lien des mentions juste au-dessus du bouton */
-    #btn-open-legal {
+    #screen-menu #btn-open-legal {
         display: block !important;
         position: absolute !important;
         bottom: 72px !important;
@@ -5053,7 +4985,7 @@ button,
     }
 
     /* Plaque la boîte à idées au ras du bas et la centre */
-    #btn-open-feedback {
+    #screen-menu #btn-open-feedback {
         position: absolute !important;
         bottom: 20px !important;
         left: 50% !important;
