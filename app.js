@@ -2163,11 +2163,11 @@ const bgAvatar = avatarColors[Math.abs(hash) % avatarColors.length];
         });
     });
 // Dictionnaire des thèmes de lutte pour les alliés
-    const ALLY_THEMES = {
+   const ALLY_THEMES = {
         'theme-ecologie':     { label: 'Écologie & Terres',          icon: '🌿', color: '#16a34a' },
         'theme-emancipation': { label: 'Émancipation & Droits',       icon: '✊', color: '#9333ea' },
         'theme-antifa':       { label: 'Antifascisme & Libertés',    icon: '🔻', color: '#18181b' },
-        'theme-social':       { label: 'Justice Sociale & Travail',  icon: '🍞', color: '#dc2626' }
+        'theme-social':       { label: 'Justice Sociale & Travail',  icon: '🥖', color: '#dc2626' }
     };
 
     function renderCollectionGrid(tierFilter = 'all') {
@@ -2297,6 +2297,28 @@ const bgAvatar = avatarColors[Math.abs(hash) % avatarColors.length];
         `;
 
         overlay.style.display = 'flex';
+    }
+    // Gestion de la fermeture de la modale Allié
+    const allyOverlay = document.getElementById('ally-modal-overlay');
+    const allyCloseBtn = document.getElementById('btn-close-ally-modal') || document.querySelector('.close-ally-modal');
+
+    function closeAllyModal() {
+        if (allyOverlay) {
+            allyOverlay.style.display = 'none';
+        }
+    }
+
+    if (allyCloseBtn) {
+        allyCloseBtn.addEventListener('click', closeAllyModal);
+    }
+
+    // Permet aussi de fermer en cliquant à côté de la modale (sur le fond sombre)
+    if (allyOverlay) {
+        allyOverlay.addEventListener('click', (e) => {
+            if (e.target === allyOverlay) {
+                closeAllyModal();
+            }
+        });
     }
 // =========================================================
     // GESTION AUDIO UNIVERSELLE (FONCTIONNE SUR TOUS LES ÉCRANS)
