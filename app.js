@@ -1787,6 +1787,40 @@ const bgAvatar = avatarColors[Math.abs(hash) % avatarColors.length];
         displayEvent(pivotEvent);
     }
 
+    // =========================================================
+    // CORRESPONDANCE DES THÈMES JOUEUR & ALLIÉS
+    // =========================================================
+    const ALLY_THEMES = {
+        'theme-ecologie':     { label: 'Écologie & Terres',          icon: '🌿', color: '#16a34a' },
+        'theme-emancipation': { label: 'Émancipation & Droits',       icon: '✊', color: '#9333ea' },
+        'theme-antifa':       { label: 'Antifascisme & Libertés',    icon: '🔻', color: '#18181b' },
+        'theme-social':       { label: 'Justice Sociale & Travail',  icon: '🥖', color: '#dc2626' }
+    };
+
+    function getPlayerThemeAffinity() {
+        const charType = (gameState && gameState.selectedCharacter) 
+            ? (gameState.selectedCharacter.id || gameState.selectedCharacter) 
+            : '';
+
+        switch(charType) {
+            case 'écolo':
+            case 'attache_parlementaire': 
+                return 'theme-ecologie';
+            case 'syndicaliste':
+            case 'etudiant_bloqueur': 
+                return 'theme-social';
+            case 'feministe':
+            case 'queer':
+            case 'anticolonial': 
+                return 'theme-emancipation';
+            default: 
+                return 'theme-social';
+        }
+    }
+
+    // =========================================================
+    // PHASE D'OUVERTURE DE PACK (TOUR 23)
+    // =========================================================
     function triggerPackOpeningPhase() {
         const eventCard = document.getElementById('event-card');
         const choicesContainer = document.getElementById('choices-container');
@@ -1811,78 +1845,141 @@ const bgAvatar = avatarColors[Math.abs(hash) % avatarColors.length];
 
         if (buyPack1) {
             buyPack1.disabled = gameState.stats.budget < costPack1;
-            buyPack1.onclick = () => resolvePackPick(1, costPack1);
+            buyPack1.onclick = () => resolvePackPick('standard', costPack1);
         }
 
         if (buyPack2) {
             buyPack2.disabled = gameState.stats.budget < costPack2;
-            buyPack2.onclick = () => resolvePackPick(2, costPack2);
+            buyPack2.onclick = () => resolvePackPick('family', costPack2);
         }
     }
 
     function resolvePackPick(packType, cost) {
         if (typeof ALLIES_DATABASE === 'undefined') return;
 
+        if (gameState.stats.budget < cost) {
+            alert("Fonds insuffisants dans la caisse de grève !");
+            return;
+        }
+
         gameState.stats.budget -= cost;
         updateStatsUI();
 
-        let candidates = [];
-        const playerTier = getCurrentTierNumber();
+        const playerTheme = getPlayerThemeAffinity();
+        let pool = [];
 
-        if (packType === 1) {
-            candidates = ALLIES_DATABASE.filter(a => a.tier === playerTier);
+        if (packType === 'family') {
+            // Pack cher : Uniquement sa famille thématique, tous paliers confondus (pondéré par dropWeight)
+            pool = ALLIES_DATABASE.filter(a => a.theme === playerTheme);
+            if (pool.length === 0) pool = ALLIES_DATABASE;
         } else {
-            const playerArch = (gameState.selectedCharacter?.name || '').toLowerCase();
-            candidates = ALLIES_DATABASE.filter(a => 
-                a.archetype.toLowerCase().includes(playerArch) || 
-                playerArch.includes(a.archetype.toLowerCase())
-            );
-            if (candidates.length === 0) {
-                candidates = ALLIES_DATABASE;
+            // Pack standard : Tout le monde (paliers 1 et 2 favorisés naturellement via dropWeight)
+            pool = [...ALLIES_DATABASE];
+        }
+
+        // Tirage pondéré par dropWeight
+        const totalWeight = pool.reduce((acc, a) => acc + (a.dropWeight || 10), 0);
+        let roll = Math.random() * totalWeight;
+        let chosenAlly = pool[0];
+
+        for (const ally of pool) {
+            const w = ally.dropWeight || 10;
+            if (roll <= w) {
+                chosenAlly = ally;
+                break;
+            }
+            roll -= w;
+        }
+
+        // Synergie parfaite si le thème de l'allié correspond à celui du profil
+        const isSynergy = chosenAlly.theme === playerTheme;
+        let synergyMultiplier = 1;
+
+        if (isSynergy) {
+            switch(chosenAlly.tier) {
+                case 1: synergyMultiplier = 2; break;
+                case 2: synergyMultiplier = 3; break;
+                case 3: synergyMultiplier = 4; break;
+                case 4: synergyMultiplier = 5; break;
+                default: synergyMultiplier = 2;
             }
         }
 
-        const chosenAlly = weightedAllyPick(candidates);
         gameState.selectedAlly = chosenAlly;
+        gameState.allySynergy = {
+            active: isSynergy,
+            multiplier: synergyMultiplier,
+            theme: playerTheme
+        };
+
         saveAllyToCollection(chosenAlly.id);
-        displayRevealedAlly(chosenAlly);
+        displayRevealedAlly(chosenAlly, isSynergy, synergyMultiplier);
     }
 
-    function displayRevealedAlly(ally) {
-        document.querySelector('.packs-container').style.display = 'none';
+    // Affichage dans le conteneur du Tour 24 (#ally-card-revealed)
+    function displayRevealedAlly(ally, isSynergy, synergyMultiplier) {
+        const packsContainer = document.querySelector('.packs-container');
+        if (packsContainer) packsContainer.style.display = 'none';
+
         const box = document.getElementById('ally-card-revealed');
-        const badge = document.getElementById('ally-rarity-badge');
-        const name = document.getElementById('ally-name');
-        const role = document.getElementById('ally-role');
-        const bio = document.getElementById('ally-bio');
-        const bonusTag = document.getElementById('ally-bonus-display');
-        const synergyTag = document.getElementById('ally-synergy-tag');
-        const btnContinue = document.getElementById('btn-continue-march');
+        if (!box) return;
 
-        if (box) box.style.display = 'block';
-        if (badge) {
-            badge.textContent = ally.rarityName;
-            badge.style.backgroundColor = ally.rarityColor;
-        }
-        if (name) name.textContent = ally.name;
-        if (role) role.textContent = ally.role;
-        if (bio) bio.textContent = ally.bio;
-
-        const playerArch = (gameState.selectedCharacter?.name || '').toLowerCase();
-        const hasSynergy = ally.archetype.toLowerCase().includes(playerArch) || playerArch.includes(ally.archetype.toLowerCase());
+        const conf = rarityConfig[ally.tier] || { name: "Allié", color: "#64748b" };
+        const themeInfo = ALLY_THEMES[ally.theme] || { label: 'Lutte Populaire', icon: '📢', color: conf.color };
 
         let bonusText = '';
         if (ally.bonusType === 'flat') {
-            const val = hasSynergy ? ally.bonusValue * 2 : ally.bonusValue;
-            bonusText = `+${val.toLocaleString('fr-FR')} manifestants`;
+            const finalVal = ally.bonusValue * synergyMultiplier;
+            bonusText = `+${finalVal.toLocaleString('fr-FR')} manifestants`;
         } else {
-            const val = hasSynergy ? Math.round(ally.bonusValue * 200) : Math.round(ally.bonusValue * 100);
-            bonusText = `+${val}% de cortège`;
+            const finalPct = Math.round(ally.bonusValue * synergyMultiplier * 100);
+            bonusText = `+${finalPct}% de cortège`;
         }
 
-        if (bonusTag) bonusTag.textContent = bonusText;
-        if (synergyTag) synergyTag.style.display = hasSynergy ? 'block' : 'none';
+        box.style.display = 'block';
+        box.innerHTML = `
+            <div class="booster-card-wrapper ${isSynergy ? 'synergy-glow-effect' : ''}" style="border: 2px solid ${conf.color}; border-radius: 16px; overflow: hidden; background: #fff; text-align: center; margin: 10px auto; max-width: 360px; box-shadow: 0 4px 18px rgba(0,0,0,0.1);">
+                
+                ${isSynergy ? `
+                    <div style="background: linear-gradient(90deg, #f59e0b, #fbbf24, #f59e0b); color: #451a03; font-weight: 900; font-size: 0.78rem; padding: 7px; text-transform: uppercase; letter-spacing: 0.05em;">
+                        ✨ SYNERGIE TOTALE : ${themeInfo.label.toUpperCase()} (x${synergyMultiplier}) ✨
+                    </div>
+                ` : ''}
 
+                <div style="background: ${conf.color}; color: #fff; padding: 6px 12px; font-weight: 800; font-size: 0.78rem; display: flex; justify-content: space-between;">
+                    <span>${conf.name.toUpperCase()}</span>
+                    <span>${ally.topPct || ''}</span>
+                </div>
+
+                <div style="padding: 16px;">
+                    <!-- Badge de thème bien visible avec émoji -->
+                    <div style="display: inline-flex; align-items: center; gap: 6px; background: ${themeInfo.color}15; color: ${themeInfo.color}; border: 1.5px solid ${themeInfo.color}60; padding: 3px 12px; border-radius: 999px; font-size: 0.78rem; font-weight: 800; margin-bottom: 8px;">
+                        <span>${themeInfo.icon}</span>
+                        <span>${themeInfo.label}</span>
+                    </div>
+
+                    <h2 style="font-size: 1.35rem; font-weight: 900; margin: 4px 0 2px 0; color: #18181b;">${ally.name}</h2>
+                    <div style="color: #71717a; font-size: 0.82rem; margin-bottom: 12px;">${ally.role}</div>
+                    
+                    <p style="font-style: italic; font-size: 0.84rem; color: #3f3f46; margin-bottom: 14px; line-height: 1.35;">« ${ally.bio} »</p>
+
+                    <div style="background: ${isSynergy ? '#fefce8' : '#f4f4f5'}; border: ${isSynergy ? '1px solid #fde047' : '1px solid #e4e4e7'}; border-radius: 10px; padding: 10px;">
+                        <div style="font-size: 0.74rem; font-weight: 700; color: ${isSynergy ? '#b45309' : '#71717a'};">
+                            ${isSynergy ? `⭐ Synergie ${themeInfo.icon} active (Multiplicateur x${synergyMultiplier}) :` : 'Impact sur le Cortège :'}
+                        </div>
+                        <div style="font-size: 1.15rem; font-weight: 900; color: #15803d; margin-top: 2px;">
+                            ${bonusText}
+                        </div>
+                    </div>
+
+                    <button id="btn-continue-march" class="btn-primary" style="margin-top: 16px; width: 100%;">
+                        En route pour la Logistique & la Marche 🚩
+                    </button>
+                </div>
+            </div>
+        `;
+
+        const btnContinue = document.getElementById('btn-continue-march');
         if (btnContinue) {
             btnContinue.onclick = () => {
                 openLogisticsScreen();
@@ -1890,6 +1987,144 @@ const bgAvatar = avatarColors[Math.abs(hash) % avatarColors.length];
         }
     }
 
+    // =========================================================
+    // BILAN DE LA MARCHE POPULAIRE (CORTÈGE FINAL)
+    // =========================================================
+    function triggerFinalMarchVictory() {
+        showScreen('screen-end');
+
+        const scoreHeroLabel = document.querySelector('.score-hero-label');
+        const scoreHeroSub = document.querySelector('.score-hero-sub');
+        const saveBox = document.querySelector('.save-box');
+        const nemesisCard = document.querySelector('.dash-card.nemesis-theme');
+        const marchCountEl = document.getElementById('final-march-count');
+        const marchVerdictEl = document.getElementById('final-march-verdict');
+
+        if (scoreHeroLabel) scoreHeroLabel.textContent = "AFFLUENCE DU CORTÈGE POPULAIRE";
+        if (scoreHeroSub) scoreHeroSub.textContent = "Estimation de la préfecture et des syndicats";
+        if (saveBox) saveBox.style.display = 'flex';
+
+        if (nemesisCard) nemesisCard.classList.remove('nemesis-burnout-active');
+        if (marchCountEl) marchCountEl.classList.remove('gameover-burnout-text');
+        if (marchVerdictEl) marchVerdictEl.classList.remove('verdict-burnout');
+
+        // 1. Équipements
+        let bonusFlatCortege = 0;
+        let allyMult = 1.0;
+        let overallMult = 1.0;
+        let credMultiplierImpact = 1.0;
+        let ignoreHighTensionRepression = false;
+
+        (gameState.purchasedLogistics || []).forEach(itemId => {
+            const item = (typeof MARCH_LOGISTICS_ITEMS !== 'undefined') 
+                ? MARCH_LOGISTICS_ITEMS.find(i => i.id === itemId) 
+                : null;
+            if (!item) return;
+
+            if (item.type === 'flat_boost') {
+                bonusFlatCortege += item.value;
+            } else if (item.type === 'ally_multiplier') {
+                allyMult *= item.multiplier;
+            } else if (item.type === 'energy_boost') {
+                gameState.stats.energy = Math.min(100, gameState.stats.energy + item.energyVal);
+            } else if (item.type === 'cred_boost') {
+                gameState.stats.credibility = Math.min(100, gameState.stats.credibility + item.credVal);
+            } else if (item.type === 'followers_conversion') {
+                const chunks = Math.floor((gameState.stats.followers || 0) / 10000);
+                bonusFlatCortege += (chunks * item.rate);
+            } else if (item.type === 'anti_repression') {
+                ignoreHighTensionRepression = true;
+            } else if (item.type === 'cortege_multiplier') {
+                overallMult *= item.pct;
+            } else if (item.type === 'cred_double_impact') {
+                credMultiplierImpact = 2.0;
+            }
+        });
+
+        // 2. Calcul du cortège de base
+        const baseFollowers = Math.max(1000, gameState.stats.followers || 0);
+        const credFactor = Math.max(0.3, ((gameState.stats.credibility || 50) / 50) * credMultiplierImpact);
+        const finalTier = getCurrentTierNumber();
+        const tierMultiplierMap = { 1: 1.0, 2: 1.3, 3: 1.7, 4: 2.2 };
+        const tierBonus = tierMultiplierMap[finalTier] || 1.0;
+
+        let finalScore = (baseFollowers * 1.5 * credFactor * tierBonus) + bonusFlatCortege;
+
+        // 3. Bonus Allié & Super-Synergie
+        const currentAlly = gameState.selectedAlly;
+        if (currentAlly) {
+            const synMult = (gameState.allySynergy && gameState.allySynergy.active) 
+                ? gameState.allySynergy.multiplier 
+                : 1.0;
+
+            if (currentAlly.bonusType === 'flat') {
+                finalScore += (currentAlly.bonusValue * synMult * allyMult);
+            } else {
+                finalScore *= (1 + (currentAlly.bonusValue * synMult * allyMult));
+            }
+        }
+
+        // 4. Répression
+        if (!ignoreHighTensionRepression && (gameState.stats.tension || 0) > 75) {
+            finalScore *= 0.85;
+        }
+
+        // 5. Score final
+        finalScore = Math.max(500, Math.round(finalScore * overallMult));
+        gameState.finalCalculatedScore = finalScore;
+
+        if (marchCountEl) {
+            animateScoreCounter(marchCountEl, finalScore, 2400);
+        }
+
+        if (marchVerdictEl) {
+            if (finalScore >= 500000) marchVerdictEl.textContent = "🔥 MARÉE POPULAIRE HISTORIQUE";
+            else if (finalScore >= 150000) marchVerdictEl.textContent = "🚩 DÉFERLANTE CITOYENNE";
+            else marchVerdictEl.textContent = "✊ MOBILISATION DE COMBAT";
+        }
+
+        // 6. Récapitulatifs (avec boîte allié compacte sans émoji superflu)
+        const recapArchetype = document.getElementById('recap-archetype');
+        if (recapArchetype) recapArchetype.textContent = getSelectedArchetypeName();
+
+        const recapAlly = document.getElementById('recap-ally');
+        if (recapAlly) {
+            if (currentAlly) {
+                const themeInfo = ALLY_THEMES[currentAlly.theme] || { label: 'Lutte', icon: '📢', color: '#dc2626' };
+                const isSynergy = gameState.allySynergy && gameState.allySynergy.active;
+                const synVal = isSynergy ? gameState.allySynergy.multiplier : 1;
+
+                recapAlly.style.display = 'flex';
+                recapAlly.style.flexDirection = 'column';
+                recapAlly.style.alignItems = 'center';
+                recapAlly.style.gap = '3px';
+                recapAlly.style.maxWidth = '100%';
+                recapAlly.style.overflow = 'hidden';
+
+                recapAlly.innerHTML = `
+                    <div style="font-weight: 800; font-size: 0.95rem; color: #18181b; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%;">
+                        ${currentAlly.name}
+                    </div>
+                    <div style="display: inline-flex; align-items: center; gap: 4px; flex-wrap: wrap; justify-content: center;">
+                        <span style="background: ${themeInfo.color}15; color: ${themeInfo.color}; border: 1px solid ${themeInfo.color}40; padding: 1px 7px; border-radius: 999px; font-size: 0.7rem; font-weight: 700;">
+                            ${themeInfo.label}
+                        </span>
+                        ${isSynergy ? `<span style="background: #fef08a; color: #854d0e; border: 1px solid #facc15; padding: 1px 6px; border-radius: 999px; font-size: 0.68rem; font-weight: 800;">✨ Synergie x${synVal}</span>` : ''}
+                    </div>
+                `;
+            } else {
+                recapAlly.textContent = 'Aucun';
+            }
+        }
+
+        const recapNemesis = document.getElementById('recap-nemesis');
+        if (recapNemesis) recapNemesis.textContent = gameState.highestOpponentName || 'Aucun';
+
+        const recapStatus = document.getElementById('recap-status');
+        if (recapStatus) recapStatus.textContent = getDynamicTier();
+
+        renderLeaderboard();
+    }
     function saveAllyToCollection(allyId) {
         let collection = JSON.parse(localStorage.getItem('unlocked_allies_collection') || '[]');
         if (!collection.includes(allyId)) {
@@ -1984,152 +2219,7 @@ const bgAvatar = avatarColors[Math.abs(hash) % avatarColors.length];
 
         window.requestAnimationFrame(step);
     }
-    function triggerFinalMarchVictory() {
-        showScreen('screen-end');
-
-        // --- 0. RÉINITIALISATION PROPRE DU BANDEAU ET DE LA BOÎTE D'ENREGISTREMENT ---
-        const scoreHeroLabel = document.querySelector('.score-hero-label');
-        const scoreHeroSub = document.querySelector('.score-hero-sub');
-        const saveBox = document.querySelector('.save-box');
-        const nemesisCard = document.querySelector('.dash-card.nemesis-theme');
-        const marchCountEl = document.getElementById('final-march-count');
-        const marchVerdictEl = document.getElementById('final-march-verdict');
-
-        if (scoreHeroLabel) scoreHeroLabel.textContent = "AFFLUENCE DU CORTÈGE POPULAIRE";
-        if (scoreHeroSub) scoreHeroSub.textContent = "Estimation de la préfecture et des syndicats";
-        
-        // Rétablir le formulaire de pseudo masqué par un éventuel game over
-        if (saveBox) saveBox.style.display = 'flex';
-
-        // Nettoyer les styles de défaite
-        if (nemesisCard) nemesisCard.classList.remove('nemesis-burnout-active');
-        if (marchCountEl) marchCountEl.classList.remove('gameover-burnout-text');
-        if (marchVerdictEl) marchVerdictEl.classList.remove('verdict-burnout');
-
-        // 1. Application des bonus d'équipements achetés
-        let bonusFlatCortege = 0;
-        let allyMult = 1.0;
-        let overallMult = 1.0;
-        let credMultiplierImpact = 1.0;
-        let ignoreHighTensionRepression = false;
-
-        (gameState.purchasedLogistics || []).forEach(itemId => {
-            const item = (typeof MARCH_LOGISTICS_ITEMS !== 'undefined') 
-                ? MARCH_LOGISTICS_ITEMS.find(i => i.id === itemId) 
-                : null;
-            if (!item) return;
-
-            if (item.type === 'flat_boost') {
-                bonusFlatCortege += item.value;
-            } else if (item.type === 'ally_multiplier') {
-                allyMult *= item.multiplier;
-            } else if (item.type === 'cred_boost') {
-                gameState.stats.credibility = Math.min(100, gameState.stats.credibility + item.credVal);
-            } else if (item.type === 'followers_conversion') {
-                const chunks = Math.floor((gameState.stats.followers || 0) / 10000);
-                bonusFlatCortege += (chunks * item.rate);
-            } else if (item.type === 'anti_repression') {
-                ignoreHighTensionRepression = true;
-            } else if (item.type === 'cortege_multiplier') {
-                overallMult *= item.pct;
-            } else if (item.type === 'cred_double_impact') {
-                credMultiplierImpact = 2.0;
-            }
-        });
-
-        // 2. NOUVEAU CALCUL SANS ÉNERGIE + BONUS DU PALIER FINAL
-        const baseFollowers = Math.max(1000, gameState.stats.followers || 0);
-        const credFactor = Math.max(0.3, ((gameState.stats.credibility || 50) / 50) * credMultiplierImpact);
-        
-        // Multiplicateur selon le statut de fin de partie
-        const finalTier = getCurrentTierNumber();
-        const tierMultiplierMap = {
-            1: 1.0,  // Militant de section
-            2: 1.3,  // Figure locale
-            3: 1.7,  // Porte-parole médiatique
-            4: 2.2   // Poids lourd national
-        };
-        const tierBonus = tierMultiplierMap[finalTier] || 1.0;
-
-        // Calcul de base : Abonnés × Crédibilité × Statut de Palier + Logistique
-        let finalScore = (baseFollowers * 1.5 * credFactor * tierBonus) + bonusFlatCortege;
-
-        // 3. Prise en compte de l'allié avec multiplicateur de synergie
-        const currentAlly = gameState.selectedAlly;
-        if (currentAlly) {
-            const synergyMult = (gameState.allySynergy && gameState.allySynergy.active) 
-                ? gameState.allySynergy.multiplier 
-                : 1.0;
-
-            if (currentAlly.bonusType === 'flat') {
-                finalScore += (currentAlly.bonusValue * synergyMult * allyMult);
-            } else {
-                finalScore *= (1 + (currentAlly.bonusValue * synergyMult * allyMult));
-            }
-        }
-
-        // 4. Malus répression (annulé si section juridique présente)
-        if (!ignoreHighTensionRepression && (gameState.stats.tension || 0) > 75) {
-            finalScore *= 0.85;
-        }
-
-        // 5. Multiplicateur global
-        finalScore = Math.max(500, Math.round(finalScore * overallMult));
-        gameState.finalCalculatedScore = finalScore;
-
-        // 6. Défilement animé du score final
-        const scoreElement = document.getElementById('final-march-count') 
-                           || document.getElementById('final-score') 
-                           || document.getElementById('final-cortege-score');
-
-        if (scoreElement) {
-            animateScoreCounter(scoreElement, finalScore, 2400);
-        }
-
-        // Verdict narratif sous le score
-        if (marchVerdictEl) {
-            if (finalScore >= 500000) marchVerdictEl.textContent = "🔥 MARÉE POPULAIRE HISTORIQUE";
-            else if (finalScore >= 150000) marchVerdictEl.textContent = "🚩 DÉFERLANTE CITOYENNE";
-            else marchVerdictEl.textContent = "✊ MOBILISATION DE COMBAT";
-        }
-
-        // Récapitulatif des cartes
-        const recapArchetype = document.getElementById('recap-archetype');
-        if (recapArchetype) recapArchetype.textContent = getSelectedArchetypeName();
-
-        // Récapitulatif Allié avec Émoji, Nom et Badge Synergie
-        const recapAlly = document.getElementById('recap-ally');
-        if (recapAlly) {
-            if (currentAlly) {
-                const themeInfo = (typeof ALLY_THEMES !== 'undefined' && ALLY_THEMES[currentAlly.theme])
-                    ? ALLY_THEMES[currentAlly.theme]
-                    : { label: 'Lutte Populaire', icon: '📢', color: '#dc2626' };
-
-                const isSynergy = gameState.allySynergy && gameState.allySynergy.active;
-                const synMult = isSynergy ? gameState.allySynergy.multiplier : 1;
-
-                recapAlly.innerHTML = `
-                    <span style="font-size: 1.15rem; margin-right: 4px;">${themeInfo.icon}</span>
-                    <strong style="color: #18181b;">${currentAlly.name}</strong>
-                    <span style="background: ${themeInfo.color}15; color: ${themeInfo.color}; border: 1px solid ${themeInfo.color}; padding: 2px 7px; border-radius: 999px; font-size: 0.72rem; font-weight: 800; margin-left: 6px;">
-                        ${themeInfo.label}
-                    </span>
-                    ${isSynergy ? `<span style="background: #fef08a; color: #854d0e; border: 1px solid #facc15; padding: 2px 7px; border-radius: 999px; font-size: 0.7rem; font-weight: 800; margin-left: 4px;">✨ Synergie x${synMult}</span>` : ''}
-                `;
-            } else {
-                recapAlly.textContent = 'Aucun';
-            }
-        }
-
-        const recapNemesis = document.getElementById('recap-nemesis');
-        if (recapNemesis) recapNemesis.textContent = gameState.highestOpponentName || 'Aucun';
-
-        const recapStatus = document.getElementById('recap-status');
-        if (recapStatus) recapStatus.textContent = getDynamicTier();
-
-        renderLeaderboard();
-    }
-    window.triggerFinalMarchVictory = triggerFinalMarchVictory;
+    
 
     const btnCollection = document.getElementById('btn-collection');
     const btnCollectionBack = document.getElementById('btn-collection-back');
@@ -2332,6 +2422,41 @@ const bgAvatar = avatarColors[Math.abs(hash) % avatarColors.length];
             grid.appendChild(card);
         });
     }
+function openAllyPack(packType) {
+        // 1. Coût selon le pack : standard (10 000) ou famille/affinité (25 000)
+        const cost = packType === 'family' ? 25000 : 10000;
+        const currentBudget = (gameState && gameState.stats) ? (gameState.stats.budget || 0) : 0;
+
+        if (currentBudget < cost) {
+            alert("Fonds insuffisants dans la caisse de grève pour recruter cet allié !");
+            return;
+        }
+
+        // 2. Déduction du budget et mise à jour de l'interface
+        gameState.stats.budget -= cost;
+        if (typeof updateStatsUI === 'function') {
+            updateStatsUI();
+        }
+
+        // 3. Tirage pondéré avec calcul de synergie
+        const drawResult = drawAllyFromPack(packType);
+        if (!drawResult) return;
+
+        // 4. Rendu visuel de la carte tirée
+        displayPackResult(drawResult);
+
+        // 5. Bascule d'affichage entre la boutique et le résultat
+        const packSelectionView = document.getElementById('pack-selection-view') || document.getElementById('ally-shop-options');
+        const packResultDisplay = document.getElementById('pack-result-display') || document.getElementById('ally-draw-result');
+
+        if (packSelectionView) packSelectionView.style.display = 'none';
+        if (packResultDisplay) packResultDisplay.style.display = 'block';
+    }
+
+    // Permet le déclenchement direct depuis les boutons HTML (onclick="openAllyPack('standard')")
+    window.openAllyPack = openAllyPack;
+
+
     function openAllyModal(ally, conf) {
         const overlay = document.getElementById('ally-modal-overlay');
         const modalBody = document.getElementById('modal-body');
