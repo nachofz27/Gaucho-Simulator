@@ -827,16 +827,16 @@ function displayEvent(event) {
         const multiplier = getCompatibilityMultiplier(event.theme, tier);
         const isCompat = multiplier > 1.0;
 
-        // 1. Badge de thème en haut à gauche
+       // 1. Badge de thème propre (sans le texte x1.5 collé au label)
         if (eventThemeBadge) {
-            eventThemeBadge.textContent = themeData.label + (isCompat ? ` (x${multiplier})` : '');
+            eventThemeBadge.textContent = themeData.label;
             eventThemeBadge.className = `badge-event-theme ${event.theme || ''}`;
             eventThemeBadge.style.backgroundColor = `${themeData.color}15`;
             eventThemeBadge.style.color = themeData.color;
             eventThemeBadge.style.borderColor = themeData.color;
         }
 
-        // 2. Gestion de la carte et du fond teinté
+        // 2. Gestion de la carte et du badge flottant dans l'angle supérieur gauche
         if (eventCard) {
             eventCard.style.setProperty('border-color', themeData.color, 'important');
             eventCard.style.setProperty('box-shadow', `0 4px 20px ${themeData.color}33`, 'important');
@@ -847,22 +847,21 @@ function displayEvent(event) {
                 eventCard.style.setProperty('background-color', '#FFFFFF', 'important');
             }
 
-            // Gestion du badge étoile flottant dans l'angle en HAUT À GAUCHE
-            let badgeLeft = eventCard.querySelector('.compat-badge-corner-tl');
-            if (!badgeLeft) {
-                badgeLeft = document.createElement('div');
-                badgeLeft.className = 'compat-badge-corner-tl';
-                eventCard.appendChild(badgeLeft);
+            // Récupération ou création du badge indépendant
+            let badgeStar = eventCard.querySelector('.compat-badge-floating-tl');
+            if (!badgeStar) {
+                badgeStar = document.createElement('div');
+                badgeStar.className = 'compat-badge-floating-tl';
+                eventCard.prepend(badgeStar); // Placé tout en haut du conteneur
             }
 
-            // S'il y a compatibilité, on affiche l'étoile avec le multiplicateur, sinon on le masque STRICTEMENT
             if (isCompat) {
-                badgeLeft.style.display = 'flex';
-                badgeLeft.innerHTML = `⭐ <span style="font-size:0.75rem; margin-left:4px; font-weight:bold;">x${multiplier}</span>`;
-                badgeLeft.style.borderColor = themeData.color;
-                badgeLeft.style.color = themeData.color;
+                badgeStar.style.display = 'flex';
+                badgeStar.innerHTML = `⭐ <span style="font-size:0.75rem; margin-left:4px; font-weight:800;">x${multiplier}</span>`;
+                badgeStar.style.borderColor = themeData.color;
+                badgeStar.style.color = themeData.color;
             } else {
-                badgeLeft.style.display = 'none'; // Empêche l'affichage du badge blanc sur mobile
+                badgeStar.style.display = 'none';
             }
         }
 
@@ -872,7 +871,7 @@ function displayEvent(event) {
         
         if (eventTitle) eventTitle.textContent = event.titre;
         if (eventDescription) eventDescription.textContent = event.description;
-        
+
         // Rendu des choix... (reste inchangé)
         if (choicesContainer) {
             choicesContainer.innerHTML = '';

@@ -5019,29 +5019,33 @@ button,
         transform-origin: top left;
     }
 }
-/* Badge étoile flottant ancré sur l'angle extérieur en haut à gauche */
-.compat-badge-corner-tl {
+/* Verrouille le cadre pour que le badge se positionne par rapport à ses bords */
+#event-card {
+    position: relative !important;
+    overflow: visible !important;
+}
+
+/* Badge flottant ancré exactement sur l'angle supérieur gauche */
+.compat-badge-floating-tl {
     position: absolute !important;
-    top: -16px !important;
-    left: -16px !important;
+    top: -14px !important;
+    left: -14px !important;
     background: #FFFFFF !important;
     border: 2px solid currentColor !important;
     padding: 4px 10px !important;
-    border-radius: 20px !important;
+    border-radius: 999px !important;
     font-size: 0.9rem !important;
+    line-height: 1 !important;
     display: flex !important;
     align-items: center !important;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
-    z-index: 99 !important;
+    justify-content: center !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.18) !important;
+    z-index: 100 !important;
+    pointer-events: none; /* Ne bloque pas les clics sur la carte */
     animation: pulseCompat 2s infinite ease-in-out;
 }
 
 @keyframes pulseCompat {
     0%, 100% { transform: scale(1); }
     50% { transform: scale(1.06); }
-}
-
-#event-card {
-    position: relative !important;
-    overflow: visible !important; /* Nécessaire pour que le badge dépasse du cadre */
 }
