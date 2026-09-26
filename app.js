@@ -354,7 +354,7 @@ window.supabaseClient = supabaseClient;
         return debatesList[debatesList.length - 1];
     }
 
-    function playTurn() {
+   function playTurn() {
         updateStatsUI();
 
         if (gameState.stats.energy <= 0) {
@@ -433,28 +433,51 @@ window.supabaseClient = supabaseClient;
             }
         }
 
-        // Filtrage STRICT : uniquement le palier en cours ET jamais vu
+        // =========================================================
+        // SÉLECTION DES ÉVÉNEMENTS : PALIER STRICT + BRASSAGE ALÉATOIRE
+        // =========================================================
+
+        // 1. Filtrage strict : palier actuel et carte non vue
         let availableEvents = gameEvents.filter(e => 
             (e.tier || 1) === currentTier && !gameState.historyEventsSeen.includes(e.id)
         );
 
-        // Si épuisé au sein du palier en cours, on autorise le palier juste en dessous sans répétition
+        // 2. Si le palier en cours est épuisé, on prend ce qui reste dans l'ensemble du jeu sans doublon
         if (availableEvents.length === 0) {
             availableEvents = gameEvents.filter(e => 
                 !gameState.historyEventsSeen.includes(e.id)
             );
         }
 
-        // Si tout le catalogue du jeu a été joué, arrêt de sécurité
+        // 3. Sécurité si toutes les cartes ont été jouées
         if (availableEvents.length === 0) {
             triggerFinalMarchVictory();
             return;
         }
 
-        // Tirage aléatoire sans doublon
-        const randomIndex = Math.floor(Math.random() * availableEvents.length);
-        gameState.currentEvent = availableEvents[randomIndex];
-        gameState.historyEventsSeen.push(gameState.currentEvent.id);
+        // 4. ANTI-RÉPÉTITION DU THÈME : on élimine le thème du tour précédent si d'autres thèmes existent
+        const lastTheme = gameState.lastEventTheme;
+        let diversePool = availableEvents.filter(e => e.theme !== lastTheme);
+
+        // Si tout ce qui reste a le même thème, on reprend la liste
+        if (diversePool.length === 0) {
+            diversePool = availableEvents;
+        }
+
+        // 5. BRASSAGE FISHER-YATES (véritable aléatoire, brise l'ordre d'écriture du fichier)
+        for (let i = diversePool.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            const temp = diversePool[i];
+            diversePool[i] = diversePool[j];
+            diversePool[j] = temp;
+        }
+
+        // 6. Prise de la première carte mélangée et mémorisation
+        const selectedEvent = diversePool[0];
+        gameState.currentEvent = selectedEvent;
+        gameState.lastEventTheme = selectedEvent.theme;
+        gameState.historyEventsSeen.push(selectedEvent.id);
+
         displayEvent(gameState.currentEvent);
     }
 
