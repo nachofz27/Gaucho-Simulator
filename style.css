@@ -5100,6 +5100,7 @@ button,
     color: #18181b !important;
 }
 /* Carte de profil mystère verrouillée */
+.char-card-teaser,
 .char-card-locked {
     position: relative;
     background: #09090b !important;
