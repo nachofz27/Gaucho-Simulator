@@ -428,17 +428,16 @@ function getDynamicTier() {
             }
         }
 
-        // Calcul du seuil de débat restant
+        // Calcul du seuil de débat restant (100% basé sur la tension)
         const statTensionNext = document.getElementById('stat-tension-next');
         if (statTensionNext) {
             const debateThresholds = [
-                { level: 1, minTension: 15 },
-                { level: 2, minTension: 35 },
-                { level: 3, minTension: 60 },
+                { level: 1, minTension: 20 },
+                { level: 2, minTension: 40 },
+                { level: 3, minTension: 65 },
                 { level: 4, minTension: 85 }
             ];
 
-            // Trouver le prochain palier non encore disputé
             const nextTarget = debateThresholds.find(
                 d => !gameState.completedDebates.includes(d.level)
             );
@@ -448,12 +447,12 @@ function getDynamicTier() {
             } else {
                 const diff = nextTarget.minTension - tension;
                 if (diff <= 0) {
-                statTensionNext.innerHTML = `Débat suiv.= <span style="font-size: 0.65rem;">0 🔥</span>`;
-                statTensionNext.style.color = "#dc2626";
-            } else {
-                statTensionNext.innerHTML = `Débat suiv.= <span style="font-size: 0.65rem;">${diff} 🔥</span>`;
-                statTensionNext.style.color = "#ea580c";
-            }
+                    statTensionNext.innerHTML = `Débat imm. prêt 🔥`;
+                    statTensionNext.style.color = "#dc2626";
+                } else {
+                    statTensionNext.innerHTML = `Débat suiv.= <span style="font-size: 0.65rem;">${diff} 🔥</span>`;
+                    statTensionNext.style.color = "#ea580c";
+                }
             }
         }
 
@@ -517,21 +516,18 @@ function getDynamicTier() {
         }
 
         const tension = gameState.stats.tension || 0;
-        const currentTier = getCurrentTierNumber();
 
-        // Les débats ne se déclenchent que si le palier est atteint ET la tension suffisante
+        // Seuils de tension purs pour déclencher les 4 débats
         const debateThresholds = [
-            { level: 1, minTension: 25, requiredTier: 1 },
-            { level: 2, minTension: 45, requiredTier: 2 },
-            { level: 3, minTension: 65, requiredTier: 3 },
-            { level: 4, minTension: 80, requiredTier: 4 }
+            { level: 1, minTension: 20 },
+            { level: 2, minTension: 40 },
+            { level: 3, minTension: 65 },
+            { level: 4, minTension: 85 }
         ];
 
-        // Détection du débat éligible non encore disputé
-        const eligibleDebate = debateThresholds.find(d => 
-            currentTier >= d.requiredTier &&
-            tension >= d.minTension &&
-            !gameState.completedDebates.includes(d.level)
+        // Détection du premier débat non fait dont le seuil de tension est franchi
+        const eligibleDebate = debateThresholds.find(
+            d => tension >= d.minTension && !gameState.completedDebates.includes(d.level)
         );
 
         if (eligibleDebate && typeof DEBATES_DATABASE !== 'undefined' && DEBATES_DATABASE[eligibleDebate.level]) {
