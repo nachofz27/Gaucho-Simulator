@@ -2756,17 +2756,30 @@ function openCharacterLoreModal(characterId, characterName) {
         modal.style.display = 'flex';
     }
 
-    // Fermeture de la modale fiche profil
-    const btnCloseLore = document.getElementById('btn-close-lore-modal');
-    const loreModal = document.getElementById('character-lore-modal');
+    // Fermeture universelle et inratable de la fiche profil / lore
+    function closeCharacterLoreModal() {
+        const modal = document.getElementById('character-lore-modal');
+        if (modal) {
+            modal.style.display = 'none';
+        }
+    }
+    window.closeCharacterLoreModal = closeCharacterLoreModal;
 
-    if (btnCloseLore) {
-        btnCloseLore.addEventListener('click', () => {
-            if (loreModal) loreModal.style.display = 'none';
-        });
-    }
-    if (loreModal) {
-        loreModal.addEventListener('click', (e) => {
-            if (e.target === loreModal) loreModal.style.display = 'none';
-        });
-    }
+    // Détection globale des clics sur la croix ou sur l'arrière-plan sombre
+    document.addEventListener('click', (e) => {
+        const modal = document.getElementById('character-lore-modal');
+        if (!modal || modal.style.display === 'none') return;
+
+        // 1. Clic direct sur la croix (bouton ou texte ✕)
+        if (e.target.id === 'btn-close-lore-modal' || e.target.closest('#btn-close-lore-modal')) {
+            e.preventDefault();
+            e.stopPropagation();
+            closeCharacterLoreModal();
+            return;
+        }
+
+        // 2. Clic sur le fond sombre (en dehors de la carte blanche)
+        if (e.target === modal) {
+            closeCharacterLoreModal();
+        }
+    });
