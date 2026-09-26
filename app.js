@@ -2348,3 +2348,4 @@ const bgAvatar = avatarColors[Math.abs(hash) % avatarColors.length];
             }).catch(() => {});
         }
     }, { once: true });
+});
