@@ -192,6 +192,43 @@ window.supabaseClient = supabaseClient;
             if (e.target === modalFeedback) closeFeedbackModal();
         });
     }
+
+
+
+// ==========================================
+// SYSTÈME DE PALIERS & TITRES DYNAMIQUES
+// ==========================================
+function getCurrentTierNumber() {
+    const followers = Math.max(0, (gameState && gameState.stats) ? (gameState.stats.followers || 0) : 0);
+    let tier = 1;
+
+    if (followers >= 200000) tier = 4;
+    else if (followers >= 60000) tier = 3;
+    else if (followers >= 15000) tier = 2;
+    else tier = 1;
+
+    if (gameState) {
+        if (!gameState.highestTierReached || tier > gameState.highestTierReached) {
+            gameState.highestTierReached = tier;
+        }
+        return gameState.highestTierReached;
+    }
+
+    return tier;
+}
+
+function getDynamicTier() {
+    const tier = getCurrentTierNumber();
+    switch (tier) {
+        case 4: return "Poids Lourd National (Palier 4)";
+        case 3: return "Porte-Parole Médiatique (Palier 3)";
+        case 2: return "Figure Locale & Régionale (Palier 2)";
+        case 1: return "Militant de Section (Palier 1)";
+        default: return "Militant de Section (Palier 1)";
+    }
+}
+
+
     // ==========================================
     // 3. GESTION DES ÉCRANS
     // ==========================================
