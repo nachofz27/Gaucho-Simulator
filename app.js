@@ -1787,15 +1787,7 @@ const bgAvatar = avatarColors[Math.abs(hash) % avatarColors.length];
         displayEvent(pivotEvent);
     }
 
-    // =========================================================
-    // CORRESPONDANCE DES THÈMES JOUEUR & ALLIÉS
-    // =========================================================
-    const ALLY_THEMES = {
-        'theme-ecologie':     { label: 'Écologie & Terres',          icon: '🌿', color: '#16a34a' },
-        'theme-emancipation': { label: 'Émancipation & Droits',       icon: '✊', color: '#9333ea' },
-        'theme-antifa':       { label: 'Antifascisme & Libertés',    icon: '🔻', color: '#18181b' },
-        'theme-social':       { label: 'Justice Sociale & Travail',  icon: '🥖', color: '#dc2626' }
-    };
+   
 
     function getPlayerThemeAffinity() {
         const charType = (gameState && gameState.selectedCharacter) 
@@ -2592,23 +2584,7 @@ function openAllyPack(packType) {
     // Rendre la fonction accessible en ligne pour les onclick HTML
     window.closeAllyModal = closeAllyModal;
 
-    // Correspondance entre profil joueur et thème d'allié
-    function getPlayerThemeAffinity() {
-        const charType = (typeof gameState !== 'undefined' && gameState.selectedCharacter) 
-            ? (gameState.selectedCharacter.id || gameState.selectedCharacter) 
-            : '';
-
-        switch(charType) {
-            case 'écolo': return 'theme-ecologie';
-            case 'syndicaliste':
-            case 'etudiant_bloqueur': return 'theme-social';
-            case 'feministe':
-            case 'queer':
-            case 'anticolonial': return 'theme-emancipation';
-            case 'attache_parlementaire': return 'theme-ecologie';
-            default: return 'theme-social';
-        }
-    }
+    
 
     // Tirage pondéré parmi une liste de cartes selon leur dropWeight
     function pickWeightedAlly(pool) {
@@ -2731,4 +2707,4 @@ function displayPackResult(drawResult) {
                 </div>
             </div>
         `;
-    }
+    } 
