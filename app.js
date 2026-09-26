@@ -2563,7 +2563,7 @@ function displayPackResult(drawResult) {
             ? ALLY_THEMES[ally.theme]
             : { label: 'Lutte Populaire', icon: '📢', color: conf.color };
 
-        // Calcul du bonus affiché
+        // Calcul du bonus affiché avec synergie
         let bonusText = '';
         if (ally.bonusType === 'flat') {
             const finalVal = ally.bonusValue * synergyMultiplier;
@@ -2606,28 +2606,6 @@ function displayPackResult(drawResult) {
             </div>
         `;
     }
-        const container = document.getElementById('pack-result-display');
-        if (!container || !drawResult) return;
-
-        const { ally, isSynergy, synergyMultiplier } = drawResult;
-        const conf = (typeof rarityConfig !== 'undefined' && rarityConfig[ally.tier]) 
-            ? rarityConfig[ally.tier] 
-            : { name: "Allié", color: "#64748b" };
-        
-        const themeInfo = (typeof ALLY_THEMES !== 'undefined' && ALLY_THEMES[ally.theme])
-            ? ALLY_THEMES[ally.theme]
-            : { label: 'Lutte', icon: '✊', color: conf.color };
-
-        // Calcul du bonus final après application du super-bonus de synergie
-        let bonusText = '';
-        if (ally.bonusType === 'flat') {
-            const finalVal = ally.bonusValue * synergyMultiplier;
-            bonusText = `+${finalVal.toLocaleString('fr-FR')} manifestants`;
-        } else {
-            const finalPct = Math.round(ally.bonusValue * synergyMultiplier * 100);
-            bonusText = `+${finalPct}% de cortège`;
-        }
-
         container.innerHTML = `
             <div class="booster-card-wrapper ${isSynergy ? 'synergy-glow-effect' : ''}" style="border-color: ${conf.color};">
                 ${isSynergy ? `
