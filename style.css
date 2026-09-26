@@ -5060,3 +5060,42 @@ button,
     font-size: 1.05rem;
     line-height: 1;
 }
+/* Conteneur de la modale en position relative pour caler la croix */
+#ally-modal-overlay .modal-card,
+#ally-modal-overlay .modal-content,
+#ally-modal-overlay > div {
+    position: relative !important;
+}
+
+/* Bouton croix discret calé dans l'angle supérieur droit */
+#btn-close-ally-modal,
+.close-ally-modal {
+    position: absolute !important;
+    top: 12px !important;
+    right: 12px !important;
+    width: 32px !important;
+    height: 32px !important;
+    min-width: 32px !important;
+    max-width: 32px !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    border: none !important;
+    border-radius: 50% !important;
+    background: #f4f4f5 !important;
+    color: #52525b !important;
+    font-size: 1rem !important;
+    font-weight: 700 !important;
+    line-height: 1 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    cursor: pointer !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important;
+    z-index: 100 !important;
+}
+
+#btn-close-ally-modal:hover,
+.close-ally-modal:hover {
+    background: #e4e4e7 !important;
+    color: #18181b !important;
+}
