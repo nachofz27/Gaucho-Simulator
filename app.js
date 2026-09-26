@@ -472,44 +472,29 @@ window.supabaseClient = supabaseClient;
         const tension = gameState.stats.tension || 0;
         const currentTier = getCurrentTierNumber();
 
-        // 4 seuils de tension correspondant aux 4 paliers de débat
+        // Les débats ne se déclenchent que si le palier est atteint ET la tension suffisante
         const debateThresholds = [
-            { level: 1, minTension: 15 },
-            { level: 2, minTension: 35 },
-            { level: 3, minTension: 60 },
-            { level: 4, minTension: 85 }
+            { level: 1, minTension: 25, requiredTier: 1 },
+            { level: 2, minTension: 45, requiredTier: 2 },
+            { level: 3, minTension: 65, requiredTier: 3 },
+            { level: 4, minTension: 80, requiredTier: 4 }
         ];
 
-        // Détection du palier de débat éligible non encore disputé
-        const eligibleDebate = debateThresholds
-            .filter(d => tension >= d.minTension && !gameState.completedDebates.includes(d.level))
-            .pop();
+        // Détection du débat éligible non encore disputé
+        const eligibleDebate = debateThresholds.find(d => 
+            currentTier >= d.requiredTier &&
+            tension >= d.minTension &&
+            !gameState.completedDebates.includes(d.level)
+        );
 
         if (eligibleDebate && typeof DEBATES_DATABASE !== 'undefined' && DEBATES_DATABASE[eligibleDebate.level]) {
             const rawTierData = DEBATES_DATABASE[eligibleDebate.level];
             let pickedDebate = null;
 
             if (Array.isArray(rawTierData)) {
-                // Priorité aux adversaires du palier non encore affrontés
                 const unplayed = rawTierData.filter(d => !gameState.completedDebates.includes(d.id));
                 const pool = unplayed.length > 0 ? unplayed : rawTierData;
-
-                // Tirage aléatoire pondéré selon la rareté interne (propriété 'weight')
-                if (typeof pickWeightedDebate === 'function') {
-                    pickedDebate = pickWeightedDebate(pool);
-                } else {
-                    const totalWeight = pool.reduce((sum, d) => sum + (d.weight || 10), 0);
-                    let randomNum = Math.random() * totalWeight;
-                    for (const item of pool) {
-                        const w = item.weight || 10;
-                        if (randomNum < w) {
-                            pickedDebate = item;
-                            break;
-                        }
-                        randomNum -= w;
-                    }
-                    if (!pickedDebate) pickedDebate = pool[pool.length - 1];
-                }
+                pickedDebate = (typeof pickWeightedDebate === 'function') ? pickWeightedDebate(pool) : pool[0];
 
                 if (pickedDebate && pickedDebate.id) {
                     gameState.completedDebates.push(pickedDebate.id);
@@ -1974,7 +1959,7 @@ const bgAvatar = avatarColors[Math.abs(hash) % avatarColors.length];
         if (marchCountEl) marchCountEl.classList.remove('gameover-burnout-text');
         if (marchVerdictEl) marchVerdictEl.classList.remove('verdict-burnout');
 
-        // 1. Application des bonus d'équipements achetés
+       // 1. Application des bonus d'équipements achetés
         let bonusFlatCortege = 0;
         let allyMult = 1.0;
         let overallMult = 1.0;
@@ -1991,8 +1976,6 @@ const bgAvatar = avatarColors[Math.abs(hash) % avatarColors.length];
                 bonusFlatCortege += item.value;
             } else if (item.type === 'ally_multiplier') {
                 allyMult *= item.multiplier;
-            } else if (item.type === 'energy_boost') {
-                gameState.stats.energy = Math.min(100, gameState.stats.energy + item.energyVal);
             } else if (item.type === 'cred_boost') {
                 gameState.stats.credibility = Math.min(100, gameState.stats.credibility + item.credVal);
             } else if (item.type === 'followers_conversion') {
@@ -2002,21 +1985,29 @@ const bgAvatar = avatarColors[Math.abs(hash) % avatarColors.length];
                 ignoreHighTensionRepression = true;
             } else if (item.type === 'cortege_multiplier') {
                 overallMult *= item.pct;
-            } else if (item.type === 'low_energy_boost' && gameState.stats.energy < 50) {
-                overallMult *= item.pct;
             } else if (item.type === 'cred_double_impact') {
                 credMultiplierImpact = 2.0;
             }
         });
 
-        // 2. Calcul de base sécurisé
+        // 2. NOUVEAU CALCUL SANS ÉNERGIE + BONUS DU PALIER FINAL
         const baseFollowers = Math.max(1000, gameState.stats.followers || 0);
-        const credFactor = Math.max(0.2, ((gameState.stats.credibility || 50) / 50) * credMultiplierImpact);
-        const energyFactor = Math.max(0.3, (gameState.stats.energy || 50) / 100);
+        const credFactor = Math.max(0.3, ((gameState.stats.credibility || 50) / 50) * credMultiplierImpact);
+        
+        // Multiplicateur selon le statut de fin de partie
+        const finalTier = getCurrentTierNumber();
+        const tierMultiplierMap = {
+            1: 1.0,  // Militant de section
+            2: 1.3,  // Figure locale
+            3: 1.7,  // Porte-parole médiatique
+            4: 2.2   // Poids lourd national
+        };
+        const tierBonus = tierMultiplierMap[finalTier] || 1.0;
 
-        let finalScore = (baseFollowers * 1.5 * credFactor * energyFactor) + bonusFlatCortege;
+        // Calcul de base : Abonnés × Crédibilité × Statut de Palier + Logistique
+        let finalScore = (baseFollowers * 1.5 * credFactor * tierBonus) + bonusFlatCortege;
 
-        // 3. Prise en compte de l'allié
+        // 3. Prise en compte de l'allié (on l'affinera au prochain tour)
         const currentAlly = gameState.selectedAlly;
         if (currentAlly) {
             const playerArch = (gameState.selectedCharacter?.name || gameState.selectedCharacter || '').toLowerCase();
@@ -2326,26 +2317,34 @@ function renderCollectionGrid(tierFilter = 'all') {
         return Math.round(baseScore * (cred / 100));
     }
 
-   function getCurrentTierNumber() {
-        const score = calculateUnderTheHoodScore();
-        // Objectif : ~5% des parties parfaites
-        if (score >= 200000) return 4;
-        // Objectif : ~15-20%
-        if (score >= 60000)  return 3;
-        // Objectif : ~50%
-        if (score >= 15000)  return 2;
-        // Départ
-        return 1;
+   // ==========================================
+    // GESTION DES PALIERS (BASÉE SUR LES ABONNÉS PURS)
+    // ==========================================
+    function getCurrentTierNumber() {
+        const followers = Math.max(0, gameState.stats.followers);
+        let tier = 1;
+
+        if (followers >= 200000) tier = 4;
+        else if (followers >= 60000) tier = 3;
+        else if (followers >= 15000) tier = 2;
+        else tier = 1;
+
+        // Verrou : le joueur ne peut JAMAIS redescendre de palier
+        if (!gameState.highestTierReached || tier > gameState.highestTierReached) {
+            gameState.highestTierReached = tier;
+        }
+
+        return gameState.highestTierReached;
     }
 
     function getDynamicTier() {
         const tier = getCurrentTierNumber();
         switch(tier) {
-            case 4: return "Rayonnement international (palier 4)";
-            case 3: return "Envergure nationale (palier 3)";
-            case 2: return "Influence régionale (palier 2)";
-            case 1: return "Notoriété locale (palier 1)";
-            default: return "Notoriété locale (palier 1)";
+            case 4: return "Poids Lourd National (Palier 4)";
+            case 3: return "Porte-Parole Médiatique (Palier 3)";
+            case 2: return "Figure Locale & Régionale (Palier 2)";
+            case 1: return "Militant de Section (Palier 1)";
+            default: return "Militant de Section (Palier 1)";
         }
     }
 
