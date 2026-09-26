@@ -516,18 +516,21 @@ function getDynamicTier() {
         }
 
         const tension = gameState.stats.tension || 0;
+        const currentTier = getCurrentTierNumber();
 
-        // Seuils de tension purs pour déclencher les 4 débats
+        // Les débats ne se déclenchent que si le palier est atteint ET la tension suffisante
         const debateThresholds = [
-            { level: 1, minTension: 20 },
-            { level: 2, minTension: 40 },
-            { level: 3, minTension: 65 },
-            { level: 4, minTension: 85 }
+            { level: 1, minTension: 25, requiredTier: 1 },
+            { level: 2, minTension: 45, requiredTier: 2 },
+            { level: 3, minTension: 65, requiredTier: 3 },
+            { level: 4, minTension: 80, requiredTier: 4 }
         ];
 
-        // Détection du premier débat non fait dont le seuil de tension est franchi
-        const eligibleDebate = debateThresholds.find(
-            d => tension >= d.minTension && !gameState.completedDebates.includes(d.level)
+        // Détection du débat éligible non encore disputé
+        const eligibleDebate = debateThresholds.find(d => 
+            currentTier >= d.requiredTier &&
+            tension >= d.minTension &&
+            !gameState.completedDebates.includes(d.level)
         );
 
         if (eligibleDebate && typeof DEBATES_DATABASE !== 'undefined' && DEBATES_DATABASE[eligibleDebate.level]) {
