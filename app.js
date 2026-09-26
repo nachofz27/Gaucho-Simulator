@@ -515,22 +515,20 @@ function getDynamicTier() {
             return;
         }
 
-        const tension = gameState.stats.tension || 0;
+       const tension = gameState.stats.tension || 0;
         const currentTier = getCurrentTierNumber();
 
-        // Les débats ne se déclenchent que si le palier est atteint ET la tension suffisante
+        // 1. DÉCLENCHEMENT IMMÉDIAT DU DÉBAT BASÉ UNIQUEMENT SUR LA TENSION
         const debateThresholds = [
-            { level: 1, minTension: 25, requiredTier: 1 },
-            { level: 2, minTension: 45, requiredTier: 2 },
-            { level: 3, minTension: 65, requiredTier: 3 },
-            { level: 4, minTension: 80, requiredTier: 4 }
+            { level: 1, minTension: 20 },
+            { level: 2, minTension: 40 },
+            { level: 3, minTension: 65 },
+            { level: 4, minTension: 85 }
         ];
 
-        // Détection du débat éligible non encore disputé
+        // On prend le premier palier non disputé dont la tension est atteinte
         const eligibleDebate = debateThresholds.find(d => 
-            currentTier >= d.requiredTier &&
-            tension >= d.minTension &&
-            !gameState.completedDebates.includes(d.level)
+            tension >= d.minTension && !gameState.completedDebates.includes(d.level)
         );
 
         if (eligibleDebate && typeof DEBATES_DATABASE !== 'undefined' && DEBATES_DATABASE[eligibleDebate.level]) {
@@ -552,12 +550,12 @@ function getDynamicTier() {
             if (pickedDebate) {
                 gameState.completedDebates.push(eligibleDebate.level);
                 setupDebateScreen(pickedDebate, eligibleDebate.level);
-                return;
+                return; // Bascule immédiate vers l'arène
             }
         }
 
         // =========================================================
-        // SÉLECTION DES ÉVÉNEMENTS : PALIER STRICT + BRASSAGE ALÉATOIRE
+        // SÉLECTION DES ÉVÉNEMENTS CLASSIQUES (si aucun débat)
         // =========================================================
 
         // 1. Filtrage strict : palier actuel et carte non vue
