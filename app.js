@@ -2006,7 +2006,7 @@ const bgAvatar = avatarColors[Math.abs(hash) % avatarColors.length];
         if (marchCountEl) marchCountEl.classList.remove('gameover-burnout-text');
         if (marchVerdictEl) marchVerdictEl.classList.remove('verdict-burnout');
 
-       // 1. Application des bonus d'équipements achetés
+        // 1. Application des bonus d'équipements achetés
         let bonusFlatCortege = 0;
         let allyMult = 1.0;
         let overallMult = 1.0;
@@ -2054,8 +2054,7 @@ const bgAvatar = avatarColors[Math.abs(hash) % avatarColors.length];
         // Calcul de base : Abonnés × Crédibilité × Statut de Palier + Logistique
         let finalScore = (baseFollowers * 1.5 * credFactor * tierBonus) + bonusFlatCortege;
 
-        // 3. Prise en compte de l'allié (on l'affinera au prochain tour)
-        // Prise en compte de l'allié avec multiplicateur de synergie
+        // 3. Prise en compte de l'allié avec multiplicateur de synergie
         const currentAlly = gameState.selectedAlly;
         if (currentAlly) {
             const synergyMult = (gameState.allySynergy && gameState.allySynergy.active) 
@@ -2098,8 +2097,29 @@ const bgAvatar = avatarColors[Math.abs(hash) % avatarColors.length];
         const recapArchetype = document.getElementById('recap-archetype');
         if (recapArchetype) recapArchetype.textContent = getSelectedArchetypeName();
 
+        // Récapitulatif Allié avec Émoji, Nom et Badge Synergie
         const recapAlly = document.getElementById('recap-ally');
-        if (recapAlly) recapAlly.textContent = currentAlly ? currentAlly.name : 'Aucun';
+        if (recapAlly) {
+            if (currentAlly) {
+                const themeInfo = (typeof ALLY_THEMES !== 'undefined' && ALLY_THEMES[currentAlly.theme])
+                    ? ALLY_THEMES[currentAlly.theme]
+                    : { label: 'Lutte Populaire', icon: '📢', color: '#dc2626' };
+
+                const isSynergy = gameState.allySynergy && gameState.allySynergy.active;
+                const synMult = isSynergy ? gameState.allySynergy.multiplier : 1;
+
+                recapAlly.innerHTML = `
+                    <span style="font-size: 1.15rem; margin-right: 4px;">${themeInfo.icon}</span>
+                    <strong style="color: #18181b;">${currentAlly.name}</strong>
+                    <span style="background: ${themeInfo.color}15; color: ${themeInfo.color}; border: 1px solid ${themeInfo.color}; padding: 2px 7px; border-radius: 999px; font-size: 0.72rem; font-weight: 800; margin-left: 6px;">
+                        ${themeInfo.label}
+                    </span>
+                    ${isSynergy ? `<span style="background: #fef08a; color: #854d0e; border: 1px solid #facc15; padding: 2px 7px; border-radius: 999px; font-size: 0.7rem; font-weight: 800; margin-left: 4px;">✨ Synergie x${synMult}</span>` : ''}
+                `;
+            } else {
+                recapAlly.textContent = 'Aucun';
+            }
+        }
 
         const recapNemesis = document.getElementById('recap-nemesis');
         if (recapNemesis) recapNemesis.textContent = gameState.highestOpponentName || 'Aucun';
@@ -2531,6 +2551,61 @@ const bgAvatar = avatarColors[Math.abs(hash) % avatarColors.length];
         return { ally: pickedAlly, isSynergy, synergyMultiplier };
     }
 function displayPackResult(drawResult) {
+        const container = document.getElementById('pack-result-display');
+        if (!container || !drawResult) return;
+
+        const { ally, isSynergy, synergyMultiplier } = drawResult;
+        const conf = (typeof rarityConfig !== 'undefined' && rarityConfig[ally.tier]) 
+            ? rarityConfig[ally.tier] 
+            : { name: "Allié", color: "#64748b" };
+        
+        const themeInfo = (typeof ALLY_THEMES !== 'undefined' && ALLY_THEMES[ally.theme])
+            ? ALLY_THEMES[ally.theme]
+            : { label: 'Lutte Populaire', icon: '📢', color: conf.color };
+
+        // Calcul du bonus affiché
+        let bonusText = '';
+        if (ally.bonusType === 'flat') {
+            const finalVal = ally.bonusValue * synergyMultiplier;
+            bonusText = `+${finalVal.toLocaleString('fr-FR')} manifestants`;
+        } else {
+            const finalPct = Math.round(ally.bonusValue * synergyMultiplier * 100);
+            bonusText = `+${finalPct}% de cortège`;
+        }
+
+        container.innerHTML = `
+            <div class="booster-card-wrapper ${isSynergy ? 'synergy-glow-effect' : ''}" style="border-color: ${conf.color};">
+                ${isSynergy ? `
+                    <div class="synergy-shining-badge">
+                        ✨ SYNERGIE TOTALE : ${themeInfo.label.toUpperCase()} (x${synergyMultiplier}) ✨
+                    </div>
+                ` : ''}
+
+                <div class="booster-header" style="background: ${conf.color};">
+                    <span>${conf.name.toUpperCase()}</span>
+                    <span>${ally.topPct}</span>
+                </div>
+
+                <div class="booster-content">
+                    <!-- Badge du thème bien visible au-dessus du nom -->
+                    <div class="booster-theme-pill" style="color: ${themeInfo.color}; border: 1.5px solid ${themeInfo.color}; background: ${themeInfo.color}15;">
+                        ${themeInfo.icon} ${themeInfo.label}
+                    </div>
+
+                    <h2 class="booster-name">${ally.name}</h2>
+                    <div class="booster-role">${ally.role}</div>
+                    <p class="booster-bio">« ${ally.bio} »</p>
+
+                    <div class="booster-impact-box ${isSynergy ? 'synergy-impact' : ''}">
+                        <div class="impact-label">
+                            ${isSynergy ? `⭐ Synergie ${themeInfo.icon} activée (Bonus x${synergyMultiplier}) :` : 'Impact Standard :'}
+                        </div>
+                        <div class="impact-val">${bonusText}</div>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
         const container = document.getElementById('pack-result-display');
         if (!container || !drawResult) return;
 
