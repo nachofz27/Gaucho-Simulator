@@ -2209,10 +2209,13 @@ const bgAvatar = avatarColors[Math.abs(hash) % avatarColors.length];
             list = list.filter(a => a.tier === parseInt(tierFilter, 10));
         }
 
-        // 2. Tri : Palier croissant, puis rareté interne croissante (le plus rare / meilleur scoreIndex se retrouve à la fin)
+        // Tri : palier croissant (Tier 1 -> Tier 4)
+        // et au sein du palier : du MOINS rare au PLUS rare (scoreIndex décroissant)
         list.sort((a, b) => {
-            if (a.tier !== b.tier) return a.tier - b.tier;
-            return (a.scoreIndex || 0) - (b.scoreIndex || 0);
+            if (a.tier !== b.tier) {
+                return a.tier - b.tier;
+            }
+            return (b.scoreIndex || 0) - (a.scoreIndex || 0);
         });
 
         if (!grid) return;
@@ -2371,3 +2374,28 @@ const bgAvatar = avatarColors[Math.abs(hash) % avatarColors.length];
         }
     }, { once: true });
 });
+// Gestion universelle de la fermeture de la modale Allié
+    function closeAllyModal() {
+        const overlay = document.getElementById('ally-modal-overlay');
+        if (overlay) {
+            overlay.style.display = 'none';
+        }
+    }
+
+    // Capture tous les clics sur la croix ou ses éléments enfants
+    document.addEventListener('click', (e) => {
+        if (
+            e.target.id === 'btn-close-ally-modal' ||
+            e.target.closest('#btn-close-ally-modal') ||
+            e.target.classList.contains('close-ally-modal') ||
+            e.target.closest('.close-ally-modal') ||
+            e.target.id === 'modal-close-btn'
+        ) {
+            e.preventDefault();
+            e.stopPropagation();
+            closeAllyModal();
+        }
+    });
+
+    // Rendre la fonction accessible en ligne pour les onclick HTML
+    window.closeAllyModal = closeAllyModal;
