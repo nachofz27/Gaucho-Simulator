@@ -232,10 +232,73 @@ window.supabaseClient = supabaseClient;
     // ==========================================
     // 5. INITIALISATION & TOURS DE JEU
     // ==========================================
-   function initGame(charType) {
+   // Dictionnaire des statistiques de départ par archétype
+    const CHARACTER_STARTING_STATS = {
+        'syndicaliste': {
+            followers: 4000,
+            budget: 900,
+            energy: 80,
+            credibility: 35,
+            tension: 3
+        },
+        'écolo': {
+            followers: 5000,
+            budget: 1000,
+            energy: 90,
+            credibility: 20,
+            tension: 0
+        },
+        'etudiant_bloqueur': {
+            followers: 7000,
+            budget: 700,
+            energy: 100,
+            credibility: 20,
+            tension: 5
+        },
+        'feministe': {
+            followers: 5000,
+            budget: 1000,
+            energy: 100,
+            credibility: 25,
+            tension: 3
+        },
+        'queer': {
+            followers: 7000,
+            budget: 1000,
+            energy: 100,
+            credibility: 25,
+            tension: 0
+        },
+        'anticolonial': {
+            followers: 5000,
+            budget: 1000,
+            energy: 100,
+            credibility: 25,
+            tension: 0
+        },
+        'attache_parlementaire': {
+            followers: 8000,
+            budget: 1200,
+            energy: 100,
+            credibility: 30,
+            tension: 0
+        }
+    };
+
+    function initGame(charType) {
         gameState.turn = 0;
         gameState.selectedCharacter = charType;
-        gameState.stats = { followers: 5000, budget: 1000, energy: 100, credibility: 25, tension: 0 };
+        
+        // Attribution des stats uniques de l'archétype choisi
+        const baseStats = CHARACTER_STARTING_STATS[charType] || {
+            followers: 5000,
+            budget: 1000,
+            energy: 100,
+            credibility: 25,
+            tension: 0
+        };
+
+        gameState.stats = { ...baseStats };
         
         gameState.completedDebates = [];
         gameState.historyEventsSeen = [];
@@ -243,7 +306,7 @@ window.supabaseClient = supabaseClient;
         gameState.highestOpponentScore = 0;
         gameState.selectedAlly = null;
 
-        // --- NETTOYAGE VISUEL OBLIGATOIRE POUR REPARTIR À ZÉRO ---
+        // Nettoyage visuel obligatoire pour repartir à zéro
         const eventCard = document.getElementById('event-card');
         const choicesContainer = document.getElementById('choices-container');
         const packZone = document.getElementById('pack-opening-zone');
@@ -315,6 +378,35 @@ window.supabaseClient = supabaseClient;
                 statTensionFill.style.backgroundColor = '#ea580c';
             } else {
                 statTensionFill.style.backgroundColor = '#f59e0b';
+            }
+        }
+
+        // Calcul du seuil de débat restant
+        const statTensionNext = document.getElementById('stat-tension-next');
+        if (statTensionNext) {
+            const debateThresholds = [
+                { level: 1, minTension: 15 },
+                { level: 2, minTension: 35 },
+                { level: 3, minTension: 60 },
+                { level: 4, minTension: 85 }
+            ];
+
+            // Trouver le prochain palier non encore disputé
+            const nextTarget = debateThresholds.find(
+                d => !gameState.completedDebates.includes(d.level)
+            );
+
+            if (!nextTarget) {
+                statTensionNext.textContent = "Arène max atteinte 👑";
+            } else {
+                const diff = nextTarget.minTension - tension;
+                if (diff <= 0) {
+                    statTensionNext.textContent = "⚔️ Débat imminent !";
+                    statTensionNext.style.color = "#dc2626";
+                } else {
+                    statTensionNext.textContent = `Prochain débat dans ${diff} 🔥`;
+                    statTensionNext.style.color = "#ea580c";
+                }
             }
         }
 
