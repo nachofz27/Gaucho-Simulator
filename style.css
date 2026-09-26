@@ -5019,29 +5019,29 @@ button,
         transform-origin: top left;
     }
 }
-/* Badge de compatibilité en bas à droite de la carte événement */
+/* Badge de compatibilité flottant qui dépasse sur l'angle en bas à droite */
 .compat-badge-corner {
     position: absolute;
-    bottom: 12px;
-    right: 16px;
-    background: rgba(255, 255, 255, 0.9);
+    bottom: -12px;
+    right: -10px;
+    background: #FFFFFF;
     border: 2px solid currentColor;
-    padding: 4px 8px;
+    padding: 6px 10px;
     border-radius: 20px;
-    font-size: 0.9rem;
+    font-size: 0.95rem;
     display: flex;
     align-items: center;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    z-index: 5;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    z-index: 10;
     animation: pulseCompat 2s infinite ease-in-out;
 }
 
 @keyframes pulseCompat {
     0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.05); }
+    50% { transform: scale(1.06); }
 }
 
-/* S'assurer que la carte événement est bien en position relative pour caler le badge */
 #event-card {
     position: relative !important;
+    overflow: visible !important; /* Permet au badge de déborder proprement de la carte */
 }

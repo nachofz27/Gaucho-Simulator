@@ -837,14 +837,19 @@ window.supabaseClient = supabaseClient;
             eventThemeBadge.style.borderColor = themeData.color;
         }
 
-        // 2. Fond teinté léger et bordure sur la carte événement
+        // 2. Gestion de la carte et du fond teinté (uniquement si compatible)
         if (eventCard) {
             eventCard.style.setProperty('border-color', themeData.color, 'important');
-            // On applique une couleur de fond très transparente (ex: 8% d'opacité avec '14' en hexa)
-            eventCard.style.setProperty('background-color', `${themeData.color}11`, 'important');
             eventCard.style.setProperty('box-shadow', `0 4px 20px ${themeData.color}33`, 'important');
 
-            // Gestion du badge émoji en bas à droite de la carte
+            // Le fond devient teinté SEULEMENT si le profil est compatible
+            if (isCompat) {
+                eventCard.style.setProperty('background-color', `${themeData.color}11`, 'important');
+            } else {
+                eventCard.style.setProperty('background-color', '#FFFFFF', 'important'); // Reste blanc par défaut
+            }
+
+            // Gestion du badge flottant qui dépasse dans l'angle en bas à droite
             let badgeRight = eventCard.querySelector('.compat-badge-corner');
             if (!badgeRight) {
                 badgeRight = document.createElement('div');
@@ -856,8 +861,9 @@ window.supabaseClient = supabaseClient;
                 const charType = gameState.selectedCharacter;
                 const emoji = characterEmojis[charType] || '⭐';
                 badgeRight.style.display = 'flex';
-                badgeRight.innerHTML = `${emoji} <span style="font-size:0.7rem; margin-left:4px; font-weight:bold;">x${multiplier}</span>`;
+                badgeRight.innerHTML = `${emoji} <span style="font-size:0.75rem; margin-left:4px; font-weight:bold;">x${multiplier}</span>`;
                 badgeRight.style.borderColor = themeData.color;
+                badgeRight.style.color = themeData.color;
             } else {
                 badgeRight.style.display = 'none';
             }
@@ -870,9 +876,7 @@ window.supabaseClient = supabaseClient;
         if (eventTitle) eventTitle.textContent = event.titre;
         if (eventDescription) eventDescription.textContent = event.description;
 
-        // Rendu des boutons de choix... (suite du code existant)
-
-        // Rendu des boutons
+        // Rendu des choix... (reste inchangé)
         if (choicesContainer) {
             choicesContainer.innerHTML = '';
             
