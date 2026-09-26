@@ -5294,3 +5294,38 @@ button,
     border-radius: 12px;
     margin: 8px 0;
 }
+/* Bouton Soutien / Cagnotte - Coin inférieur droit */
+.btn-support-corner {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    background: #d97706; /* Ambre chaud */
+    color: #ffffff !important;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 800;
+    padding: 8px 14px;
+    border-radius: 9999px;
+    box-shadow: 0 4px 14px rgba(217, 119, 6, 0.35);
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: transform 0.15s ease, background 0.2s ease;
+    z-index: 20;
+}
+
+.btn-support-corner:hover {
+    background: #b45309;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(217, 119, 6, 0.45);
+}
+
+/* Ajustement smartphone */
+@media (max-width: 600px) {
+    .btn-support-corner {
+        bottom: 15px;
+        right: 15px;
+        font-size: 0.75rem;
+        padding: 6px 11px;
+    }
+}
