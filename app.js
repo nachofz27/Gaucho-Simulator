@@ -894,7 +894,14 @@ function displayEvent(event) {
         }
 
         if (eventCharacterTag) {
-            eventCharacterTag.textContent = `👤 ${event.characterName || 'Événement'}`;
+            // Affichage du nom personnalisé défini dans data.js
+            eventCharacterTag.textContent = `👤 ${event.characterName || 'Intervenant'}`;
+            eventCharacterTag.style.cursor = 'pointer';
+
+            // Clic : ouverture directe de la fiche profil
+            eventCharacterTag.onclick = () => {
+                openCharacterLoreModal(event.characterId, event.characterName);
+            };
         }
         
         if (eventTitle) eventTitle.textContent = event.titre;
@@ -2705,3 +2712,61 @@ function displayPackResult(drawResult) {
             </div>
         `;
     } 
+function openCharacterLoreModal(characterId, characterName) {
+        const modal = document.getElementById('character-lore-modal');
+        const titleEl = document.getElementById('lore-modal-title');
+        const tagEl = document.getElementById('lore-modal-tag');
+        const bodyEl = document.getElementById('lore-modal-body');
+        const sourcesList = document.getElementById('lore-modal-sources-list');
+
+        if (!modal) return;
+
+        // Récupère les données depuis loredata.js ou applique un modèle par défaut
+        const data = (typeof LORE_DATABASE !== 'undefined' && LORE_DATABASE[characterId])
+            ? LORE_DATABASE[characterId]
+            : {
+                category: "Contexte & Débat",
+                bio: "Fiche d'information et contexte en cours de rédaction...",
+                sources: []
+            };
+
+        if (titleEl) titleEl.textContent = characterName || "Dossier Intervenant";
+        if (tagEl) {
+            tagEl.textContent = data.category || "Information";
+            tagEl.style.backgroundColor = "rgba(0,0,0,0.06)";
+            tagEl.style.color = "#71717a";
+        }
+        if (bodyEl) bodyEl.textContent = data.bio;
+
+        if (sourcesList) {
+            sourcesList.innerHTML = '';
+            if (data.sources && data.sources.length > 0) {
+                data.sources.forEach(s => {
+                    const li = document.createElement('li');
+                    li.innerHTML = s.url 
+                        ? `<a href="${s.url}" target="_blank" rel="noopener noreferrer" style="color: #2563eb; text-decoration: underline;">${s.label} ↗</a>`
+                        : `<span>${s.label}</span>`;
+                    sourcesList.appendChild(li);
+                });
+            } else {
+                sourcesList.innerHTML = '<li style="color: #a1a1aa; font-style: italic;">Sources en cours de référencement.</li>';
+            }
+        }
+
+        modal.style.display = 'flex';
+    }
+
+    // Fermeture de la modale fiche profil
+    const btnCloseLore = document.getElementById('btn-close-lore-modal');
+    const loreModal = document.getElementById('character-lore-modal');
+
+    if (btnCloseLore) {
+        btnCloseLore.addEventListener('click', () => {
+            if (loreModal) loreModal.style.display = 'none';
+        });
+    }
+    if (loreModal) {
+        loreModal.addEventListener('click', (e) => {
+            if (e.target === loreModal) loreModal.style.display = 'none';
+        });
+    }
