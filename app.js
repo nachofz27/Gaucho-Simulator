@@ -216,6 +216,16 @@ function getCurrentTierNumber() {
 
     return tier;
 }
+// ==========================================
+// COMPATIBILITÉ SCORE / PIVOT PREMIER TOUR
+// ==========================================
+function calculateUnderTheHoodScore() {
+    if (!gameState || !gameState.stats) return 0;
+    const followers = Math.max(0, gameState.stats.followers || 0);
+    const cred = Math.max(1, gameState.stats.credibility || 50);
+    // Score pondéré notoriété x crédibilité
+    return Math.round(followers * (cred / 50));
+}
 
 function getDynamicTier() {
     const tier = getCurrentTierNumber();
