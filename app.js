@@ -2045,17 +2045,17 @@ const bgAvatar = avatarColors[Math.abs(hash) % avatarColors.length];
         let finalScore = (baseFollowers * 1.5 * credFactor * tierBonus) + bonusFlatCortege;
 
         // 3. Prise en compte de l'allié (on l'affinera au prochain tour)
+        // Prise en compte de l'allié avec multiplicateur de synergie
         const currentAlly = gameState.selectedAlly;
         if (currentAlly) {
-            const playerArch = (gameState.selectedCharacter?.name || gameState.selectedCharacter || '').toLowerCase();
-            const allyArch = (currentAlly.archetype || '').toLowerCase();
-            const hasSynergy = allyArch.includes(playerArch) || playerArch.includes(allyArch);
-            const synergy = hasSynergy ? 2.0 : 1.0;
+            const synergyMult = (gameState.allySynergy && gameState.allySynergy.active) 
+                ? gameState.allySynergy.multiplier 
+                : 1.0;
 
             if (currentAlly.bonusType === 'flat') {
-                finalScore += (currentAlly.bonusValue * synergy * allyMult);
+                finalScore += (currentAlly.bonusValue * synergyMult * allyMult);
             } else {
-                finalScore *= (1 + (currentAlly.bonusValue * synergy * allyMult));
+                finalScore *= (1 + (currentAlly.bonusValue * synergyMult * allyMult));
             }
         }
 
