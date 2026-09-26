@@ -819,8 +819,7 @@ window.supabaseClient = supabaseClient;
         'anticolonial': '✊🏾',
         'attache_parlementaire': '🏛️'
     };
-
-    function displayEvent(event) {
+function displayEvent(event) {
         if (!event) return;
 
         const themeData = getThemeData(event.theme);
@@ -837,35 +836,33 @@ window.supabaseClient = supabaseClient;
             eventThemeBadge.style.borderColor = themeData.color;
         }
 
-        // 2. Gestion de la carte et du fond teinté (uniquement si compatible)
+        // 2. Gestion de la carte et du fond teinté
         if (eventCard) {
             eventCard.style.setProperty('border-color', themeData.color, 'important');
             eventCard.style.setProperty('box-shadow', `0 4px 20px ${themeData.color}33`, 'important');
 
-            // Le fond devient teinté SEULEMENT si le profil est compatible
             if (isCompat) {
                 eventCard.style.setProperty('background-color', `${themeData.color}11`, 'important');
             } else {
-                eventCard.style.setProperty('background-color', '#FFFFFF', 'important'); // Reste blanc par défaut
+                eventCard.style.setProperty('background-color', '#FFFFFF', 'important');
             }
 
-            // Gestion du badge flottant qui dépasse dans l'angle en bas à droite
-            let badgeRight = eventCard.querySelector('.compat-badge-corner');
-            if (!badgeRight) {
-                badgeRight = document.createElement('div');
-                badgeRight.className = 'compat-badge-corner';
-                eventCard.appendChild(badgeRight);
+            // Gestion du badge étoile flottant dans l'angle en HAUT À GAUCHE
+            let badgeLeft = eventCard.querySelector('.compat-badge-corner-tl');
+            if (!badgeLeft) {
+                badgeLeft = document.createElement('div');
+                badgeLeft.className = 'compat-badge-corner-tl';
+                eventCard.appendChild(badgeLeft);
             }
 
+            // S'il y a compatibilité, on affiche l'étoile avec le multiplicateur, sinon on le masque STRICTEMENT
             if (isCompat) {
-                const charType = gameState.selectedCharacter;
-                const emoji = characterEmojis[charType] || '⭐';
-                badgeRight.style.display = 'flex';
-                badgeRight.innerHTML = `${emoji} <span style="font-size:0.75rem; margin-left:4px; font-weight:bold;">x${multiplier}</span>`;
-                badgeRight.style.borderColor = themeData.color;
-                badgeRight.style.color = themeData.color;
+                badgeLeft.style.display = 'flex';
+                badgeLeft.innerHTML = `⭐ <span style="font-size:0.75rem; margin-left:4px; font-weight:bold;">x${multiplier}</span>`;
+                badgeLeft.style.borderColor = themeData.color;
+                badgeLeft.style.color = themeData.color;
             } else {
-                badgeRight.style.display = 'none';
+                badgeLeft.style.display = 'none'; // Empêche l'affichage du badge blanc sur mobile
             }
         }
 
@@ -875,7 +872,7 @@ window.supabaseClient = supabaseClient;
         
         if (eventTitle) eventTitle.textContent = event.titre;
         if (eventDescription) eventDescription.textContent = event.description;
-
+        
         // Rendu des choix... (reste inchangé)
         if (choicesContainer) {
             choicesContainer.innerHTML = '';

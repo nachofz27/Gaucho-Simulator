@@ -5019,19 +5019,19 @@ button,
         transform-origin: top left;
     }
 }
-/* Badge de compétence ancré pile sur l'angle extérieur en bas à droite */
-.compat-badge-corner {
+/* Badge étoile flottant ancré sur l'angle extérieur en haut à gauche */
+.compat-badge-corner-tl {
     position: absolute !important;
-    bottom: -18px !important;
-    right: -18px !important;
+    top: -16px !important;
+    left: -16px !important;
     background: #FFFFFF !important;
     border: 2px solid currentColor !important;
-    padding: 6px 12px !important;
+    padding: 4px 10px !important;
     border-radius: 20px !important;
-    font-size: 0.95rem !important;
+    font-size: 0.9rem !important;
     display: flex !important;
     align-items: center !important;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2) !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
     z-index: 99 !important;
     animation: pulseCompat 2s infinite ease-in-out;
 }
@@ -5043,5 +5043,5 @@ button,
 
 #event-card {
     position: relative !important;
-    overflow: visible !important; /* Indispensable pour que le badge sorte du cadre */
+    overflow: visible !important; /* Nécessaire pour que le badge dépasse du cadre */
 }
