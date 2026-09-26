@@ -4995,3 +4995,72 @@ button,
         font-size: 0.8rem;
     }
 }
+@media (max-width: 640px) {
+    /* 1. Le conteneur du menu occupe 100% de la fenêtre mobile */
+    #screen-menu,
+    .screen#screen-menu {
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: flex-start !important;
+        align-items: center !important;
+        min-height: 100dvh !important;
+        height: 100dvh !important;
+        position: relative !important;
+        box-sizing: border-box !important;
+        padding: 0 16px 20px 16px !important;
+    }
+
+    /* 2. Le titre descend plus bas dans la page */
+    #screen-menu h1,
+    #screen-menu .menu-title,
+    #screen-menu .title-container {
+        margin-top: 55px !important;
+        margin-bottom: 20px !important;
+        text-align: center !important;
+    }
+
+    /* 3. Bloc central des boutons calé au milieu */
+    #screen-menu .menu-actions,
+    #screen-menu .menu-buttons,
+    #screen-menu .button-group {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        width: 100% !important;
+        max-width: 320px !important;
+        gap: 12px !important;
+        margin-top: auto !important;
+        margin-bottom: auto !important;
+    }
+
+    /* 4. Mentions légales & Boîte à idées calées tout en bas */
+    #modal-feedback,
+    #btn-open-feedback,
+    #btn-open-legal,
+    #screen-menu .menu-footer {
+        text-align: center !important;
+    }
+
+    /* Place le lien des mentions juste au-dessus du bouton */
+    #btn-open-legal {
+        display: block !important;
+        position: absolute !important;
+        bottom: 72px !important;
+        left: 50% !important;
+        transform: translateX(-50%) !important;
+        width: 100% !important;
+        text-align: center !important;
+    }
+
+    /* Plaque la boîte à idées au ras du bas et la centre */
+    #btn-open-feedback {
+        position: absolute !important;
+        bottom: 20px !important;
+        left: 50% !important;
+        transform: translateX(-50%) !important;
+        margin: 0 !important;
+        display: inline-flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+    }
+}
