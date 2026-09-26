@@ -573,6 +573,42 @@ window.supabaseClient = supabaseClient;
         displayEvent(gameState.currentEvent);
     }
 
+// 1. Définition des compatibilités (Quel profil matche quel thème)
+    const characterThemeAffinity = {
+        'écolo': ['theme-ecologie', 'theme-ecolo'],
+        'syndicaliste': ['theme-social'],
+        'etudiant_bloqueur': ['theme-social'],
+        'feministe': ['theme-emancipation', 'theme-feminisme'],
+        'queer': ['theme-emancipation', 'theme-feminisme'],
+        'anticolonial': ['theme-emancipation', 'theme-feminisme'],
+        'attache_parlementaire': ['theme-ecologie', 'theme-ecolo'] // l'attaché a un bonus écolo selon ta demande
+    };
+
+    // 2. Calcul du multiplicateur selon le palier (1.5 / 2 / 2.5 / 4)
+    function getCompatibilityMultiplier(eventTheme, eventTier) {
+        const charType = gameState.selectedCharacter;
+        if (!charType) return 1.0;
+
+        // Si le thème est neutre (ou non répertorié), tout le monde a la même chose (x1.0)
+        if (!eventTheme || eventTheme === 'theme-neutre' || eventTheme === 'theme-medias') {
+            return 1.0;
+        }
+
+        const allowedThemes = characterThemeAffinity[charType] || [];
+        const isCompatible = allowedThemes.includes(eventTheme);
+
+        if (!isCompatible) return 1.0;
+
+        // Multiplicateurs progressifs selon le palier
+        switch (Number(eventTier)) {
+            case 1: return 1.5;
+            case 2: return 2.0;
+            case 3: return 2.5;
+            case 4: return 4.0;
+            default: return 1.0;
+        }
+    }
+
     function setupDebateScreen(debateObj, tier) {
         const screenDebate = document.getElementById('screen-debate');
         if (!screenDebate || !debateObj) return;
@@ -773,24 +809,58 @@ window.supabaseClient = supabaseClient;
         return themeLabels[themeId] || themeLabels['theme-default'];
     }
 
+    // Dictionnaire des émojis par profil pour le badge de compatibilité
+    const characterEmojis = {
+        'syndicaliste': '📢',
+        'écolo': '🍃',
+        'etudiant_bloqueur': '🪧',
+        'feministe': '🟣',
+        'queer': '🏳️‍🌈',
+        'anticolonial': '✊🏾',
+        'attache_parlementaire': '🏛️'
+    };
+
     function displayEvent(event) {
         if (!event) return;
 
         const themeData = getThemeData(event.theme);
+        const tier = event.tier || 1;
+        const multiplier = getCompatibilityMultiplier(event.theme, tier);
+        const isCompat = multiplier > 1.0;
 
-        // Badge de thème
+        // 1. Badge de thème en haut à gauche
         if (eventThemeBadge) {
-            eventThemeBadge.textContent = themeData.label;
+            eventThemeBadge.textContent = themeData.label + (isCompat ? ` (x${multiplier})` : '');
             eventThemeBadge.className = `badge-event-theme ${event.theme || ''}`;
-            eventThemeBadge.style.backgroundColor = `${themeData.color}22`;
+            eventThemeBadge.style.backgroundColor = `${themeData.color}15`;
             eventThemeBadge.style.color = themeData.color;
-            eventThemeBadge.style.border = `1px solid ${themeData.color}`;
+            eventThemeBadge.style.borderColor = themeData.color;
         }
-        
-        // Bordure dynamique du cadre de la carte selon le thème
+
+        // 2. Fond teinté léger et bordure sur la carte événement
         if (eventCard) {
-            eventCard.style.borderColor = themeData.color;
-            eventCard.style.boxShadow = `0 4px 18px ${themeData.color}33`;
+            eventCard.style.setProperty('border-color', themeData.color, 'important');
+            // On applique une couleur de fond très transparente (ex: 8% d'opacité avec '14' en hexa)
+            eventCard.style.setProperty('background-color', `${themeData.color}11`, 'important');
+            eventCard.style.setProperty('box-shadow', `0 4px 20px ${themeData.color}33`, 'important');
+
+            // Gestion du badge émoji en bas à droite de la carte
+            let badgeRight = eventCard.querySelector('.compat-badge-corner');
+            if (!badgeRight) {
+                badgeRight = document.createElement('div');
+                badgeRight.className = 'compat-badge-corner';
+                eventCard.appendChild(badgeRight);
+            }
+
+            if (isCompat) {
+                const charType = gameState.selectedCharacter;
+                const emoji = characterEmojis[charType] || '⭐';
+                badgeRight.style.display = 'flex';
+                badgeRight.innerHTML = `${emoji} <span style="font-size:0.7rem; margin-left:4px; font-weight:bold;">x${multiplier}</span>`;
+                badgeRight.style.borderColor = themeData.color;
+            } else {
+                badgeRight.style.display = 'none';
+            }
         }
 
         if (eventCharacterTag) {
@@ -799,6 +869,8 @@ window.supabaseClient = supabaseClient;
         
         if (eventTitle) eventTitle.textContent = event.titre;
         if (eventDescription) eventDescription.textContent = event.description;
+
+        // Rendu des boutons de choix... (suite du code existant)
 
         // Rendu des boutons
         if (choicesContainer) {
@@ -979,7 +1051,7 @@ const bgAvatar = avatarColors[Math.abs(hash) % avatarColors.length];
     // ==========================================
     // 7. RÉSOLUTION DIRECTE SUR LA MÊME INTERFACE
     // ==========================================
-    function resolveChoice(choix) {
+   function resolveChoice(choix) {
         let resultData = choix;
 
         if (choix.isClash && choix.outcomeSuccess && choix.outcomeFailure) {
@@ -988,14 +1060,30 @@ const bgAvatar = avatarColors[Math.abs(hash) % avatarColors.length];
             resultData = (roll <= winChance) ? choix.outcomeSuccess : choix.outcomeFailure;
         }
 
-        const impact = resultData.impact || {};
+        const rawImpact = resultData.impact || {};
+        
+        // --- MULTIPLICATEUR DE COMPATIBILITÉ ---
+        const tier = gameState.currentEvent ? (gameState.currentEvent.tier || 1) : 1;
+        const theme = gameState.currentEvent ? gameState.currentEvent.theme : '';
+        const multiplier = getCompatibilityMultiplier(theme, tier);
 
-        // Application des stats
-        gameState.stats.followers += impact.followers || 0;
-        gameState.stats.budget += impact.budget || 0;
-        gameState.stats.energy += impact.energy || 0;
-        gameState.stats.credibility += impact.credibility || 0;
-        gameState.stats.tension = (gameState.stats.tension || 0) + (impact.tension || 0);
+        // On applique le multiplicateur sur les gains et pertes de ressources
+        const impact = {
+            followers: rawImpact.followers ? Math.round(rawImpact.followers * multiplier) : 0,
+            budget: rawImpact.budget ? Math.round(rawImpact.budget * multiplier) : 0,
+            energy: rawImpact.energy ? Math.round(rawImpact.energy * multiplier) : 0,
+            credibility: rawImpact.credibility ? Math.round(rawImpact.credibility * multiplier) : 0,
+            tension: rawImpact.tension || 0 // La tension ne subit généralement pas le boost, ou tu peux le multiplier aussi
+        };
+        // ---------------------------------------
+
+        // Application des stats dans le gameState...
+        gameState.stats.followers += impact.followers;
+        gameState.stats.budget += impact.budget;
+        gameState.stats.energy += impact.energy;
+        gameState.stats.credibility += impact.credibility;
+        gameState.stats.tension = (gameState.stats.tension || 0) + impact.tension;
+
 
         gameState.stats.energy = Math.max(0, Math.min(100, gameState.stats.energy));
         gameState.stats.credibility = Math.max(0, Math.min(100, gameState.stats.credibility));
