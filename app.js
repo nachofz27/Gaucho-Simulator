@@ -2436,3 +2436,141 @@ const bgAvatar = avatarColors[Math.abs(hash) % avatarColors.length];
 
     // Rendre la fonction accessible en ligne pour les onclick HTML
     window.closeAllyModal = closeAllyModal;
+
+    // Correspondance entre profil joueur et thème d'allié
+    function getPlayerThemeAffinity() {
+        const charType = (typeof gameState !== 'undefined' && gameState.selectedCharacter) 
+            ? (gameState.selectedCharacter.id || gameState.selectedCharacter) 
+            : '';
+
+        switch(charType) {
+            case 'écolo': return 'theme-ecologie';
+            case 'syndicaliste':
+            case 'etudiant_bloqueur': return 'theme-social';
+            case 'feministe':
+            case 'queer':
+            case 'anticolonial': return 'theme-emancipation';
+            case 'attache_parlementaire': return 'theme-ecologie';
+            default: return 'theme-social';
+        }
+    }
+
+    // Tirage pondéré parmi une liste de cartes selon leur dropWeight
+    function pickWeightedAlly(pool) {
+        if (!pool || pool.length === 0) return null;
+        const totalWeight = pool.reduce((acc, curr) => acc + (curr.dropWeight || 10), 0);
+        let roll = Math.random() * totalWeight;
+
+        for (const ally of pool) {
+            const w = ally.dropWeight || 10;
+            if (roll <= w) return ally;
+            roll -= w;
+        }
+        return pool[0];
+    }
+
+    // Fonction de tirage selon le pack choisi
+    function drawAllyFromPack(packType) {
+        if (typeof ALLIES_DATABASE === 'undefined') return null;
+
+        const playerTheme = getPlayerThemeAffinity();
+        let eligiblePool = [];
+
+        if (packType === 'family') {
+            // PACK AFFINITÉ : Uniquement de sa famille thématique, tous paliers confondus
+            // Les raretés basses tombent plus souvent grâce au dropWeight
+            eligiblePool = ALLIES_DATABASE.filter(a => a.theme === playerTheme);
+        } else {
+            // PACK STANDARD : N'importe qui dans la base
+            // (La probabilité favorise les paliers 1 et 2 via le dropWeight)
+            eligiblePool = [...ALLIES_DATABASE];
+        }
+
+        const pickedAlly = pickWeightedAlly(eligiblePool);
+        if (!pickedAlly) return null;
+
+        // Détection de la compatibilité
+        const isSynergy = pickedAlly.theme === playerTheme;
+
+        // Multiplicateur de Synergie selon la rareté : P1 = x2, P2 = x3, P3 = x4, P4 = x5
+        let synergyMultiplier = 1;
+        if (isSynergy) {
+            switch(pickedAlly.tier) {
+                case 1: synergyMultiplier = 2; break;
+                case 2: synergyMultiplier = 3; break;
+                case 3: synergyMultiplier = 4; break;
+                case 4: synergyMultiplier = 5; break;
+                default: synergyMultiplier = 2;
+            }
+        }
+
+        // Sauvegarde de l'allié tiré et déblocage dans la collection
+        gameState.selectedAlly = pickedAlly;
+        gameState.allySynergy = {
+            active: isSynergy,
+            multiplier: synergyMultiplier,
+            theme: playerTheme
+        };
+
+        const unlocked = JSON.parse(localStorage.getItem('unlocked_allies_collection') || '[]');
+        if (!unlocked.includes(pickedAlly.id)) {
+            unlocked.push(pickedAlly.id);
+            localStorage.setItem('unlocked_allies_collection', JSON.stringify(unlocked));
+        }
+
+        return { ally: pickedAlly, isSynergy, synergyMultiplier };
+    }
+function displayPackResult(drawResult) {
+        const container = document.getElementById('pack-result-display');
+        if (!container || !drawResult) return;
+
+        const { ally, isSynergy, synergyMultiplier } = drawResult;
+        const conf = (typeof rarityConfig !== 'undefined' && rarityConfig[ally.tier]) 
+            ? rarityConfig[ally.tier] 
+            : { name: "Allié", color: "#64748b" };
+        
+        const themeInfo = (typeof ALLY_THEMES !== 'undefined' && ALLY_THEMES[ally.theme])
+            ? ALLY_THEMES[ally.theme]
+            : { label: 'Lutte', icon: '✊', color: conf.color };
+
+        // Calcul du bonus final après application du super-bonus de synergie
+        let bonusText = '';
+        if (ally.bonusType === 'flat') {
+            const finalVal = ally.bonusValue * synergyMultiplier;
+            bonusText = `+${finalVal.toLocaleString('fr-FR')} manifestants`;
+        } else {
+            const finalPct = Math.round(ally.bonusValue * synergyMultiplier * 100);
+            bonusText = `+${finalPct}% de cortège`;
+        }
+
+        container.innerHTML = `
+            <div class="booster-card-wrapper ${isSynergy ? 'synergy-glow-effect' : ''}" style="border-color: ${conf.color};">
+                ${isSynergy ? `
+                    <div class="synergy-shining-badge">
+                        ✨ SYNERGIE PARFAITE : ${themeInfo.label.toUpperCase()} (x${synergyMultiplier}) ✨
+                    </div>
+                ` : ''}
+
+                <div class="booster-header" style="background: ${conf.color};">
+                    <span>${conf.name.toUpperCase()}</span>
+                    <span>${ally.topPct}</span>
+                </div>
+
+                <div class="booster-content">
+                    <div class="booster-theme-pill" style="color: ${themeInfo.color}; border-color: ${themeInfo.color};">
+                        ${themeInfo.icon} ${themeInfo.label}
+                    </div>
+                    <h2 class="booster-name">${ally.name}</h2>
+                    <div class="booster-role">${ally.role}</div>
+                    <p class="booster-bio">« ${ally.bio} »</p>
+
+                    <div class="booster-impact-box ${isSynergy ? 'synergy-impact' : ''}">
+                        <div class="impact-label">
+                            ${isSynergy ? `🔥 Impact Décuplé (Bonus x${synergyMultiplier}) :` : 'Impact Standard :'}
+                        </div>
+                        <div class="impact-val">${bonusText}</div>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
