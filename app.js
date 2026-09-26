@@ -456,6 +456,7 @@ window.supabaseClient = supabaseClient;
         gameState.currentEvent = availableEvents[randomIndex];
         gameState.historyEventsSeen.push(gameState.currentEvent.id);
         displayEvent(gameState.currentEvent);
+    }
 
     function setupDebateScreen(debateObj, tier) {
         const screenDebate = document.getElementById('screen-debate');
