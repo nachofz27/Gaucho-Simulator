@@ -11,7 +11,7 @@ const gameEvents = [
     {
         id: "sainte_soline_ecoutes_radio",
         characterId: "opp_gendarme_sainte_soline",
-        characterName: "Le Gendarme Mobile de Sainte-Soline",
+        characterName: "CRS de Sainte-Soline",
         tier: 1,
         scoreIndex: 20,
         theme: "theme-ecologie",
@@ -91,7 +91,7 @@ const gameEvents = [
     {
         id: "carcassonne_patrouille_raciste",
         characterId: "opp_flic_carcassonne",
-        characterName: "Le Chef d'Équipage de Carcassonne",
+        characterName: "Police municipale de Carcassonne",
         tier: 1,
         scoreIndex: 20,
         theme: "theme-antifa",
@@ -251,7 +251,7 @@ const gameEvents = [
     {
         id: "collage_nuit_camarade_marco",
         characterId: "allie_marco_militant",
-        characterName: "Marco, camarade de section",
+        characterName: "Camarade militant",
         tier: 1,
         scoreIndex: 20,
         theme: "theme-antifa",
@@ -311,7 +311,7 @@ const gameEvents = [
             // CHOIX 3 : APPEL AUX RÉSEAUX & MATÉRIEL (Focus Budget)
             // =========================================================
             {
-                texte: "💶 « Marco, prends la fresque en photo maintenant avant qu'elle soit arrachée et balance un appel de soutien pour refaire le plein de colle et d'encre ! »",
+                texte: "💶 « Prends la fresque en photo maintenant avant qu'elle soit arrachée et balance un appel de soutien pour refaire le plein de colle et d'encre ! »",
                 impact: { followers: 200, budget: 60, energy: -3, credibility: 2, tension: 0 },
                 consequenceText: "Le cliché de nuit tourne bien sur Instagram. Les soutiens envoient 60 € en quelques minutes pour financer les prochains rouleaux d'affiches et l'encre.",
                 tweets: [
@@ -331,7 +331,7 @@ const gameEvents = [
     {
         id: "crous_precarite_apl_etudiants",
         characterId: "opp_directeur_crous",
-        characterName: "Le Directeur régional du CROUS",
+        characterName: "CROUS",
         tier: 1,
         scoreIndex: 20,
         theme: "theme-social",
@@ -411,7 +411,7 @@ const gameEvents = [
     {
         id: "histoires_crepues_intersectionnalite",
         characterId: "allie_histoires_crepues",
-        characterName: "L'Équipe d'Histoires Crépues",
+        characterName: "Histoires Crépues",
         tier: 1,
         scoreIndex: 20,
         theme: "theme-emancipation",
@@ -491,7 +491,7 @@ const gameEvents = [
     {
         id: "a412_chablais_thomas_brail",
         characterId: "opp_chef_chantier_a412",
-        characterName: "Le Chef de chantier de l'A412",
+        characterName: "Thomas Brail",
         tier: 1,
         scoreIndex: 20,
         theme: "theme-ecologie",
@@ -571,7 +571,7 @@ const gameEvents = [
     {
         id: "repas_famille_tonton_michel",
         characterId: "opp_tonton_michel",
-        characterName: "Tonton Michel",
+        characterName: "Famille",
         tier: 1,
         scoreIndex: 20,
         theme: "theme-emancipation",
@@ -651,7 +651,7 @@ const gameEvents = [
     {
         id: "taxation_milliardaires_taxe_zucman",
         characterId: "opp_cadre_liberal_micro",
-        characterName: "Le Défenseur des milliardaires au micro",
+        characterName: "Gabriel Zucman",
         tier: 1,
         scoreIndex: 20,
         theme: "theme-social",
@@ -731,7 +731,7 @@ const gameEvents = [
     {
         id: "passage_pieton_lgbt_riposte",
         characterId: "opp_porte_parole_identitaire",
-        characterName: "Le Porte-parole du collectif d'extrême droite",
+        characterName: "Collectif d'extrême droite",
         tier: 1,
         scoreIndex: 20,
         theme: "theme-emancipation",
@@ -811,7 +811,7 @@ const gameEvents = [
     {
         id: "manif_permis_de_tuer_presomption",
         characterId: "opp_porte_parole_syndicat_police",
-        characterName: "Le Porte-parole du syndicat policier majoritaire",
+        characterName: "Loi permis de tuer",
         tier: 1,
         scoreIndex: 20,
         theme: "theme-antifa",
@@ -891,7 +891,7 @@ const gameEvents = [
     {
         id: "hopital_public_urgence_ars",
         characterId: "opp_emissaire_ars",
-        characterName: "L'Émissaire de l'Agence Régionale de Santé",
+        characterName: "Hôpital public",
         tier: 1,
         scoreIndex: 20,
         theme: "theme-social",
@@ -971,7 +971,7 @@ const gameEvents = [
     {
         id: "interdiction_voile_glu_patate",
         characterId: "opp_depute_rn_interview",
-        characterName: "Le Député RN en interview",
+        characterName: "Voile",
         tier: 1,
         scoreIndex: 20,
         theme: "theme-neutre",
@@ -1131,7 +1131,7 @@ const gameEvents = [
     {
         id: "top3_cinema_regelegorila",
         characterId: "allie_regelegorila",
-        characterName: "regelegorila",
+        characterName: "Regelegorila",
         tier: 1,
         scoreIndex: 20,
         theme: "theme-neutre",
@@ -1211,7 +1211,7 @@ const gameEvents = [
     {
         id: "ademe_fonds_chaleur_austerite",
         characterId: "opp_depute_climatosceptique",
-        characterName: "Le Député climatosceptique",
+        characterName: "ADEME",
         tier: 2,
         scoreIndex: 40,
         theme: "theme-ecologie",
@@ -1291,11 +1291,11 @@ const gameEvents = [
     {
         id: "micro_trottoir_frontieres_florentin",
         characterId: "opp_journaliste_frontieres",
-        characterName: "Le Reporteur de Frontières",
+        characterName: "Frontières-Jordan Florentin",
         tier: 2,
         scoreIndex: 40,
         theme: "theme-antifa",
-        titre: "En « dirèt » avec l'esstrême droite",
+        titre: "En « direk » avec l'extrême droite",
         description: "En pleine manif antifasciste, le reporter de Frontières surgit micro tendu face caméra : « Nous sommes en dirèt avec l'estrême gauche ! Dites-nous, c'est quoi un facho en fait ? Définissez-le ! »",
         choix: [
             // =========================================================
@@ -1312,7 +1312,7 @@ const gameEvents = [
                     impact: { followers: 1500, budget: 0, energy: -12, credibility: 4, tension: 3 },
                     consequenceText: "Pris de court par ta repartie directe et filmé sous tous les angles par le cortège, il perd le fil de son conducteur et coupe précipitamment son dirèt sous les cris.",
                     tweets: [
-                        { author: "Nassim", handle: "@Nassim_QG", text: "Le reporter de Frontières qui voulait piéger des gens en 'dirèt' et qui finit par bégayer en coupant son live 💀🎤" },
+                        { author: "Nassim", handle: "@Nassim_QG", text: "Le reporter de Frontières qui voulait piéger des gens en 'direk' et qui finit par bégayer en coupant son live 💀🎤" },
                         { author: "Observatoire Médias", handle: "@Acrimed_Like", text: "Rappeler calmement que Frontières est une officine de propagande réactionnaire, excellente réaction." },
                         { author: "Samy", handle: "@Samy_off", text: "Il est venu chercher du buzz, il est reparti avec une leçon de déontologie en direct." },
                         { author: "Camarade Antifa", handle: "@CortègeVénère", text: "Ne jamais laisser ces provocateurs intimider les manifestants dans nos rues." }
@@ -1451,7 +1451,7 @@ const gameEvents = [
     {
         id: "controle_casque_musique_rue",
         characterId: "opp_brigadier_curieux",
-        characterName: "Le Brigadier curieux",
+        characterName: "Musique",
         tier: 2,
         scoreIndex: 40,
         theme: "theme-neutre",
@@ -1531,7 +1531,7 @@ const gameEvents = [
     {
         id: "greenwashing_arbres_place_maire",
         characterId: "opp_maire_deambulation",
-        characterName: "Le Maire en déambulation",
+        characterName: "Greenwashing",
         tier: 2,
         scoreIndex: 40,
         theme: "theme-ecologie",
@@ -1611,7 +1611,7 @@ const gameEvents = [
     {
         id: "tractage_protection_enfance_rn",
         characterId: "opp_militant_rn_tractage",
-        characterName: "Le Militant RN provocateur",
+        characterName: "Loi contre la pédocriminalité",
         tier: 2,
         scoreIndex: 40,
         theme: "theme-social",
@@ -1691,7 +1691,7 @@ const gameEvents = [
     {
         id: "conge_menstruel_tonton_michel",
         characterId: "opp_tonton_michel_repas",
-        characterName: "Tonton Michel au dessert",
+        characterName: "Famille",
         tier: 2,
         scoreIndex: 40,
         theme: "theme-emancipation",
@@ -1851,7 +1851,7 @@ const gameEvents = [
     {
         id: "visibilite_solidarite_etudiante_cop1",
         characterId: "allie_benevole_cop1",
-        characterName: "Le Bénévole de Cop'1",
+        characterName: "Cop'1",
         tier: 2,
         scoreIndex: 40,
         theme: "theme-social",
@@ -2092,7 +2092,7 @@ const gameEvents = [
     {
         id: "piege_plateau_cnews_empire_bollore",
         characterId: "opp_presentateur_cnews",
-        characterName: "Le Présentateur vedette de CNews",
+        characterName: "CNews",
         tier: 3,
         scoreIndex: 60,
         theme: "theme-antifa",
@@ -2253,7 +2253,7 @@ const gameEvents = [
     {
         id: "congo_rdc_generation_lumiere_extractivisme",
         characterId: "allie_generation_lumiere",
-        characterName: "Le Porte-Parole de Génération Lumière",
+        characterName: "Génération Lumière",
         tier: 3,
         scoreIndex: 60,
         theme: "theme-emancipation",
@@ -2494,7 +2494,7 @@ const gameEvents = [
     {
         id: "iran_femmes_recuperation_plateau",
         characterId: "opp_editorialiste_plateau",
-        characterName: "L'Éditorialiste réactionnaire",
+        characterName: "Femmes iraniennes",
         tier: 3,
         scoreIndex: 60,
         theme: "theme-emancipation",
@@ -2655,7 +2655,7 @@ const gameEvents = [
     {
         id: "grande_fete_solidarite_palestine",
         characterId: "allie_collectif_palestine",
-        characterName: "Le Collectif Palestine Solidarité",
+        characterName: "Free Palestine",
         tier: 4,
         scoreIndex: 80,
         theme: "theme-emancipation",
@@ -2736,7 +2736,7 @@ const gameEvents = [
     {
         id: "flambee_carburant_appel_gilets_jaunes",
         characterId: "opp_flambee_carburants",
-        characterName: "Le Baril spéculatif",
+        characterName: "Gilets jaunes",
         tier: 4,
         scoreIndex: 80,
         theme: "theme-social",
@@ -2816,7 +2816,7 @@ const gameEvents = [
     {
         id: "fete_huma_prise_de_parole_antifa",
         characterId: "allie_fete_de_lhuma",
-        characterName: "La Fête de l'Humanité",
+        characterName: "La Fête de l'Huma",
         tier: 4,
         scoreIndex: 80,
         theme: "theme-antifa",
@@ -2897,7 +2897,7 @@ const gameEvents = [
     {
         id: "sommet_cop_intrusion_lobbies_fossiles",
         characterId: "opp_sommet_climat_onu",
-        characterName: "Le Sommet Mondial pour le Climat",
+        characterName: "La COP",
         tier: 4,
         scoreIndex: 80,
         theme: "theme-ecologie",
