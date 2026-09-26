@@ -401,12 +401,12 @@ window.supabaseClient = supabaseClient;
             } else {
                 const diff = nextTarget.minTension - tension;
                 if (diff <= 0) {
-                    statTensionNext.textContent = "⚔️ Débat imminent !";
-                    statTensionNext.style.color = "#dc2626";
-                } else {
-                    statTensionNext.textContent = `Prochain débat dans ${diff} 🔥`;
-                    statTensionNext.style.color = "#ea580c";
-                }
+                statTensionNext.innerHTML = `Débat suiv.= <span style="font-size: 0.65rem;">0 🔥</span>`;
+                statTensionNext.style.color = "#dc2626";
+            } else {
+                statTensionNext.innerHTML = `Débat suiv.= <span style="font-size: 0.65rem;">${diff} 🔥</span>`;
+                statTensionNext.style.color = "#ea580c";
+            }
             }
         }
 
