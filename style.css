@@ -5047,3 +5047,16 @@ button,
     0%, 100% { transform: scale(1); }
     50% { transform: scale(1.06); }
 }
+.card-footer-rarity {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    width: 100%;
+    margin-top: auto;
+    padding-top: 6px;
+}
+
+.card-theme-icon {
+    font-size: 1.05rem;
+    line-height: 1;
+}

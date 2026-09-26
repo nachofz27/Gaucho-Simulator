@@ -2162,17 +2162,23 @@ const bgAvatar = avatarColors[Math.abs(hash) % avatarColors.length];
             renderCollectionGrid(clickedTier);
         });
     });
-function renderCollectionGrid(tierFilter = 'all') {
+// Dictionnaire des thèmes de lutte pour les alliés
+    const ALLY_THEMES = {
+        'theme-ecologie':     { label: 'Écologie & Terres',          icon: '🌿', color: '#16a34a' },
+        'theme-emancipation': { label: 'Émancipation & Droits',       icon: '✊', color: '#9333ea' },
+        'theme-antifa':       { label: 'Antifascisme & Libertés',    icon: '🔻', color: '#18181b' },
+        'theme-social':       { label: 'Justice Sociale & Travail',  icon: '🍞', color: '#dc2626' }
+    };
+
+    function renderCollectionGrid(tierFilter = 'all') {
         if (typeof ALLIES_DATABASE === 'undefined') return;
 
         const grid = document.getElementById('collection-grid');
         const countText = document.getElementById('collection-count-text');
 
-        // Récupère et filtre uniquement les IDs valides de la base actuelle
         const rawUnlockedIds = JSON.parse(localStorage.getItem('unlocked_allies_collection') || '[]');
         const validUnlockedIds = rawUnlockedIds.filter(id => ALLIES_DATABASE.some(a => a.id === id));
 
-        // Si des anciens IDs périmés traînaient, on nettoie silencieusement le stockage
         if (validUnlockedIds.length !== rawUnlockedIds.length) {
             localStorage.setItem('unlocked_allies_collection', JSON.stringify(validUnlockedIds));
         }
@@ -2197,10 +2203,17 @@ function renderCollectionGrid(tierFilter = 'all') {
             }
         }
 
-        let list = ALLIES_DATABASE;
+        // 1. Filtrage
+        let list = [...ALLIES_DATABASE];
         if (tierFilter !== 'all') {
             list = list.filter(a => a.tier === parseInt(tierFilter, 10));
         }
+
+        // 2. Tri : Palier croissant, puis rareté interne croissante (le plus rare / meilleur scoreIndex se retrouve à la fin)
+        list.sort((a, b) => {
+            if (a.tier !== b.tier) return a.tier - b.tier;
+            return (a.scoreIndex || 0) - (b.scoreIndex || 0);
+        });
 
         if (!grid) return;
         grid.innerHTML = '';
@@ -2208,9 +2221,9 @@ function renderCollectionGrid(tierFilter = 'all') {
         list.forEach(ally => {
             const isUnlocked = validUnlockedIds.includes(ally.id);
             const conf = rarityConfig[ally.tier] || { name: "Allié", color: "#64748b" };
+            const themeInfo = ALLY_THEMES[ally.theme] || { label: 'Lutte Populaire', icon: '📢', color: conf.color };
             const card = document.createElement('div');
 
-            // Récupère le pourcentage individuel de l'allié (ex: "Top 60%")
             const displayTopPct = ally.topPct || "Top 50%";
 
             if (isUnlocked) {
@@ -2227,6 +2240,7 @@ function renderCollectionGrid(tierFilter = 'all') {
                         <div class="card-role-sub">${ally.role}</div>
                     </div>
                     <div class="card-footer-rarity">
+                        <span class="card-theme-icon" title="${themeInfo.label}">${themeInfo.icon}</span>
                         <span class="card-rarity-tag" style="color: ${conf.color}; font-weight: 700;">${displayTopPct}</span>
                     </div>
                 `;
@@ -2248,7 +2262,6 @@ function renderCollectionGrid(tierFilter = 'all') {
             grid.appendChild(card);
         });
     }
-
     function openAllyModal(ally, conf) {
         const overlay = document.getElementById('ally-modal-overlay');
         const modalBody = document.getElementById('modal-body');
@@ -2261,17 +2274,22 @@ function renderCollectionGrid(tierFilter = 'all') {
             bonusText = `+${Math.round(ally.bonusValue * 100)}% de cortège`;
         }
 
-        // Layout avec dégagement à droite pour ne plus chevaucher le bouton croix
+        const themeInfo = ALLY_THEMES[ally.theme] || { label: 'Lutte Populaire', icon: '📢', color: conf.color };
+        const realTopPct = ally.topPct || "Top 50%";
+
         modalBody.innerHTML = `
-            <div class="modal-header-layout">
-                <div class="modal-badge-wrapper">
-                    <span class="card-tier-pill" style="background-color: ${conf.color};">${conf.name}</span>
-                    <span class="modal-top-tag" style="color: ${conf.color};">${conf.topPct}</span>
+            <div class="modal-header-layout" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                <div class="modal-badge-wrapper" style="display: flex; gap: 8px; align-items: center;">
+                    <span class="card-tier-pill" style="background-color: ${conf.color}; color: #fff; padding: 3px 8px; border-radius: 6px; font-size: 0.75rem; font-weight: 700;">${conf.name}</span>
+                    <span class="modal-top-tag" style="color: ${conf.color}; font-weight: 800; font-size: 0.8rem;">${realTopPct}</span>
+                </div>
+                <div class="modal-theme-tag" style="background: ${themeInfo.color}18; color: ${themeInfo.color}; border: 1px solid ${themeInfo.color}; padding: 3px 8px; border-radius: 6px; font-size: 0.75rem; font-weight: 700;">
+                    ${themeInfo.icon} ${themeInfo.label}
                 </div>
             </div>
-            <h3 class="modal-ally-name">${ally.name}</h3>
-            <div class="modal-ally-role">${ally.role}</div>
-            <p class="modal-ally-bio">« ${ally.bio} »</p>
+            <h3 class="modal-ally-name" style="margin: 0 0 4px 0;">${ally.name}</h3>
+            <div class="modal-ally-role" style="color: #71717a; font-size: 0.85rem; margin-bottom: 12px;">${ally.role}</div>
+            <p class="modal-ally-bio" style="font-style: italic; margin-bottom: 16px;">« ${ally.bio} »</p>
             <div class="modal-bonus-box">
                 <span class="modal-bonus-title">Impact sur le Cortège :</span>
                 <span class="modal-bonus-val">${bonusText}</span>
@@ -2280,75 +2298,6 @@ function renderCollectionGrid(tierFilter = 'all') {
 
         overlay.style.display = 'flex';
     }
-
-    const btnCloseModal = document.getElementById('btn-close-modal');
-    const modalOverlay = document.getElementById('ally-modal-overlay');
-
-    if (btnCloseModal) {
-        btnCloseModal.addEventListener('click', () => {
-            if (modalOverlay) modalOverlay.style.display = 'none';
-        });
-    }
-
-    if (modalOverlay) {
-        modalOverlay.addEventListener('click', (e) => {
-            if (e.target === modalOverlay) modalOverlay.style.display = 'none';
-        });
-    }
-
-    // ==========================================
-    // MOTEUR DE CALCUL DES PALIERS (Désormais bien intégré)
-    // ==========================================
-    function calculateUnderTheHoodScore() {
-        const followers = Math.max(0, gameState.stats.followers);
-        const budget = Math.max(0, gameState.stats.budget);
-        const cred = Math.max(0, Math.min(100, gameState.stats.credibility));
-
-        const baseScore = (followers * 1.2) + (budget * 15);
-        return Math.round(baseScore * (cred / 100));
-    }
-
-    function calculateUnderTheHoodScore() {
-        const followers = Math.max(0, gameState.stats.followers);
-        const budget = Math.max(0, gameState.stats.budget);
-        const cred = Math.max(0, Math.min(100, gameState.stats.credibility));
-
-        const baseScore = (followers * 1.2) + (budget * 15);
-        return Math.round(baseScore * (cred / 100));
-    }
-
-   // ==========================================
-    // GESTION DES PALIERS (BASÉE SUR LES ABONNÉS PURS)
-    // ==========================================
-    function getCurrentTierNumber() {
-        const followers = Math.max(0, gameState.stats.followers);
-        let tier = 1;
-
-        if (followers >= 200000) tier = 4;
-        else if (followers >= 60000) tier = 3;
-        else if (followers >= 15000) tier = 2;
-        else tier = 1;
-
-        // Verrou : le joueur ne peut JAMAIS redescendre de palier
-        if (!gameState.highestTierReached || tier > gameState.highestTierReached) {
-            gameState.highestTierReached = tier;
-        }
-
-        return gameState.highestTierReached;
-    }
-
-    function getDynamicTier() {
-        const tier = getCurrentTierNumber();
-        switch(tier) {
-            case 4: return "Poids Lourd National (Palier 4)";
-            case 3: return "Porte-Parole Médiatique (Palier 3)";
-            case 2: return "Figure Locale & Régionale (Palier 2)";
-            case 1: return "Militant de Section (Palier 1)";
-            default: return "Militant de Section (Palier 1)";
-        }
-    }
-
-});
 // =========================================================
     // GESTION AUDIO UNIVERSELLE (FONCTIONNE SUR TOUS LES ÉCRANS)
     // =========================================================
