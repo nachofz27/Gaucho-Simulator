@@ -5329,3 +5329,35 @@ button,
         padding: 6px 11px;
     }
 }
+/* Positionnement des boutons en bas sur smartphone */
+@media (max-width: 600px) {
+    /* Boîte à idées ancrée en bas à gauche */
+    #btn-open-feedback,
+    .btn-feedback-corner {
+        position: absolute !important;
+        bottom: 15px !important;
+        left: 15px !important;
+        right: auto !important;
+        transform: none !important; /* Annule le centrage horizontal */
+        margin: 0 !important;
+        font-size: 0.75rem !important;
+        padding: 6px 11px !important;
+        white-space: nowrap !important;
+        z-index: 20 !important;
+    }
+
+    /* Soutenir le jeu ancré en bas à droite */
+    #btn-support-corner,
+    .btn-support-corner {
+        position: absolute !important;
+        bottom: 15px !important;
+        right: 15px !important;
+        left: auto !important;
+        transform: none !important;
+        margin: 0 !important;
+        font-size: 0.75rem !important;
+        padding: 6px 11px !important;
+        white-space: nowrap !important;
+        z-index: 20 !important;
+    }
+}
