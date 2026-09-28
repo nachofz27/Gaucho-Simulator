@@ -5329,80 +5329,40 @@ button,
         padding: 6px 11px;
     }
 }
-/* Positionnement des boutons en bas sur smartphone */
 @media (max-width: 600px) {
-    /* Boîte à idées ancrée en bas à gauche */
-    #btn-open-feedback,
-    .btn-feedback-corner {
-        position: absolute !important;
-        bottom: 15px !important;
-        left: 15px !important;
-        right: auto !important;
-        transform: none !important; /* Annule le centrage horizontal */
-        margin: 0 !important;
-        font-size: 0.75rem !important;
-        padding: 6px 11px !important;
-        white-space: nowrap !important;
-        z-index: 20 !important;
+    /* Neutralise le centrage du bloc conteneur */
+    div:has(> #btn-open-feedback),
+    .feedback-container,
+    .feedback-box,
+    .menu-footer {
+        display: flex !important;
+        justify-content: flex-start !important;
+        align-items: flex-end !important;
+        text-align: left !important;
+        width: auto !important;
     }
 
-    /* Soutenir le jeu ancré en bas à droite */
-    #btn-support-corner,
-    .btn-support-corner {
-        position: absolute !important;
-        bottom: 15px !important;
-        right: 15px !important;
-        left: auto !important;
-        transform: none !important;
-        margin: 0 !important;
-        font-size: 0.75rem !important;
-        padding: 6px 11px !important;
-        white-space: nowrap !important;
-        z-index: 20 !important;
-    }
-}
-/* Alignement strict des boutons en bas sur smartphone */
-@media (max-width: 600px) {
-    /* Boîte à idées verrouillée en bas à gauche de l'écran */
-    #btn-open-feedback,
-    button[id*="feedback"],
-    .btn-feedback {
+    /* Ancrage strict du bouton boîte à idées en bas à gauche */
+    #btn-open-feedback {
         position: fixed !important;
         bottom: 14px !important;
         left: 12px !important;
         right: auto !important;
         top: auto !important;
-        transform: none !important;
+        transform: translate(0, 0) !important;
         margin: 0 !important;
-        width: auto !important;
-        min-width: 0 !important;
-        max-width: 44vw !important;
-        font-size: 0.72rem !important;
-        padding: 6px 10px !important;
-        white-space: nowrap !important;
-        overflow: hidden !important;
-        text-overflow: ellipsis !important;
         z-index: 9999 !important;
     }
 
-    /* Soutenir le jeu verrouillé en bas à droite de l'écran */
-    #btn-support-corner,
-    .btn-support-corner {
+    /* Ancrage strict du bouton de soutien en bas à droite */
+    #btn-support-corner {
         position: fixed !important;
         bottom: 14px !important;
         right: 12px !important;
         left: auto !important;
         top: auto !important;
-        transform: none !important;
+        transform: translate(0, 0) !important;
         margin: 0 !important;
-        width: auto !important;
-        min-width: 0 !important;
-        max-width: 44vw !important;
-        font-size: 0.72rem !important;
-        padding: 6px 10px !important;
-        white-space: nowrap !important;
-        overflow: hidden !important;
-        text-overflow: ellipsis !important;
         z-index: 9999 !important;
     }
 }
