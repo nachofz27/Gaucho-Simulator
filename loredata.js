@@ -142,7 +142,7 @@ const LORE_DATABASE = {
         category: "Analyse rhétorique & Médias",
         bio: "Docteur en science politique, enseignant et vulgarisateur, Clément Viktorovitch est spécialisé dans l'analyse du discours et la rhétorique politique. À la télévision comme sur le web, il décortique les mécanismes de persuasion, les sophismes et les éléments de langage employés par les responsables publics pour contourner le débat démocratique.",
         sources: [
-            { label: "Chaîne YouTube officielle de Clément Viktorovitch", url: "https://www.youtube.com/channel/UCQcas4dulTzVUrAo0fMfWWg" }
+            { label: "Chaîne YouTube officielle de Clément Viktorovitch", url: "https://www.youtube.com/channel/UCQcas4dulTzVUrAo0fMfWWg" },
             { label: "9 inscrits sur 40 : l'opération 1 000 bistrots de Gabriel Attal se transforme-t-elle en flop ?", url: "https://www.ledauphine.com/videos/9-inscrits-sur-40-l-operation-1-000-bistrots-de-gabriel-attal-se-transforme-t-elle-en-flop-3kkmxpz" }
             // NOTE : le second point de la bio (opération « 1 000 cafés ») et sa source (lemonde.fr générique) ont été retirés du fait de l'absence de lien précis vérifiable ; à réintégrer avec un article spécifique si vous le souhaitez.
         ]
