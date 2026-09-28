@@ -2656,13 +2656,17 @@ html, body, button, .char-card, .btn-choice {
 /* ─────────────────────────────────────────────────────────────
    1. CONTENEUR PRINCIPAL DE L'ARÈNE
    ───────────────────────────────────────────────────────────── */
-
 #screen-debate {
+    display: none !important; /* Reste masqué par défaut */
     position: relative;
     overflow: hidden;
     padding: 0 !important;
     min-height: 100vh;
-    display: flex;
+    box-sizing: border-box;
+}
+
+#screen-debate.active {
+    display: flex !important; /* S'affiche UNIQUEMENT quand le débat démarre */
     flex-direction: column;
     justify-content: space-between;
 }
