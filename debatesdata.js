@@ -22,6 +22,7 @@ window.DEBATES_DATABASE = {
                 <div class="chalk-doodle">📝 TD de Droit • Fin de séance agitée</div>
             `,
             opponentAttack: "« Le féminisme d'État a détruit le marché de la séduction ! Les femmes ne veulent que des mecs blindés et vos théories wokes ruinent nos facs ! »",
+            bgImage: "https://images.unsplash.com/photo-1516280440614-37939bbacd81?auto=format&fit=crop&q=80&w=1920",
             choix: [
                 {
                     texte: "Démonter posément ses arguments avec les statistiques de l'INSEE sur les violences et inégalités réelles.",
@@ -174,6 +175,7 @@ window.DEBATES_DATABASE = {
                 <div class="chalk-doodle">📱 Live TikTok hostile en cours • 200 étudiants en cercle</div>
             `,
             opponentAttack: "« Vous prétendez défendre les femmes, mais votre gauche refuse de voir que l'insécurité et les agressions sexuelles sont importées par l'immigration massive ! »",
+            bgImage: "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&q=80&w=1920",
             choix: [
                 {
                     texte: "« Posons les statistiques du ministère de la Justice : 85% des violences sexistes et sexuelles ont lieu dans le cercle familial ou par des proches, quelle que soit leur nationalité. »",
@@ -326,6 +328,7 @@ window.DEBATES_DATABASE = {
                 <div class="tv-breaking-chiron"><span class="chiron-flash">DIRECT</span> TENSIONS SUR LES VALEURS DE LA RÉPUBLIQUE</div>
             `,
             opponentAttack: "« Vous, l'extrême gauche, vous êtes les fossoyeurs de notre nation ! Vous encouragez le chaos, la haine de la police et la submersion pour détruire la France ! »",
+            bgImage: "https://images.unsplash.com/photo-1590602847861-f357a9332bbc?auto=format&fit=crop&q=80&w=1920",
             choix: [
                 {
                     texte: "« Jean, hurler sur tous les plateaux pour faire oublier que ton seul fait d'armes c'est d'avoir gratté ta com' sur une cagnotte de la division, c'est ridicule. »",
@@ -478,6 +481,7 @@ window.DEBATES_DATABASE = {
                 <div class="tv-breaking-chiron"><span class="chiron-flash">DIRECT 2027</span> LE CHOIX DE NATION • 48H DU VOTE FINAL</div>
             `,
             opponentAttack: "« Vous incarnez le chaos, la ruine fiscale et la submersion de notre patrie. Les Français doivent choisir entre la fierté retrouvée et votre tyrannie woke désordonnée ! »",
+            bgImage: "https://images.unsplash.com/photo-1585829365295-ab7cd400c167?auto=format&fit=crop&q=80&w=1920",
             choix: [
                 {
                     texte: "« Jordan, ta fierté nationale c'est de servir la soupe aux milliardaires comme Bolloré tout en votant contre le SMIC et la retraite à 60 ans des ouvriers ! »",
@@ -551,6 +555,7 @@ window.DEBATES_DATABASE = {
                 <div class="tv-breaking-chiron"><span class="chiron-flash">WORLD ALERT</span> DIPLOMATIC STANDOFF AT THE OVAL OFFICE</div>
             `,
             opponentAttack: "« Your socialist movement is a disaster! You want to destroy business, ban oil and bring communism to Europe. We made deals with real leaders, not radicals! »",
+            bgImage: "https://images.unsplash.com/photo-1585829365295-ab7cd400c167?auto=format&fit=crop&q=80&w=1920",
             choix: [
                 {
                     texte: "« Le monde n'est pas un casino de promoteur en faillite, Donald : tes forages et tes guerres pour le pétrole détruisent la seule planète qu'on a. »",
