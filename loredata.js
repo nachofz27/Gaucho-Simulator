@@ -37,9 +37,9 @@ const LORE_DATABASE = {
         category: "Écologie populaire & Banlieues",
         bio: "Originaire de Strasbourg, Féris Barkat est le cofondateur de l'association Banlieues Climat, lancée pour reconnecter les quartiers populaires aux enjeux écologiques sans discours moralisateur ou technocratique. Reconnu pour sa pédagogie de terrain percutante, il a notamment enseigné et donné des modules de cours sur l'écologie populaire et la justice environnementale à l'université Sorbonne Nouvelle. Son mouvement forme des centaines de jeunes des cités aux réalités du dérèglement climatique (précarité thermique des passoires HLM, manque d'îlots de fraîcheur, pollutions industrielles subies), en faisant de l'écologie un vecteur d'émancipation sociale, de formation professionnelle et de reprise de pouvoir sur leur cadre de vie.",
         sources: [
-            { label: "Site officiel de l'association Banlieues Climat", url: "https://banlieuesclimat.com/" },
+            { label: "Site officiel de l'association Banlieues Climat", url: "https://banlieues-climat.org/" },
             // [VÉRIFIÉ] Retrouvé cité (URL tronquée identique) sur un site tiers référençant ce podcast précis ; conservé.
-            { label: "Podcast France Inter, « La Terre au carré » : quelle écologie pour les quartiers populaires ?", url: "https://www.radiofrance.fr/franceinter/podcasts/la-terre-au-carre/la-terre-au-carre-du-jeudi-08-juin-2023-3882747" },
+            { label: "Podcast France Inter, « La Terre au carré » : quelle écologie pour les quartiers populaires ?", url: "https://www.radiofrance.fr/franceinter/podcasts/la-terre-au-carre/la-terre-au-carre-du-mercredi-14-juin-2023-3375317" },
             // [NOUVEAU][VÉRIFIÉ] Le lien StreetPress d'origine n'a pas pu être confirmé ; remplacé par un article Politis vérifié et très complet.
             { label: "Politis : comment l'association Banlieues Climat fait vivre l'écologie populaire", url: "https://www.politis.fr/articles/2023/12/comment-lassociation-banlieues-climat-de-feris-berkat-fait-vivre-lecologie-populaire" }
         ]
@@ -67,7 +67,7 @@ const LORE_DATABASE = {
         bio: "Fondé par l'artiste et chercheur Seumboy Vrainom :€, Histoires Crépues est un média d'éducation populaire et de déconstruction historique. À travers la vidéo courte et un minutieux travail d'archives, le projet vulgarise l'histoire coloniale française, la pensée décoloniale et l'écologie politique. En abordant des thématiques souvent invisibilisées dans les programmes scolaires traditionnels — massacres coloniaux, représentations raciales ou extraction des ressources —, il offre des outils théoriques accessibles pour penser les séquelles contemporaines de l'impérialisme.",
         sources: [
             { label: "Chaîne YouTube officielle Histoires Crépues", url: "https://www.youtube.com/@histoirescrepues" },
-            { label: "Compte Instagram du média Histoires Crépues", url: "https://www.instagram.com/histoirescrepues" }
+            { label: "Compte Instagram du média Histoires Crépues", url: "https://www.instagram.com/histoires_crepues" }
         ]
     },
     "opp_chef_chantier_a412": {
@@ -84,8 +84,8 @@ const LORE_DATABASE = {
         bio: "La cellule familiale constitue la première instance de socialisation politique, transmettant de manière diffuse mais profonde des visions du monde, des valeurs morales et des réflexes partisans. Loin de débats théoriques abstraits, c'est souvent lors des repas de famille — symbolisés par la figure stéréotypée du « tonton » aux remarques réactionnaires — que se heurtent les appartenances de classe, les clivages générationnels et l'incorporation inconsciente des hiérarchies sociales. La famille fonctionne ainsi comme un espace paradoxal d'apprentissage du conformisme ou de rupture idéologique, où l'adhésion ou la révolte politique se négocient d'abord dans l'intimité domestique.",
         sources: [
             // [À VÉRIFIER] Non revérifiés individuellement aujourd'hui.
-            { label: "Recherche sociologique sur la socialisation politique familiale et le vote (Cairn)", url: "https://shs.cairn.info/revue-francaise-de-science-politique-2015-4-page-643" },
-            { label: "Dossier pédagogique sur les mécanismes de la socialisation primaire (ENS Lyon)", url: "https://ses.ens-lyon.fr/articles/la-socialisation-politique-des-enfants" }
+            { label: "La politique, une affaire de famille(s) ? (Cairn)", url: "https://https://shs.cairn.info/revue-idees-economiques-et-sociales-2011-4-page-31?lang=fr" },
+            { label: "La socialisation (Cairn)", url: "https://https://shs.cairn.info/premieres-lecons-de-sociologie--9782130620396-page-63?lang=fr" }
         ]
     },
     "opp_cadre_liberal_micro": {
@@ -104,8 +104,8 @@ const LORE_DATABASE = {
         sources: [
             // [À VÉRIFIER] Domaines réels et sérieux (CNCDH, Mediapart, SOS Homophobie) mais pointant vers la page d'accueil ; à remplacer par l'article/rapport précis de votre choix.
             { label: "Commission nationale consultative des droits de l'homme (CNCDH)", url: "https://www.cncdh.fr" },
-            { label: "Mediapart — enquêtes sur les réseaux ultranationalistes", url: "https://www.mediapart.fr" },
-            { label: "Rapport annuel de SOS Homophobie", url: "https://www.sos-homophobie.org" }
+            { label: "Mediapart — Groupuscules d’extrême droite : les enquêtes de Mediapart", url: "https://www.mediapart.fr/journal/politique/051223/groupuscules-d-extreme-droite-les-enquetes-de-mediapart?uid=MTUyODU5NA==" },
+            { label: "Rapport annuel de SOS Homophobie", url: "https://ressource.sos-homophobie.org/Rapports_annuels/rapport_LGBTIphobies_2026.pdf" }
         ]
     },
     "opp_porte_parole_syndicat_police": {
@@ -124,9 +124,9 @@ const LORE_DATABASE = {
         bio: "L'hôpital public traverse une crise structurelle profonde, accentuée par des années de politiques de tarification à l'activité (T2A), de fermetures continues de lits et de coupes budgétaires. Le manque criant de moyens matériels et humains engendre une saturation permanente des services d'urgences, des délais de prise en charge démesurés et des conditions de travail délétères pour les soignants, provoquant une vague massive de démissions. Cette gestion managériale pilotée par les Agences régionales de santé (ARS) délaisse la logique de service public universel au profit d'une logique comptable, avec des conséquences tragiques sur la prise en charge et une mortalité évitable documentée aux urgences.",
         sources: [
             // [À VÉRIFIER] Domaines réels (Cour des comptes, Mediapart, DREES) mais pages d'accueil génériques ; à remplacer par le rapport/article précis de votre choix.
-            { label: "Rapport de la Cour des comptes sur les finances de l'hôpital public", url: "https://www.ccomptes.fr" },
-            { label: "Enquêtes de Mediapart sur la dégradation des urgences hospitalières", url: "https://www.mediapart.fr" },
-            { label: "Données de la DREES sur les capacités hospitalières", url: "https://drees.solidarites-sante.gouv.fr" }
+            { label: "Rapport de la Cour des comptes sur les finances de l'hôpital public", url: "https://www.ccomptes.fr/fr/publications/la-situation-financiere-des-hopitaux-publics-apres-la-crise-sanitaire" },
+            { label: "Dossier L’hôpital à bout de souffle", url: "https://www.mediapart.fr/journal/france/dossier/l-hopital-bout-de-souffle" },
+            { label: "Les établissements de santé en 2024 - Édition 2026", url: "https://drees.solidarites-sante.gouv.fr/publications-communique-de-presse-documents-de-reference/panoramas-de-la-drees/260520-Etablissements-de-santé-en-2024" }
         ]
     },
     "opp_depute_rn_interview": {
@@ -142,7 +142,8 @@ const LORE_DATABASE = {
         category: "Analyse rhétorique & Médias",
         bio: "Docteur en science politique, enseignant et vulgarisateur, Clément Viktorovitch est spécialisé dans l'analyse du discours et la rhétorique politique. À la télévision comme sur le web, il décortique les mécanismes de persuasion, les sophismes et les éléments de langage employés par les responsables publics pour contourner le débat démocratique.",
         sources: [
-            { label: "Chaîne YouTube officielle de Clément Viktorovitch", url: "https://www.youtube.com/@clementviktorovitch" }
+            { label: "Chaîne YouTube officielle de Clément Viktorovitch", url: "https://www.youtube.com/channel/UCQcas4dulTzVUrAo0fMfWWg" }
+            { label: "9 inscrits sur 40 : l'opération 1 000 bistrots de Gabriel Attal se transforme-t-elle en flop ?", url: "https://www.ledauphine.com/videos/9-inscrits-sur-40-l-operation-1-000-bistrots-de-gabriel-attal-se-transforme-t-elle-en-flop-3kkmxpz" }
             // NOTE : le second point de la bio (opération « 1 000 cafés ») et sa source (lemonde.fr générique) ont été retirés du fait de l'absence de lien précis vérifiable ; à réintégrer avec un article spécifique si vous le souhaitez.
         ]
     },
@@ -161,8 +162,8 @@ const LORE_DATABASE = {
         bio: "Procédé de communication trompeur, le greenwashing (ou écoblanchiment) consiste pour une collectivité, un responsable politique ou une entreprise à mobiliser les codes et l'esthétique de l'écologie pour masquer l'absence d'engagements environnementaux réels. Dans la gestion municipale, il se traduit fréquemment par des opérations cosmétiques très médiatisées — installation de jardinières, réfection d'une place minérale avec quelques arbrisseaux ou communication sur des micro-forêts urbaines — pendant que se poursuivent l'artificialisation des sols périphériques, le tout-voiture et la densification bétonnée.",
         sources: [
             // [À VÉRIFIER] Domaines réels (ADEME, Reporterre) mais pages génériques.
-            { label: "Guide de l'ADEME pour identifier et prévenir le greenwashing", url: "https://www.ademe.fr" },
-            { label: "Reporterre — enquêtes sur l'écoblanchiment municipal", url: "https://reporterre.net" }
+            { label: "Guide de l'ADEME pour identifier et prévenir le greenwashing", url: "https://librairie.ademe.fr/societe-et-politiques-publiques/8839-guide-anti-greenwashing-de-l-ademe-edition-2025-9791029724312.html" },
+            { label: "L’inventaire de l’éco-blanchiment : une enquête collective par la Coordination des médias libres", url: "https://reporterre.net/L-inventaire-de-l-eco-blanchiment-une-enquete-collective-par-la-Coordination" }
         ]
     },
     "opp_militant_rn_tractage": {
@@ -176,19 +177,19 @@ const LORE_DATABASE = {
     },
     "opp_tonton_michel_repas": {
         category: "Santé menstruelle & Précarité",
-        // ATTENTION : cette fiche était vide dans le fichier d'origine ("Texte de présentation / contexte en attente...", sources: []).
-        // Claude n'a pas inventé de contenu ni de sources : il faut nous préciser l'angle exact (précarité menstruelle ? tabou familial au repas ?)
-        // pour qu'on puisse proposer un texte et des sources réelles.
-        bio: "Texte de présentation / contexte en attente...",
-        sources: []
+        bio: "La cellule familiale constitue la première instance de socialisation politique, transmettant de manière diffuse mais profonde des visions du monde, des valeurs morales et des réflexes partisans. Loin de débats théoriques abstraits, c'est souvent lors des repas de famille — symbolisés par la figure stéréotypée du « tonton » aux remarques réactionnaires — que se heurtent les appartenances de classe, les clivages générationnels et l'incorporation inconsciente des hiérarchies sociales. La famille fonctionne ainsi comme un espace paradoxal d'apprentissage du conformisme ou de rupture idéologique, où l'adhésion ou la révolte politique se négocient d'abord dans l'intimité domestique. La précarité menstruelle désigne la difficulté, voire l'impossibilité, pour les personnes menstruées d'accéder à des protections périodiques adaptées, à des infrastructures sanitaires de base (eau potable, toilettes sûres) et à une information fiable.",
+        sources: [{ label: "La politique, une affaire de famille(s) ? (Cairn)", url: "https://https://shs.cairn.info/revue-idees-economiques-et-sociales-2011-4-page-31?lang=fr" },
+                  { label: "La socialisation (Cairn)", url: "https://https://shs.cairn.info/premieres-lecons-de-sociologie--9782130620396-page-63?lang=fr" }
+                  { label: "La précarité menstruelle (Médecin du monde )", url: "https://www.medecinsdumonde.org/medecins-du-monde/quest-ce-que-la-precarite-menstruelle/" }
+        ]
     },
    "opp_influenceur_masculiniste": {
         category: "Masculinisme & Réseaux sociaux",
         bio: "Propulsée par les algorithmes de TikTok, YouTube ou Instagram, la « manosphère » réunit des créateurs de contenu qui diffusent une idéologie ouvertement antiféministe et patriarcale, à l'image des figures internationales comme Andrew Tate ou de leurs émules francophones. Prétendant réhabiliter une « masculinité alpha » perdue à coup de pseudo-développement personnel, de culte de la performance financière et de fixation sur le corps musclé, ces influenceurs véhiculent des discours de haine décomplexés, la banalisation du viol et le contrôle systématique du corps des femmes.",
         sources: [
             // [À VÉRIFIER] Domaines réels mais génériques.
-            { label: "Haut Conseil à l'Égalité entre les femmes et les hommes — rapport sur le masculinisme", url: "https://www.haut-conseil-egalite.gouv.fr" },
-            { label: "Mediapart — enquête sur les réseaux masculinistes", url: "https://www.mediapart.fr" }
+            { label: "Haut Conseil à l'Égalité entre les femmes et les hommes — rapport sur le masculinisme", url: "https://www.haut-conseil-egalite.gouv.fr/rapport-2026-sur-letat-des-lieux-du-sexisme-en-france-la-menace-masculiniste" },
+            { label: "Mediapart — Aux sources du masculinisme", url: "https://www.mediapart.fr/journal/culture-et-idees/210219/aux-sources-du-masculinisme" }
         ]
     },
     "allie_benevole_cop1": {
@@ -260,8 +261,8 @@ const LORE_DATABASE = {
         bio: "Députée européenne et figure stratégique du parti d'extrême droite Reconquête, Sarah Knafo articule son discours autour de la surenchère nationaliste et de la dénonciation des services publics. Ancienne magistrate à la Cour des comptes passée par les cercles du pouvoir, elle incarne une ligne ultralibérale et identitaire en rupture avec le quotidien des usagers des transports collectifs et des classes populaires.",
         sources: [
             // [À VÉRIFIER] Domaines réels mais génériques ; non revérifiés individuellement aujourd'hui.
-            { label: "Mediapart — portrait et enquête sur Sarah Knafo", url: "https://www.mediapart.fr" },
-            { label: "Le Monde — trajectoire et réseaux de l'eurodéputée", url: "https://www.lemonde.fr" }
+            { label: "Médiapart - Sous le manteau jaune de Sarah Knafo, l’extrême droite la plus radicale à l’assaut de Paris", url: "https://www.mediapart.fr/journal/politique/130326/sous-le-manteau-jaune-de-sarah-knafo-l-extreme-droite-la-plus-radicale-l-assaut-de-paris" },
+            { label: "Le Monde — Présidentielle 2027 : le « fan-club » de Sarah Knafo repart en campagne pour soutenir Eric Zemmour et ses thèmes de la « remigration » et du « grand remplacement »", url: "https://www.lemonde.fr/politique/article/2026/09/13/presidentielle-2027-le-fan-club-de-sarah-knafo-repart-en-campagne-pour-soutenir-eric-zemmour-et-ses-themes-de-la-remigration-et-du-grand-remplacement_6772983_823448.html?srsltid=AU7gw4X2PSTdT0QWSBZPLhjggkWMrXbDlXgYwyTKXKGN5lM1n7dGAiyc" }
         ]
     },
     "opp_editorialiste_plateau": {
@@ -269,8 +270,8 @@ const LORE_DATABASE = {
         bio: "Depuis le soulèvement historique « Femme, Vie, Liberté » consécutif au meurtre de Mahsa Amini, les femmes iraniennes mènent une résistance héroïque contre l'apartheid de genre imposé par la République islamique. Sur les plateaux télévisés occidentaux, ce combat universel pour l'émancipation corporelle est pourtant régulièrement dévoyé par des éditorialistes réactionnaires, qui instrumentalisent le calvaire des Iraniennes pour nourrir un discours islamophobe domestique.",
         sources: [
             // [À VÉRIFIER] Organisations réelles et sérieuses mais liens génériques.
-            { label: "Amnesty International — répression des femmes en Iran", url: "https://www.amnesty.fr" },
-            { label: "Human Rights Watch — droits humains en Iran", url: "https://www.hrw.org" }
+            { label: "Amnesty International — répression des femmes en Iran", url: "https://www.amnesty.fr/actualites/iran-durcissement-repression-contre-femmes/" },
+            { label: "Human Rights Watch — droits humains en Iran", url: "https://www.hrw.org/fr/news/2026/02/04/iran-la-situation-des-droits-humains-senfonce-plus-profondement-dans-la-crise" }
         ]
     },
     "opp_charles_alloncle": {
@@ -292,8 +293,8 @@ const LORE_DATABASE = {
             // [À VÉRIFIER] Organisations réelles et majeures, liens de niveau page d'accueil non revérifiés individuellement aujourd'hui.
             { label: "Bureau du Haut-Commissariat de l'ONU aux droits de l'homme (OHCHR)", url: "https://www.ohchr.org" },
             { label: "Cour internationale de Justice — ordonnances sur la Convention sur le génocide", url: "https://www.icj-cij.org" },
-            { label: "Amnesty International — rapport sur l'apartheid", url: "https://www.amnesty.fr" },
-            { label: "Human Rights Watch — documentation des crimes de guerre", url: "https://www.hrw.org" },
+            { label: "Amnesty International — rapport sur l'apartheid", url: "https://www.amnesty.fr/wp-content/uploads/2025/11/Rapport-apartheid-israelien-envers-le-peuple-palestinien.pdf" },
+            { label: "Human Rights Watch — Gaza : Les meurtres par les forces israéliennes de Palestiniens en quête de nourriture sont des crimes de guerre", url: "https://www.hrw.org/fr/news/2025/08/01/gaza-les-meurtres-par-les-forces-israeliennes-de-palestiniens-en-quete-de" },
             { label: "Compte du photojournaliste Motaz Azaiza", url: "https://www.instagram.com/motaz_azaiza" },
             { label: "Compte de la journaliste Bisan Owda", url: "https://www.instagram.com/wizard_bisan1" },
             { label: "Médecins Sans Frontières — urgence humanitaire", url: "https://www.msf.fr" },
