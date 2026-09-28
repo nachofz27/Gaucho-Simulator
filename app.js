@@ -816,7 +816,7 @@ function resolveArcadeDebateRound(choix, winChance, debateObj) {
 
     setTimeout(() => {
         displayDebateOutcome(deckContainer, isSuccess, result);
-    }, 1800);
+    }, 600);
 }
 
 function displayDebateOutcome(deckContainer, isSuccess, result) {
