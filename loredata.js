@@ -291,8 +291,7 @@ const LORE_DATABASE = {
         bio: "Depuis des décennies d'occupation militaire et de colonisation forcenée en Cisjordanie — rythmées par les destructions de foyers, les expulsions forcées et l'accaparement des terres par des colons armés sous escorte de Tsahal —, le peuple palestinien fait face à un système d'oppression structurelle documenté par l'ONU et les ONG comme un crime d'apartheid. Dans la bande de Gaza, l'offensive militaire menée par l'armée israélienne a fait des dizaines de milliers de morts civils. L'usage de la famine comme arme de guerre et le blocage des convois d'aide humanitaire ont été dénoncés par la Cour internationale de Justice.",
         sources: [
             // [À VÉRIFIER] Organisations réelles et majeures, liens de niveau page d'accueil non revérifiés individuellement aujourd'hui.
-            { label: "Bureau du Haut-Commissariat de l'ONU aux droits de l'homme (OHCHR)", url: "https://www.ohchr.org" },
-            { label: "Cour internationale de Justice — ordonnances sur la Convention sur le génocide", url: "https://www.icj-cij.org" },
+            
             { label: "Amnesty International — rapport sur l'apartheid", url: "https://www.amnesty.fr/wp-content/uploads/2025/11/Rapport-apartheid-israelien-envers-le-peuple-palestinien.pdf" },
             { label: "Human Rights Watch — Gaza : Les meurtres par les forces israéliennes de Palestiniens en quête de nourriture sont des crimes de guerre", url: "https://www.hrw.org/fr/news/2025/08/01/gaza-les-meurtres-par-les-forces-israeliennes-de-palestiniens-en-quete-de" },
             { label: "Compte du photojournaliste Motaz Azaiza", url: "https://www.instagram.com/motaz_azaiza" },
@@ -306,9 +305,9 @@ const LORE_DATABASE = {
         bio: "L'envolée récurrente des cours des carburants à la pompe met en lumière la dépendance brutale de nos modèles économiques aux énergies fossiles ainsi que la vulnérabilité des ménages des zones périurbaines et rurales. Cette situation ravive le traumatisme et la mémoire politique du soulèvement des Gilets jaunes, né à l'automne 2018 d'une taxe carbone jugée profondément injuste.",
         sources: [
             // [À VÉRIFIER] Domaines réels et sérieux mais génériques.
-            { label: "Cairn — dossier sociologique sur les Gilets jaunes", url: "https://shs.cairn.info" },
-            { label: "INSEE — impact de la facture énergétique sur les ménages modestes", url: "https://www.insee.fr" },
-            { label: "Le Monde Diplomatique — dépendance automobile et colère sociale", url: "https://www.monde-diplomatique.fr" }
+            { label: "Cairn — dossier sociologique sur les Gilets jaunes", url: "Cairn — dossier sociologique sur les Gilets jaunes" },
+            { label: "INSEE — La consommation des ménages en biens augmente de nouveau en octobre 2025", url: "https://www.insee.fr/fr/statistiques/8672870" },
+            { label: "Le Monde — Yoann Demoli, sociologue : « La voiture n’est pas une préférence, c’est une dépendance »", url: "https://www.lemonde.fr/le-monde-et-vous/article/2026/09/21/yoann-demoli-sociologue-la-voiture-n-est-pas-une-preference-c-est-une-dependance_6778733_6065879.html?srsltid=AU7gw4VUJ3tcXTEJFO-sSzSSYF-WvwsXAY-z4NrSFQRcHkcIZgC3mmbg" }
         ]
     },
     "allie_fete_de_lhuma": {
@@ -317,8 +316,8 @@ const LORE_DATABASE = {
         sources: [
             { label: "Site officiel de la Fête de l'Humanité et billetterie", url: "https://fete.humanite.fr" },
             // [À VÉRIFIER] Domaines réels mais génériques.
-            { label: "L'Humanité — archives et repères historiques", url: "https://www.humanite.fr" },
-            { label: "CNRS — recherche sur la culture politique et populaire", url: "https://histoire-sociale.cnrs.fr" }
+            { label: "L'Humanité — archives", url: "https://www.humanite.fr/-/-/archives" },
+            { label: "CNRS — recherche sur la culture politique et populaire", url: "https://www.inshs.cnrs.fr/fr/evenement/cultures-populaires-cultures-de-resistance-contre-culture-culture-et-memoire-politique" }
         ]
     },
     "opp_sommet_climat_onu": {
@@ -326,10 +325,10 @@ const LORE_DATABASE = {
         bio: "Les sommets annuels de la Convention-cadre des Nations unies sur les changements climatiques (COP) se sont mués au fil des années en vitrines géantes de l'impuissance politique et du greenwashing étatique. Malgré les cris d'alarme répétés du GIEC, ces conférences peinent à imposer une sortie contraignante du charbon, du pétrole et du gaz, en partie du fait de l'omniprésence des lobbyistes des multinationales de l'énergie fossile au sein même des délégations.",
         sources: [
             // [À VÉRIFIER] Institutions réelles et majeures (GIEC, OMM, etc.) mais liens génériques non revérifiés individuellement aujourd'hui.
-            { label: "GIEC (IPCC) — 6e rapport d'évaluation sur l'état du climat", url: "https://www.ipcc.ch" },
-            { label: "Organisation météorologique mondiale — records de températures", url: "https://wmo.int" },
-            { label: "Corporate Europe Observatory — lobbies fossiles dans les COP", url: "https://corporateeurope.org" },
-            { label: "Observatoire du climat / Notre Affaire à Tous", url: "https://www.notre-affaire-a-tous.org" }
+            { label: "Wikipédia — 6e rapport d'évaluation sur l'état du climat", url: "https://fr.wikipedia.org/wiki/Sixième_rapport_d%27évaluation_du_GIEC" },
+            { label: "Organisation météorologique mondiale — records de températures", url: "https://wmo.int/fr/news/media-centre/un-recent-rapport-laisse-presager-de-nouveaux-records-de-temperature-lechelle-mondiale" },
+            { label: "Corporate Europe Observatory — lobbies fossiles dans les COP", url: "https://corporateeurope.org/en/2024/11/fossil-fuel-lobbyists-eclipse-delegations-most-climate-vulnerable-nations-cop29-climate-0" },
+            { label: "Observatoire du climat / Notre Affaire à Tous", url: "https://notreaffaireatous.org" }
         ]
     },
 };
