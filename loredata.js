@@ -179,7 +179,7 @@ const LORE_DATABASE = {
         category: "Santé menstruelle & Précarité",
         bio: "La cellule familiale constitue la première instance de socialisation politique, transmettant de manière diffuse mais profonde des visions du monde, des valeurs morales et des réflexes partisans. Loin de débats théoriques abstraits, c'est souvent lors des repas de famille — symbolisés par la figure stéréotypée du « tonton » aux remarques réactionnaires — que se heurtent les appartenances de classe, les clivages générationnels et l'incorporation inconsciente des hiérarchies sociales. La famille fonctionne ainsi comme un espace paradoxal d'apprentissage du conformisme ou de rupture idéologique, où l'adhésion ou la révolte politique se négocient d'abord dans l'intimité domestique. La précarité menstruelle désigne la difficulté, voire l'impossibilité, pour les personnes menstruées d'accéder à des protections périodiques adaptées, à des infrastructures sanitaires de base (eau potable, toilettes sûres) et à une information fiable.",
         sources: [{ label: "La politique, une affaire de famille(s) ? (Cairn)", url: "https://https://shs.cairn.info/revue-idees-economiques-et-sociales-2011-4-page-31?lang=fr" },
-                  { label: "La socialisation (Cairn)", url: "https://https://shs.cairn.info/premieres-lecons-de-sociologie--9782130620396-page-63?lang=fr" }
+                  { label: "La socialisation (Cairn)", url: "https://https://shs.cairn.info/premieres-lecons-de-sociologie--9782130620396-page-63?lang=fr" },
                   { label: "La précarité menstruelle (Médecin du monde )", url: "https://www.medecinsdumonde.org/medecins-du-monde/quest-ce-que-la-precarite-menstruelle/" }
         ]
     },
