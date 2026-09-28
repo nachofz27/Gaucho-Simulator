@@ -3279,105 +3279,277 @@ html, body, button, .char-card, .btn-choice {
     }
 }
 /* =========================================================
-   HABILLAGE VISUEL DES 4 ARÈNES DE DÉBAT (RÉALISTE & IMAGES)
+   ARÈNES DE DÉBAT - ALTERNATIVE PLUS RÉALISTE
    ========================================================= */
+
 #screen-debate {
     position: relative;
     overflow: hidden;
     padding: 10px !important;
 }
 
-/* Effet "verre fumé" (Glassmorphism) sur le plateau central pour faire ressortir le fond réaliste */
+/* Conteneur de débat avec effet de profondeur */
 .arena-stage {
-    background: rgba(15, 15, 20, 0.60) !important;
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    border: 1px solid rgba(255, 255, 255, 0.15) !important;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5) !important;
+    background: rgba(15, 15, 20, 0.75) !important;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 2px solid rgba(255, 255, 255, 0.2) !important;
+    box-shadow: 
+        0 20px 60px rgba(0, 0, 0, 0.6),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+    border-radius: 8px;
 }
 
+/* Badge du palier */
 .tier-ambiance-wrapper {
-    display: flex; justify-content: space-between; align-items: center; width: 100%; margin-bottom: 4px; z-index: 10; position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 8px;
+    z-index: 10;
+    position: relative;
 }
+
 .tier-decor-badge {
-    font-size: 0.72rem; font-weight: 900; padding: 4px 12px; border-radius: 6px; text-transform: uppercase; letter-spacing: 0.5px;
+    font-size: 0.70rem;
+    font-weight: 800;
+    padding: 6px 14px;
+    border-radius: 4px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
-/* ---------------------------------------------------------
-   PALIER 1 : LA RUE (Nuit urbaine, reflets et gyrophares)
-   --------------------------------------------------------- */
+/* ════════════════════════════════════════════════════════
+   PALIER 1 : CONFRONTATION RUE (Urbain, tension, nuit)
+   ════════════════════════════════════════════════════════ */
+
 #screen-debate.arena-tier-1 {
-    background: linear-gradient(to bottom, rgba(15, 23, 42, 0.7), rgba(0, 0, 0, 0.95)), url('https://images.unsplash.com/photo-1447069387366-2a347063229b?auto=format&fit=crop&q=80&w=1920') center/cover no-repeat !important;
-    border: 3px solid #334155;
+    background: linear-gradient(135deg, 
+        rgba(30, 27, 34, 0.8) 0%,
+        rgba(20, 15, 25, 0.9) 50%,
+        rgba(10, 8, 15, 0.95) 100%),
+        url('https://images.unsplash.com/photo-1514565131-fce0801e5785?auto=format&fit=crop&q=80&w=1920') 
+        center/cover no-repeat !important;
+    border-color: #64748b !important;
 }
-.arena-tier-1 .tier-decor-badge.street-badge {
-    background: #1e293b; color: #cbd5e1; border: 1.5px solid #475569;
-}
-.street-fx-container {
-    position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0;
-    background: linear-gradient(90deg, rgba(220,38,38,0.08) 0%, transparent 50%, rgba(37,99,235,0.08) 100%);
-    animation: policeSiren 1.5s infinite alternate ease-in-out;
-}
-@keyframes policeSiren { 0% { opacity: 0; } 100% { opacity: 1; } }
 
-/* ---------------------------------------------------------
-   PALIER 2 : L'AMPHITHÉÂTRE (Boiserie, amphithéâtre universitaire)
-   --------------------------------------------------------- */
+#screen-debate.arena-tier-1 .tier-decor-badge {
+    background: linear-gradient(135deg, #1e293b, #0f172a);
+    color: #e2e8f0;
+    border: 1px solid #475569;
+}
+
+/* Effet d'ambiance urbaine : surbrillance orange/rouge (réverbères, publicités) */
+#screen-debate.arena-tier-1::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 1;
+    background: 
+        radial-gradient(circle at 20% 30%, rgba(234, 88, 12, 0.08) 0%, transparent 40%),
+        radial-gradient(circle at 80% 70%, rgba(59, 130, 246, 0.06) 0%, transparent 40%);
+    animation: streetTension 4s ease-in-out infinite;
+}
+
+@keyframes streetTension {
+    0%, 100% { opacity: 0.8; }
+    50% { opacity: 1; }
+}
+
+/* ════════════════════════════════════════════════════════
+   PALIER 2 : DÉBAT ACADÉMIQUE (Amphithéâtre, élégance, tradition)
+   ════════════════════════════════════════════════════════ */
+
 #screen-debate.arena-tier-2 {
-    background: linear-gradient(to bottom, rgba(41, 18, 9, 0.8), rgba(10, 5, 0, 0.98)), url('https://images.unsplash.com/photo-1524178232363-1fb2b075b655?auto=format&fit=crop&q=80&w=1920') center/cover no-repeat !important;
-    border: 3px solid #9a3412;
+    background: linear-gradient(135deg,
+        rgba(78, 35, 12, 0.85) 0%,
+        rgba(55, 20, 5, 0.95) 50%,
+        rgba(30, 10, 0, 0.98) 100%),
+        url('https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=1920')
+        center/cover no-repeat !important;
+    border-color: #b45309 !important;
+    box-shadow: 
+        0 20px 60px rgba(0, 0, 0, 0.6),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1),
+        inset 0 0 40px rgba(217, 119, 6, 0.1) !important;
 }
-.arena-tier-2 .tier-decor-badge.academic-badge {
-    background: #451a03; color: #fde68a; border: 1.5px solid #d97706;
-}
-.chalk-doodle { font-size: 0.75rem; color: rgba(255, 255, 255, 0.6); font-style: italic; font-family: "Courier New", Courier, monospace; }
 
-/* ---------------------------------------------------------
-   PALIER 3 : LA RADIO MATINALE (Studio insonorisé, micro, néons rouges)
-   --------------------------------------------------------- */
+#screen-debate.arena-tier-2 .tier-decor-badge {
+    background: linear-gradient(135deg, #431407, #7c2d12);
+    color: #fef3c7;
+    border: 1px solid #d97706;
+    font-style: italic;
+}
+
+/* Éclairage ambre de la boiserie */
+#screen-debate.arena-tier-2::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 1;
+    background: 
+        linear-gradient(90deg, rgba(217, 119, 6, 0.1) 0%, transparent 50%, rgba(217, 119, 6, 0.08) 100%),
+        radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.05) 0%, transparent 60%);
+}
+
+/* ════════════════════════════════════════════════════════
+   PALIER 3 : DIRECT RADIO (Studio sonore, intimité, dynamique)
+   ════════════════════════════════════════════════════════ */
+
 #screen-debate.arena-tier-3 {
-    background: linear-gradient(to bottom, rgba(24, 24, 27, 0.85), rgba(0, 0, 0, 0.98)), url('https://images.unsplash.com/photo-1598550476439-6847785fcea6?auto=format&fit=crop&q=80&w=1920') center/cover no-repeat !important;
-    border: 3px solid #b91c1c;
+    background: linear-gradient(135deg,
+        rgba(23, 23, 28, 0.9) 0%,
+        rgba(10, 10, 15, 0.98) 50%,
+        rgba(5, 5, 10, 0.99) 100%),
+        url('https://images.unsplash.com/photo-1598550476439-6847785fcea6?auto=format&fit=crop&q=80&w=1920')
+        center/cover no-repeat !important;
+    border-color: #991b1b !important;
 }
-.arena-tier-3 .tier-decor-badge.radio-badge {
-    background: #09090b; color: #e4e4e7; border: 1.5px solid #71717a; display: flex; align-items: center; gap: 8px;
-}
-.on-air-pulse { color: #ef4444; font-weight: 900; animation: blinkOnAir 1.5s infinite ease-in-out; }
-.audio-vumeter-bars { display: flex; align-items: flex-end; gap: 3px; height: 16px; }
-.vubar { width: 4px; background: #22c55e; border-radius: 1px; animation: vumeterJump 0.5s infinite ease-in-out alternate; }
-.vubar.b2 { height: 60%; animation-delay: 0.1s; background: #eab308; }
-.vubar.b3 { height: 90%; animation-delay: 0.25s; background: #ef4444; }
-.vubar.b4 { height: 40%; animation-delay: 0.15s; }
-.vubar.b5 { height: 75%; animation-delay: 0.35s; background: #eab308; }
-@keyframes blinkOnAir { 0%, 100% { opacity: 1; text-shadow: 0 0 8px rgba(239,68,68,0.8); } 50% { opacity: 0.4; text-shadow: none; } }
-@keyframes vumeterJump { 0% { height: 20%; } 100% { height: 100%; } }
 
-/* ---------------------------------------------------------
-   PALIER 4 : LE PRIME TIME TV (Plateau télé, lumières bleues/rouges, caméras)
-   --------------------------------------------------------- */
+#screen-debate.arena-tier-3 .tier-decor-badge {
+    background: linear-gradient(135deg, #1f2937, #111827);
+    color: #f3f4f6;
+    border: 1px solid #ef4444;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Voyant ON AIR */
+.on-air-pulse {
+    width: 8px;
+    height: 8px;
+    background: #ef4444;
+    border-radius: 50%;
+    box-shadow: 0 0 8px rgba(239, 68, 68, 0.8);
+    animation: pulseOnAir 1.2s ease-in-out infinite;
+}
+
+@keyframes pulseOnAir {
+    0%, 100% { 
+        box-shadow: 0 0 8px rgba(239, 68, 68, 0.8), 0 0 16px rgba(239, 68, 68, 0.4);
+        transform: scale(1);
+    }
+    50% { 
+        box-shadow: 0 0 4px rgba(239, 68, 68, 0.5);
+        transform: scale(1.2);
+    }
+}
+
+/* VU-mètre dynamique */
+.audio-vumeter-bars {
+    display: flex;
+    align-items: flex-end;
+    gap: 2px;
+    height: 14px;
+}
+
+.vubar {
+    flex: 1;
+    background: linear-gradient(to top, #22c55e, #86efac);
+    border-radius: 2px;
+    box-shadow: 0 0 4px rgba(34, 197, 94, 0.5);
+    animation: vumeterDance 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) infinite;
+}
+
+.vubar.b2 { animation-delay: 0.05s; background: linear-gradient(to top, #eab308, #facc15); }
+.vubar.b3 { animation-delay: 0.1s; background: linear-gradient(to top, #ef4444, #fca5a5); }
+.vubar.b4 { animation-delay: 0.05s; }
+.vubar.b5 { animation-delay: 0.15s; background: linear-gradient(to top, #eab308, #facc15); }
+
+@keyframes vumeterDance {
+    0% { height: 20%; opacity: 0.7; }
+    50% { height: 80%; opacity: 1; }
+    100% { height: 40%; opacity: 0.8; }
+}
+
+/* Ambiance studio : léger voile bleuté */
+#screen-debate.arena-tier-3::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 1;
+    background: radial-gradient(circle at center, rgba(239, 68, 68, 0.05) 0%, transparent 100%);
+}
+
+/* ════════════════════════════════════════════════════════
+   PALIER 4 & 5 : PRIME TIME TV (Plateau TV, projecteurs, spectacle)
+   ════════════════════════════════════════════════════════ */
+
 #screen-debate.arena-tier-4,
 #screen-debate.arena-tier-5 {
-    background: linear-gradient(to bottom, rgba(15, 23, 74, 0.75), rgba(2, 6, 23, 0.98)), url('https://images.unsplash.com/photo-1603525545700-1c05d09e3e3b?auto=format&fit=crop&q=80&w=1920') center/cover no-repeat !important;
-    border: 3px solid #2563eb;
-    box-shadow: inset 0 0 50px rgba(37, 99, 235, 0.25);
+    background: linear-gradient(135deg,
+        rgba(15, 23, 74, 0.8) 0%,
+        rgba(7, 10, 40, 0.95) 50%,
+        rgba(2, 6, 23, 0.98) 100%),
+        url('https://images.unsplash.com/photo-1603525545700-1c05d09e3e3b?auto=format&fit=crop&q=80&w=1920')
+        center/cover no-repeat !important;
+    border-color: #1e40af !important;
+    box-shadow: 
+        0 20px 60px rgba(0, 0, 0, 0.7),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1),
+        inset 0 0 60px rgba(59, 130, 246, 0.15) !important;
 }
-.arena-tier-4 .tier-decor-badge.tv-badge,
-.arena-tier-5 .tier-decor-badge.tv-badge {
-    background: #1e3a8a; color: #FFF; font-weight: 900; border: 1.5px solid #60a5fa; display: flex; gap: 8px; align-items: center; box-shadow: 0 0 15px rgba(37,99,235,0.5);
-}
-.tv-breaking-chiron {
-    display: flex; align-items: center; background: rgba(0, 0, 0, 0.8); border: 1px solid rgba(255, 255, 255, 0.3); border-radius: 4px; overflow: hidden;
-}
-.chiron-flash { background: #dc2626; color: #FFF; font-size: 0.60rem; font-weight: 900; padding: 3px 6px; }
 
-/* Animation subtile des projecteurs de plateau TV en arrière-plan */
-#screen-debate.arena-tier-4::after,
-#screen-debate.arena-tier-5::after {
-    content: ""; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; pointer-events: none; z-index: 0;
-    background: conic-gradient(from 90deg at 50% 0%, transparent 0deg, rgba(255,255,255,0.04) 15deg, transparent 30deg);
-    animation: sweepSpotlight 12s infinite linear alternate;
+#screen-debate.arena-tier-4 .tier-decor-badge,
+#screen-debate.arena-tier-5 .tier-decor-badge {
+    background: linear-gradient(135deg, #1e3a8a, #1e40af);
+    color: #fff;
+    font-weight: 800;
+    border: 1px solid #3b82f6;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    box-shadow: 0 0 16px rgba(59, 130, 246, 0.4);
 }
-@keyframes sweepSpotlight { 0% { transform: rotate(-10deg); } 100% { transform: rotate(10deg); } }
+
+/* Bandeau TV (chiron) */
+.tv-breaking-chiron {
+    display: flex;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.85);
+    border: 1px solid rgba(59, 130, 246, 0.4);
+    border-radius: 3px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+.chiron-flash {
+    background: linear-gradient(90deg, #dc2626, #991b1b);
+    color: #fff;
+    font-size: 0.60rem;
+    font-weight: 900;
+    padding: 4px 8px;
+    letter-spacing: 0.5px;
+}
+
+/* Projecteurs de plateau TV en mouvement */
+#screen-debate.arena-tier-4::before,
+#screen-debate.arena-tier-5::before {
+    content: "";
+    position: absolute;
+    top: -100%; left: -100%;
+    width: 300%; height: 300%;
+    pointer-events: none;
+    z-index: 1;
+    background: 
+        radial-gradient(circle at 25% 30%, rgba(59, 130, 246, 0.1) 0%, transparent 35%),
+        radial-gradient(circle at 75% 70%, rgba(59, 130, 246, 0.08) 0%, transparent 35%);
+    animation: tvSpotlight 8s ease-in-out infinite;
+}
+
+@keyframes tvSpotlight {
+    0%, 100% { transform: translate(0, 0); opacity: 0.6; }
+    50% { transform: translate(40px, -30px); opacity: 0.8; }
+}
 /* =========================================================
    PLACEMENT DU BOUTON SON DANS LE HEADER (PC & MOBILE)
    ========================================================= */
