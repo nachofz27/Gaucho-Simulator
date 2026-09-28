@@ -638,196 +638,231 @@ function getDynamicTier() {
         }
     }
 
-    function setupDebateScreen(debateObj, tier) {
-        const screenDebate = document.getElementById('screen-debate');
-        if (!screenDebate || !debateObj) return;
+  // ═══════════════════════════════════════════════════════════════
+// FONCTION 1 : SETUP DE L'ÉCRAN DE DÉBAT (REFONTE)
+// ═══════════════════════════════════════════════════════════════
 
-        // 1. Bascule propre des écrans
-        showScreen('screen-debate');
+function setupDebateScreen(debateObj, tier) {
+    const screenDebate = document.getElementById('screen-debate');
+    if (!screenDebate || !debateObj) return;
 
-        // 2. Injection des classes de thème : spécifique à l'adversaire ou liée au palier
-        const characterTheme = debateObj.arenaThemeClass || `arena-char-${debateObj.id || 'standard'}`;
-        screenDebate.className = `screen active arena-tier-${tier} ${characterTheme}`;
+    showScreen('screen-debate');
 
-        const playerArchName = getSelectedArchetypeName();
-        const cred = Math.max(5, Math.min(95, Math.round(gameState.stats.credibility)));
+    const characterTheme = debateObj.arenaThemeClass || `arena-char-${debateObj.id || 'standard'}`;
+    screenDebate.className = `screen active arena-tier-${tier} ${characterTheme}`;
 
-        if (tier >= gameState.highestOpponentScore) {
-            gameState.highestOpponentScore = tier;
-            gameState.highestOpponentName = debateObj.characterName;
-        }
+    const playerArchName = getSelectedArchetypeName();
+    const cred = Math.max(5, Math.min(95, Math.round(gameState.stats.credibility)));
 
-        // 3. Décor immersif automatisé selon le palier (écrase les anciennes données)
-        let decorElementsHtml = '';
-        if (tier === 1) {
-            decorElementsHtml = `
-                <div class="tier-decor-badge street-badge">🚧 TROTTOIR • Débat public improvisé</div>
-                <div class="street-fx-container"></div>
-            `;
-        } else if (tier === 2) {
-            decorElementsHtml = `
-                <div class="tier-decor-badge academic-badge">🎓 AMPHITHÉÂTRE • Conférence universitaire</div>
-                <div class="chalk-doodle">⚡ Silence demandé dans l'assemblée</div>
-            `;
-        } else if (tier === 3) {
-            decorElementsHtml = `
-                <div class="tier-decor-badge radio-badge"><span class="on-air-pulse">🔴 ON AIR</span> STUDIO RADIO • Matinale</div>
-                <div class="audio-vumeter-bars"><span class="vubar"></span><span class="vubar b2"></span><span class="vubar b3"></span><span class="vubar b4"></span><span class="vubar b5"></span></div>
-            `;
-        } else {
-            decorElementsHtml = `
-                <div class="tier-decor-badge tv-badge">📺 PRIME TIME TV • 20h00 National</div>
-                <div class="tv-breaking-chiron"><span class="chiron-flash">DIRECT</span> LE FACE-À-FACE DÉCISIF</div>
-            `;
-        }
+    if (tier >= gameState.highestOpponentScore) {
+        gameState.highestOpponentScore = tier;
+        gameState.highestOpponentName = debateObj.characterName;
+    }
 
-        const attackText = (debateObj.opponentAttack || '').replace(/«|»/g, '');
-
-        screenDebate.innerHTML = `
-            <div class="arcade-arena">
-                <div class="tier-ambiance-wrapper">
-                    ${decorElementsHtml}
-                </div>
-
-                <div class="arena-top-hud">
-                    <div class="fighter-hud player-hud">
-                        <div class="hud-name">${playerArchName}</div>
-                        <div class="health-bar-frame">
-                            <div class="health-fill player-health-fill" style="width: ${cred}%;"></div>
-                        </div>
-                        <span class="health-val-tag">${cred}% CRÉDIBILITÉ</span>
-                    </div>
-
-                    <div class="arena-versus-badge">
-                        <span>VS</span>
-                    </div>
-
-                    <div class="fighter-hud opp-hud">
-                        <div class="hud-name">${debateObj.characterName}</div>
-                        <div class="health-bar-frame">
-                            <div class="health-fill opp-health-fill" id="opp-hp-bar" style="width: 100%;"></div>
-                        </div>
-                        <span class="health-val-tag" id="opp-hp-text">100% ASSURANCE</span>
-                    </div>
-                </div>
-
-                <div class="arena-stage">
-                    <div class="stage-spotlight"></div>
-                    <div class="stage-center-icon">🎙️</div>
-                    <div class="stage-center-fx" id="stage-fx"></div>
-
-                    <div class="comic-attack-bubble" id="comic-bubble">
-                        <div class="bubble-speaker-tag">ATTAQUE DE ${(debateObj.characterName || 'ADVERSAIRE').toUpperCase()}</div>
-                        <p class="bubble-text">« ${attackText} »</p>
-                    </div>
-                </div>
-
-                <div class="arena-deck-zone" id="debate-deck"></div>
+    let decorElementsHtml = '';
+    if (debateObj.arenaDecorHtml) {
+        decorElementsHtml = debateObj.arenaDecorHtml;
+    } else {
+        const tierBadges = {
+            1: { icon: '🚨', label: 'Débat de Rue' },
+            2: { icon: '📚', label: 'Face-à-Face Académique' },
+            3: { icon: '🎙️', label: 'Direct Radio' },
+            4: { icon: '📺', label: 'Plateau Télé' },
+            5: { icon: '👑', label: 'Prime Time' }
+        };
+        const tierInfo = tierBadges[tier] || { icon: '⚡', label: 'Débat Contradictoire' };
+        decorElementsHtml = `
+            <div class="tier-decor-badge">
+                ${tierInfo.icon} ${tierInfo.label}
             </div>
+            <div class="chalk-doodle">• ${debateObj.arenaName || 'Confrontation'}</div>
+        `;
+    }
+
+    const attackText = (debateObj.opponentAttack || '').replace(/«|»/g, '');
+
+    screenDebate.innerHTML = `
+        <div class="arcade-arena">
+            <div class="tier-ambiance-wrapper">
+                ${decorElementsHtml}
+            </div>
+
+            <div class="arena-top-hud">
+                <div class="fighter-hud player-hud">
+                    <div class="hud-name">${playerArchName}</div>
+                    <div class="health-bar-frame">
+                        <div class="health-fill player-health-fill" style="width: ${cred}%;"></div>
+                    </div>
+                    <span class="health-val-tag">${cred}% CRÉDIBILITÉ</span>
+                </div>
+
+                <div class="arena-versus-badge">
+                    <span>VS</span>
+                </div>
+
+                <div class="fighter-hud opp-hud">
+                    <div class="hud-name">${debateObj.characterName}</div>
+                    <div class="health-bar-frame">
+                        <div class="health-fill opp-health-fill" id="opp-hp-bar" style="width: 100%;"></div>
+                    </div>
+                    <span class="health-val-tag" id="opp-hp-text">100% ASSURANCE</span>
+                </div>
+            </div>
+
+            <div class="arena-stage">
+                <div class="stage-spotlight"></div>
+                <div class="stage-center-icon">🎙️</div>
+                <div class="stage-center-fx" id="stage-fx"></div>
+
+                <div class="comic-attack-bubble" id="comic-bubble">
+                    <div class="bubble-speaker-tag">ATTAQUE DE ${(debateObj.characterName || 'ADVERSAIRE').toUpperCase()}</div>
+                    <p class="bubble-text">« ${attackText} »</p>
+                </div>
+            </div>
+
+            <div class="arena-deck-zone" id="debate-deck"></div>
+        </div>
+    `;
+
+    const deckContainer = document.getElementById('debate-deck');
+    const cardThemes = ['card-red', 'card-blue', 'card-gold'];
+
+    (debateObj.choix || []).forEach((choix, idx) => {
+        const finalOdds = Math.max(5, Math.min(95, cred + (choix.successOddsBonus || 0)));
+        const cardEl = document.createElement('div');
+        cardEl.className = `action-skill-card ${cardThemes[idx % 3]}`;
+
+        cardEl.innerHTML = `
+            <div class="skill-card-top">
+                <span class="skill-badge-type">${choix.strategyName || 'RIPOSTE'}</span>
+                <span class="skill-odds-tag">🎲 ${finalOdds}% succès</span>
+            </div>
+            <div class="skill-card-desc">${choix.texte}</div>
         `;
 
-        const deckContainer = document.getElementById('debate-deck');
-        const cardThemes = ['card-red', 'card-blue', 'card-gold'];
+        cardEl.onclick = () => resolveArcadeDebateRound(choix, finalOdds, debateObj);
+        deckContainer.appendChild(cardEl);
+    });
+}
 
-        (debateObj.choix || []).forEach((choix, idx) => {
-            const finalOdds = Math.max(5, Math.min(95, cred + (choix.successOddsBonus || 0)));
-            const cardEl = document.createElement('div');
-            cardEl.className = `action-skill-card ${cardThemes[idx % 3]}`;
+// ═══════════════════════════════════════════════════════════════
+// FONCTION 2 : RÉSOLUTION DU DÉBAT
+// ═══════════════════════════════════════════════════════════════
 
-            cardEl.innerHTML = `
-                <div class="skill-card-top">
-                    <span class="skill-badge-type">${choix.strategyName || 'RIPOSTE'}</span>
-                    <span class="skill-odds-tag">🎲 ${finalOdds}% succès</span>
-                </div>
-                <div class="skill-card-desc">${choix.texte}</div>
-            `;
+function resolveArcadeDebateRound(choix, winChance, debateObj) {
+    const screenDebate = document.getElementById('screen-debate');
+    const deckContainer = document.getElementById('debate-deck');
+    const bubble = document.getElementById('comic-bubble');
+    const stageFx = document.getElementById('stage-fx');
+    const oppHpBar = document.getElementById('opp-hp-bar');
+    const oppHpText = document.getElementById('opp-hp-text');
 
-            cardEl.onclick = () => resolveArcadeDebateRound(choix, finalOdds, debateObj);
-            deckContainer.appendChild(cardEl);
-        });
+    if (!screenDebate || !deckContainer || !bubble) return;
+
+    const roll = Math.random() * 100;
+    const isSuccess = roll <= winChance;
+    const result = isSuccess ? choix.outcomeSuccess : choix.outcomeFailure;
+    const impact = result.impact || {};
+
+    gameState.stats.followers += impact.followers || 0;
+    gameState.stats.budget += impact.budget || 0;
+    gameState.stats.energy += impact.energy || 0;
+    gameState.stats.credibility += impact.credibility || 0;
+    gameState.stats.tension = (gameState.stats.tension || 0) + (impact.tension || 0);
+
+    gameState.stats.credibility = Math.max(1, Math.min(99, gameState.stats.credibility));
+    gameState.stats.followers = Math.max(0, gameState.stats.followers);
+    gameState.stats.budget = Math.max(0, gameState.stats.budget);
+    gameState.stats.energy = Math.max(0, Math.min(100, gameState.stats.energy));
+    gameState.stats.tension = Math.max(0, Math.min(100, gameState.stats.tension));
+
+    Array.from(deckContainer.querySelectorAll('.action-skill-card')).forEach(card => {
+        card.style.pointerEvents = 'none';
+        card.style.opacity = '0.5';
+    });
+
+    const consequenceMsg = result.consequenceText || result.outcomeText || result.text || "Échange terminé.";
+
+    if (isSuccess) {
+        if (oppHpBar) oppHpBar.style.width = '0%';
+        if (oppHpText) oppHpText.textContent = '0% ASSURANCE - K.O. !';
+        bubble.classList.add('outcome-success');
+        const speaker = bubble.querySelector('.bubble-speaker-tag');
+        if (speaker) speaker.textContent = '✓ VICTOIRE RHÉTORIQUE';
+        const txt = bubble.querySelector('.bubble-text');
+        if (txt) txt.textContent = consequenceMsg;
+        if (stageFx) {
+            stageFx.classList.add('victory');
+            stageFx.innerHTML = '<span class="hit-text hit-critical">K.O. RHÉTORIQUE !</span>';
+        }
+    } else {
+        bubble.classList.add('outcome-failure');
+        const speaker = bubble.querySelector('.bubble-speaker-tag');
+        if (speaker) speaker.textContent = '✗ DÉFAITE RHÉTORIQUE';
+        const txt = bubble.querySelector('.bubble-text');
+        if (txt) txt.textContent = consequenceMsg;
+        if (stageFx) {
+            stageFx.classList.add('defeat');
+            stageFx.innerHTML = '<span class="hit-text hit-blocked">CONTRE ADVERSE !</span>';
+        }
     }
 
-    function resolveArcadeDebateRound(choix, winChance, debateObj) {
-        const roll = Math.random() * 100;
-        const isSuccess = roll <= winChance;
-        const result = isSuccess ? choix.outcomeSuccess : choix.outcomeFailure;
-        const impact = result.impact || {};
+    triggerFloatingStatFeedback(impact);
+    updateStatsUI();
 
-        gameState.stats.followers += impact.followers || 0;
-        gameState.stats.budget += impact.budget || 0;
-        gameState.stats.energy += impact.energy || 0;
-        gameState.stats.credibility += impact.credibility || 0;
-        gameState.stats.tension = (gameState.stats.tension || 0) + (impact.tension || 0);
-
-        gameState.stats.energy = Math.max(0, Math.min(100, gameState.stats.energy));
-        gameState.stats.credibility = Math.max(0, Math.min(100, gameState.stats.credibility));
-        gameState.stats.tension = Math.max(0, Math.min(100, gameState.stats.tension));
-        gameState.stats.followers = Math.max(0, gameState.stats.followers);
-
-        triggerFloatingStatFeedback(impact);
-        updateStatsUI();
+    if (typeof updateTweetsFeed === 'function') {
         updateTweetsFeed(result.tweets || []);
-
-        const oppHpBar = document.getElementById('opp-hp-bar');
-        const oppHpText = document.getElementById('opp-hp-text');
-        const comicBubble = document.getElementById('comic-bubble');
-        const deckContainer = document.getElementById('debate-deck');
-        const stageFx = document.getElementById('stage-fx');
-
-        if (isSuccess) {
-            if (stageFx) stageFx.innerHTML = '<span class="hit-text hit-critical">K.O. RHÉTORIQUE !</span>';
-            if (oppHpBar) oppHpBar.style.width = '0%';
-            if (oppHpText) oppHpText.textContent = '0% DÉSTABILISÉ';
-        } else {
-            if (stageFx) stageFx.innerHTML = '<span class="hit-text hit-blocked">CONTRE ADVERSE !</span>';
-            if (oppHpBar) oppHpBar.style.width = '100%';
-        }
-
-        if (comicBubble) {
-            comicBubble.className = `comic-attack-bubble ${isSuccess ? 'bubble-triumph' : 'bubble-defeat'}`;
-            comicBubble.innerHTML = `
-                <div class="bubble-speaker-tag">${isSuccess ? '🏆 VICTOIRE DU DÉBAT' : '⚠️ REVERS DANS L\'ARÈNE'}</div>
-                <p class="bubble-text">${result.consequenceText}</p>
-            `;
-        }
-
-        let badgesHtml = '';
-        const addBadge = (valText, isPositive) => {
-            badgesHtml += `<span class="consequence-badge ${isPositive ? 'badge-gain' : 'badge-loss'}">${valText}</span>`;
-        };
-
-        if (impact.followers) addBadge(`${impact.followers > 0 ? '+' : ''}${formatFollowers(impact.followers)}`, impact.followers > 0);
-        if (impact.budget) addBadge(`${impact.budget > 0 ? '+' : ''}${impact.budget} €`, impact.budget > 0);
-        if (impact.energy) addBadge(`${impact.energy > 0 ? '+' : ''}${impact.energy}% Énergie`, impact.energy > 0);
-        if (impact.credibility) addBadge(`${impact.credibility > 0 ? '+' : ''}${impact.credibility}% Crédibilité`, impact.credibility > 0);
-        if (impact.tension) addBadge(`${impact.tension > 0 ? '+' : ''}${impact.tension}% Tension 🔥`, impact.tension < 0);
-
-        if (deckContainer) {
-            deckContainer.innerHTML = `
-                <div class="arcade-victory-panel">
-                    <div class="consequence-badges-row">${badgesHtml}</div>
-                    <button id="btn-exit-arena" class="btn-arcade-continue">
-                        Continuer la Marche ➔
-                    </button>
-                </div>
-            `;
-
-            const btnExit = document.getElementById('btn-exit-arena');
-            if (btnExit) {
-                btnExit.onclick = () => {
-                    screenDebate = document.getElementById('screen-debate');
-                    if (screenDebate) screenDebate.className = 'screen';
-                    showScreen('screen-game');
-                    gameState.turn++;
-                    if (gameState.turn >= gameState.timeline.length) {
-                        endGame();
-                    } else {
-                        playTurn();
-                    }
-                };
-            }
-        }
     }
+
+    setTimeout(() => {
+        displayDebateOutcome(deckContainer, isSuccess, result);
+    }, 1800);
+}
+
+function displayDebateOutcome(deckContainer, isSuccess, result) {
+    deckContainer.innerHTML = '';
+    const impact = result.impact || {};
+    const impactItems = [];
+
+    if (impact.followers) impactItems.push(`👥 Abonnés : ${impact.followers > 0 ? '+' : ''}${formatFollowers(impact.followers)}`);
+    if (impact.credibility) impactItems.push(`📜 Crédibilité : ${impact.credibility > 0 ? '+' : ''}${impact.credibility}%`);
+    if (impact.budget) impactItems.push(`💶 Budget : ${impact.budget > 0 ? '+' : ''}${impact.budget} €`);
+    if (impact.energy) impactItems.push(`⚡ Énergie : ${impact.energy > 0 ? '+' : ''}${impact.energy}%`);
+    if (impact.tension) impactItems.push(`🔥 Tension : ${impact.tension > 0 ? '+' : ''}${impact.tension}%`);
+
+    const impactHtml = impactItems.length > 0 
+        ? `<div style="display:flex; flex-wrap:wrap; justify-content:center; gap:8px; margin: 10px 0;">
+            ${impactItems.map(item => `<span class="consequence-badge ${isSuccess ? 'badge-gain' : 'badge-loss'}">${item}</span>`).join('')}
+           </div>`
+        : '';
+
+    deckContainer.innerHTML = `
+        <div style="width: 100%; text-align: center; padding: 16px; background: rgba(0,0,0,0.45); border-radius: 8px;">
+            <h3 style="color: ${isSuccess ? '#22c55e' : '#ef4444'}; margin: 0 0 8px 0; font-size: 1.1rem; font-weight: 900;">
+                ${isSuccess ? '🏆 VICTOIRE DANS L\'ARÈNE !' : '⚠️ REVERS RHÉTORIQUE'}
+            </h3>
+            ${impactHtml}
+            <button id="btn-continue-debate" class="btn-arcade-continue" style="margin-top: 14px;">
+                Continuer la Marche ➔
+            </button>
+        </div>
+    `;
+
+    const continueBtn = document.getElementById('btn-continue-debate');
+    if (continueBtn) {
+        continueBtn.onclick = () => {
+            const screenDebate = document.getElementById('screen-debate');
+            if (screenDebate) screenDebate.className = 'screen';
+            showScreen('screen-game');
+            gameState.turn++;
+            if (gameState.turn >= gameState.timeline.length) {
+                endGame();
+            } else {
+                playTurn();
+            }
+        };
+    }
+}
     // ==========================================
     // THEMES ET TRADUCTION DE L'AFFICHAGE & COULEURS
     // ==========================================

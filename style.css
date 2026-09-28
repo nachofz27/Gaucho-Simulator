@@ -2638,49 +2638,138 @@ html, body, button, .char-card, .btn-choice {
     70% { transform: translateY(-16px) scale(1); opacity: 0.9; }
     100% { transform: translateY(-30px) scale(0.9); opacity: 0; }
 }
-/* =========================================================
-   ARÈNE DE COMBAT ARCADE / DÉBATS VERSUS (AJUSTÉE)
-   ========================================================= */
+/* ═══════════════════════════════════════════════════════════════
+   REFONTE DU SYSTÈME DE DÉBAT - VERSION RÉALISTE & IMMERSIVE
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ─────────────────────────────────────────────────────────────
+   0. RESET & VARIABLES
+   ───────────────────────────────────────────────────────────── */
+
+:root {
+    --debate-danger: #dc2626;
+    --debate-success: #16a34a;
+    --debate-warning: #ea580c;
+    --debate-info: #0284c7;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   1. CONTENEUR PRINCIPAL DE L'ARÈNE
+   ───────────────────────────────────────────────────────────── */
+
 #screen-debate {
-    padding: 10px !important;
-    background: radial-gradient(circle at center, #2a0812 0%, #120206 100%) !important;
+    position: relative;
+    overflow: hidden;
+    padding: 0 !important;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+#screen-debate::before {
+    content: "";
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 0;
+    animation: debateAmbiance 8s ease-in-out infinite;
+}
+
+@keyframes debateAmbiance {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 1.05; }
 }
 
 .arcade-arena {
     width: 100%;
-    max-width: 760px;
-    margin: 0 auto;
+    max-width: 100%;
+    margin: 0;
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 0;
     box-sizing: border-box;
+    padding: 0;
+    position: relative;
+    z-index: 1;
+    min-height: 100vh;
+    justify-content: space-between;
 }
 
-/* 1. Barres de vie / HUD supérieur */
+/* ─────────────────────────────────────────────────────────────
+   2. EN-TÊTE : BADGE & CONTEXTE
+   ───────────────────────────────────────────────────────────── */
+
+.tier-ambiance-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 12px 16px;
+    gap: 12px;
+    z-index: 10;
+    position: relative;
+    background: linear-gradient(180deg, rgba(0,0,0,0.4) 0%, transparent 100%);
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.tier-decor-badge {
+    font-size: 0.75rem;
+    font-weight: 800;
+    padding: 8px 16px;
+    border-radius: 4px;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    display: inline-block;
+    white-space: nowrap;
+}
+
+.chalk-doodle {
+    font-size: 0.70rem;
+    color: rgba(255, 255, 255, 0.6);
+    font-style: italic;
+    font-family: "Courier New", monospace;
+    margin-left: auto;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   3. HUD SUPÉRIEUR : JOUEUR VS ADVERSAIRE
+   ───────────────────────────────────────────────────────────── */
+
 .arena-top-hud {
     display: grid;
     grid-template-columns: 1fr auto 1fr;
     align-items: center;
-    gap: 12px;
-    background: rgba(0, 0, 0, 0.45);
-    border: 1.5px solid rgba(255, 255, 255, 0.15);
-    border-radius: 12px;
-    padding: 10px 14px;
+    gap: 16px;
+    background: linear-gradient(180deg, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.2) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-left: none;
+    border-right: none;
+    padding: 14px 20px;
+    position: relative;
+    z-index: 5;
 }
 
 .fighter-hud {
     display: flex;
     flex-direction: column;
-    gap: 3px;
+    gap: 6px;
     min-width: 0;
 }
 
-.player-hud { align-items: flex-start; text-align: left; }
-.opp-hud { align-items: flex-end; text-align: right; }
+.player-hud { 
+    align-items: flex-start; 
+    text-align: left; 
+}
+.opp-hud { 
+    align-items: flex-end; 
+    text-align: right; 
+}
 
-/* Noms débridés sur PC */
 .hud-name {
-    font-size: 0.95rem;
+    font-size: 0.9rem;
     font-weight: 900;
     color: #FFF;
     text-transform: uppercase;
@@ -2692,330 +2781,632 @@ html, body, button, .char-card, .btn-choice {
 
 .health-bar-frame {
     width: 100%;
-    max-width: 220px;
-    height: 10px;
-    background: rgba(255, 255, 255, 0.2);
-    border: 1.5px solid #000;
+    max-width: 200px;
+    height: 12px;
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.3);
     border-radius: 6px;
     overflow: hidden;
+    position: relative;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .health-fill {
     height: 100%;
-    transition: width 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+    transition: width 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+    background: linear-gradient(90deg, #16a34a, #4ade80);
+    box-shadow: 0 0 8px rgba(22, 163, 74, 0.6);
 }
 
 .player-health-fill {
-    background: linear-gradient(90deg, #16a34a, #4ade80);
+    background: linear-gradient(90deg, #0284c7, #38bdf8);
+    box-shadow: 0 0 8px rgba(2, 132, 199, 0.6);
 }
 
 .opp-health-fill {
-    background: linear-gradient(90deg, #dc2626, #f87171);
+    background: linear-gradient(90deg, #dc2626, #fca5a5);
+    box-shadow: 0 0 8px rgba(220, 38, 38, 0.6);
 }
 
 .health-val-tag {
-    font-size: 0.68rem;
-    font-weight: 800;
+    font-size: 0.70rem;
+    font-weight: 700;
     color: #e2e8f0;
+    letter-spacing: 0.5px;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
 }
 
 .arena-versus-badge {
-    background: #dc2626;
-    color: #FFF;
-    font-size: 0.85rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
+    background: linear-gradient(135deg, rgba(220, 38, 38, 0.2), rgba(2, 132, 199, 0.2));
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
     font-weight: 900;
-    padding: 4px 8px;
-    border-radius: 8px;
-    border: 2px solid #FFF;
-    box-shadow: 0 0 10px rgba(220, 38, 38, 0.8);
-    transform: rotate(-5deg);
-    flex-shrink: 0;
+    color: #fff;
+    font-size: 0.85rem;
+    letter-spacing: 1px;
 }
 
-/* 2. Scène centrale avec micro au milieu */
+/* ─────────────────────────────────────────────────────────────
+   4. ARÈNE CENTRALE : STAGE & BULLE D'ATTAQUE
+   ───────────────────────────────────────────────────────────── */
+
 .arena-stage {
+    flex: 1;
     position: relative;
-    background: linear-gradient(180deg, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.65) 100%);
-    border: 1.5px solid rgba(255, 255, 255, 0.12);
-    border-radius: 14px;
-    padding: 14px 14px;
     display: flex;
-    flex-direction: column;
     align-items: center;
+    justify-content: center;
+    padding: 30px 20px;
+    z-index: 2;
     overflow: hidden;
 }
 
 .stage-spotlight {
     position: absolute;
-    top: -40px;
+    top: 50%;
     left: 50%;
-    transform: translateX(-50%);
-    width: 320px;
-    height: 130px;
-    background: radial-gradient(ellipse at center, rgba(255, 255, 255, 0.14) 0%, rgba(255,255,255,0) 70%);
+    transform: translate(-50%, -50%);
+    width: 350px;
+    height: 350px;
+    background: radial-gradient(circle, rgba(255,255,255,0.04) 0%, transparent 70%);
+    border-radius: 50%;
     pointer-events: none;
+    filter: blur(20px);
 }
 
 .stage-center-icon {
-    font-size: 2.2rem;
-    filter: drop-shadow(0 4px 10px rgba(0,0,0,0.5));
-    margin-bottom: 4px;
-    animation: idleBounce 1.5s infinite ease-in-out alternate;
-}
-
-@keyframes idleBounce {
-    0% { transform: translateY(0); }
-    100% { transform: translateY(-4px); }
+    position: absolute;
+    font-size: 4rem;
+    opacity: 0.15;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 0;
+    pointer-events: none;
 }
 
 .stage-center-fx {
     position: absolute;
+    top: 50%;
     left: 50%;
-    top: 30%;
     transform: translate(-50%, -50%);
+    width: 200px;
+    height: 200px;
     pointer-events: none;
-    z-index: 50;
+    z-index: 3;
 }
 
-.hit-text {
-    font-size: 1.3rem;
-    font-weight: 900;
-    text-transform: uppercase;
-    padding: 6px 14px;
-    border-radius: 8px;
-    display: inline-block;
-    animation: popBadge 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    white-space: nowrap;
-}
-
-.hit-critical {
-    background: #22c55e;
-    color: #FFF;
-    border: 2px solid #FFF;
-    box-shadow: 0 0 15px rgba(34, 197, 94, 0.8);
-}
-
-.hit-blocked {
-    background: #dc2626;
-    color: #FFF;
-    border: 2px solid #FFF;
-    box-shadow: 0 0 15px rgba(220, 38, 38, 0.8);
-}
-
-/* Bulle d'attaque */
+/* Bulle d'attaque centrale */
 .comic-attack-bubble {
-    width: 100%;
-    background: #FFFDF9;
-    border: 2px solid #18181b;
-    border-radius: 12px;
-    padding: 10px 14px;
-    box-shadow: 3px 3px 0px rgba(0, 0, 0, 0.6);
-    box-sizing: border-box;
+    position: relative;
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.8), rgba(20, 20, 30, 0.9));
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    padding: 18px 20px;
+    max-width: 500px;
+    width: 90%;
+    z-index: 10;
+    box-shadow: 
+        0 20px 40px rgba(0, 0, 0, 0.6),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    animation: bubbleIntro 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes bubbleIntro {
+    from {
+        opacity: 0;
+        transform: scale(0.85) translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
 }
 
 .bubble-speaker-tag {
+    display: block;
     font-size: 0.65rem;
     font-weight: 900;
-    color: #dc2626;
-    letter-spacing: 0.5px;
-    margin-bottom: 3px;
-    text-align: left;
+    color: #60a5fa;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid rgba(96, 165, 250, 0.3);
 }
 
 .bubble-text {
-    font-size: 0.88rem;
-    font-weight: 800;
-    line-height: 1.35;
-    color: #18181b;
     margin: 0;
-    text-align: left;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    color: #e2e8f0;
+    font-weight: 500;
 }
 
-.bubble-triumph {
-    background: #f0fdf4;
-    border-color: #16a34a;
-}
-.bubble-triumph .bubble-speaker-tag { color: #16a34a; }
-
-.bubble-defeat {
-    background: #fef2f2;
-    border-color: #dc2626;
+/* États de la bulle */
+#screen-debate .comic-attack-bubble.outcome-success {
+    border-color: rgba(22, 163, 74, 0.6);
+    background: linear-gradient(135deg, rgba(0, 30, 15, 0.9), rgba(10, 40, 20, 0.95));
+    box-shadow: 
+        0 20px 40px rgba(0, 0, 0, 0.6),
+        inset 0 0 20px rgba(22, 163, 74, 0.1);
 }
 
-/* 3. Deck de cartes avec surbrillance au survol */
+#screen-debate .comic-attack-bubble.outcome-failure {
+    border-color: rgba(220, 38, 38, 0.6);
+    background: linear-gradient(135deg, rgba(30, 0, 0, 0.9), rgba(40, 10, 10, 0.95));
+    box-shadow: 
+        0 20px 40px rgba(0, 0, 0, 0.6),
+        inset 0 0 20px rgba(220, 38, 38, 0.1);
+}
+
+/* ─────────────────────────────────────────────────────────────
+   5. ZONE DES CARTES (DECK)
+   ───────────────────────────────────────────────────────────── */
+
 .arena-deck-zone {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 8px;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 12px;
+    padding: 20px;
+    background: linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.3) 100%);
+    border-top: 1px solid rgba(255,255,255,0.1);
+    position: relative;
+    z-index: 5;
 }
 
 .action-skill-card {
-    background: #FFFDF9;
-    border-radius: 12px;
-    padding: 12px 10px;
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
-    gap: 8px;
+    gap: 10px;
+    padding: 14px;
+    border-radius: 6px;
+    border: 2px solid;
+    background: linear-gradient(135deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02));
     cursor: pointer;
-    border: 2px solid #000;
-    box-shadow: 0 4px 0px #000;
-    transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
-    user-select: none;
-    box-sizing: border-box;
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    backdrop-filter: blur(4px);
+    min-height: 120px;
+    position: relative;
+    overflow: hidden;
+}
+
+.action-skill-card::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: linear-gradient(135deg, rgba(255,255,255,0.1), transparent);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+}
+
+.action-skill-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.4);
+}
+
+.action-skill-card:hover::before {
+    opacity: 1;
+}
+
+.action-skill-card:active {
+    transform: translateY(-1px);
+}
+
+/* Variantes de couleur */
+.card-red {
+    border-color: rgba(220, 38, 38, 0.6);
+    background: linear-gradient(135deg, 
+        rgba(127, 29, 29, 0.3) 0%,
+        rgba(80, 20, 20, 0.2) 100%);
+}
+
+.card-red:hover {
+    border-color: rgba(220, 38, 38, 0.9);
+    box-shadow: 0 12px 24px rgba(220, 38, 38, 0.3);
+}
+
+.card-blue {
+    border-color: rgba(2, 132, 199, 0.6);
+    background: linear-gradient(135deg, 
+        rgba(7, 89, 133, 0.3) 0%,
+        rgba(5, 60, 100, 0.2) 100%);
+}
+
+.card-blue:hover {
+    border-color: rgba(2, 132, 199, 0.9);
+    box-shadow: 0 12px 24px rgba(2, 132, 199, 0.3);
+}
+
+.card-gold {
+    border-color: rgba(217, 119, 6, 0.6);
+    background: linear-gradient(135deg, 
+        rgba(120, 53, 15, 0.3) 0%,
+        rgba(90, 40, 10, 0.2) 100%);
+}
+
+.card-gold:hover {
+    border-color: rgba(217, 119, 6, 0.9);
+    box-shadow: 0 12px 24px rgba(217, 119, 6, 0.3);
 }
 
 .skill-card-top {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
+    flex-direction: column;
+    gap: 6px;
 }
 
 .skill-badge-type {
-    font-size: 0.62rem;
+    font-size: 0.70rem;
     font-weight: 900;
-    padding: 2px 6px;
-    border-radius: 6px;
     text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: #e2e8f0;
 }
 
 .skill-odds-tag {
-    font-size: 0.68rem;
-    font-weight: 900;
-    color: #15803d;
-    background: #dcfce7;
-    padding: 2px 6px;
-    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #fbbf24;
+    letter-spacing: 0.5px;
 }
 
 .skill-card-desc {
-    font-size: 0.78rem;
-    font-weight: 700;
-    line-height: 1.3;
-    color: #18181b;
-    text-align: left;
+    font-size: 0.85rem;
+    line-height: 1.4;
+    color: #d1d5db;
+    flex: 1;
 }
 
-/* Couleurs de base des bordures */
-.card-red { border-color: #dc2626; }
-.card-red .skill-badge-type { background: #fee2e2; color: #dc2626; }
+/* ─────────────────────────────────────────────────────────────
+   6. PALIERS SPÉCIFIQUES : DÉCORS & AMBIANCES
+   ───────────────────────────────────────────────────────────── */
 
-.card-blue { border-color: #2563eb; }
-.card-blue .skill-badge-type { background: #dbeafe; color: #2563eb; }
+/* ═══════════════════════════════════════════════════════════════
+   PALIER 1 : LA RUE (Urbain, tension de rue, nuit)
+   ═══════════════════════════════════════════════════════════════ */
 
-.card-gold { border-color: #d97706; }
-.card-gold .skill-badge-type { background: #fef3c7; color: #b45309; }
+#screen-debate.arena-tier-1 {
+    background: 
+        linear-gradient(135deg, 
+            rgba(30, 27, 34, 0.85) 0%,
+            rgba(20, 15, 25, 0.92) 50%,
+            rgba(10, 8, 15, 0.95) 100%),
+        url('https://images.unsplash.com/photo-1514565131-fce0801e5785?auto=format&fit=crop&q=80&w=1920') 
+        center/cover no-repeat fixed !important;
+    border: 1px solid #334155;
+}
 
-/* Survol PC : Surbrillance colorée & élévation */
-@media (hover: hover) {
-    .card-red:hover {
-        border-color: #ef4444;
-        box-shadow: 0 0 16px rgba(239, 68, 68, 0.75), 0 4px 0px #7f1d1d;
-        transform: translateY(-4px);
+#screen-debate.arena-tier-1::before {
+    background: 
+        radial-gradient(circle at 25% 40%, rgba(234, 88, 12, 0.08) 0%, transparent 40%),
+        radial-gradient(circle at 75% 60%, rgba(59, 130, 246, 0.06) 0%, transparent 40%);
+    animation: streetNeon 3s ease-in-out infinite;
+}
+
+@keyframes streetNeon {
+    0%, 100% { opacity: 0.85; }
+    50% { opacity: 1; }
+}
+
+#screen-debate.arena-tier-1 .tier-decor-badge {
+    background: linear-gradient(135deg, #1e293b, #0f172a);
+    color: #e2e8f0;
+    border: 1px solid #475569;
+}
+
+#screen-debate.arena-tier-1 .action-skill-card:hover {
+    background: linear-gradient(135deg, 
+        rgba(127, 29, 29, 0.4) 0%,
+        rgba(80, 20, 20, 0.3) 100%);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   PALIER 2 : AMPHITHÉÂTRE ACADÉMIQUE (Élégance, tradition)
+   ═══════════════════════════════════════════════════════════════ */
+
+#screen-debate.arena-tier-2 {
+    background: 
+        linear-gradient(135deg,
+            rgba(78, 35, 12, 0.88) 0%,
+            rgba(55, 20, 5, 0.94) 50%,
+            rgba(30, 10, 0, 0.98) 100%),
+        url('https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=1920')
+        center/cover no-repeat fixed !important;
+    border: 1px solid #92400e;
+}
+
+#screen-debate.arena-tier-2::before {
+    background: 
+        linear-gradient(90deg, rgba(217, 119, 6, 0.12) 0%, transparent 50%, rgba(217, 119, 6, 0.08) 100%),
+        radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.04) 0%, transparent 60%);
+    animation: academicLighting 4s ease-in-out infinite;
+}
+
+@keyframes academicLighting {
+    0%, 100% { opacity: 0.9; }
+    50% { opacity: 1; }
+}
+
+#screen-debate.arena-tier-2 .tier-decor-badge {
+    background: linear-gradient(135deg, #431407, #7c2d12);
+    color: #fef3c7;
+    border: 1px solid #d97706;
+    font-style: italic;
+}
+
+#screen-debate.arena-tier-2 .health-fill {
+    background: linear-gradient(90deg, #d97706, #f59e0b);
+    box-shadow: 0 0 8px rgba(217, 119, 6, 0.6);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   PALIER 3 : STUDIO RADIO (Direct, intimité sonore)
+   ═══════════════════════════════════════════════════════════════ */
+
+#screen-debate.arena-tier-3 {
+    background: 
+        linear-gradient(135deg,
+            rgba(23, 23, 28, 0.92) 0%,
+            rgba(10, 10, 15, 0.97) 50%,
+            rgba(5, 5, 10, 0.99) 100%),
+        url('https://images.unsplash.com/photo-1598550476439-6847785fcea6?auto=format&fit=crop&q=80&w=1920')
+        center/cover no-repeat fixed !important;
+    border: 1px solid #7f1d1d;
+}
+
+#screen-debate.arena-tier-3::before {
+    background: radial-gradient(circle at center, rgba(239, 68, 68, 0.08) 0%, transparent 100%);
+    animation: radioPulse 2s ease-in-out infinite;
+}
+
+@keyframes radioPulse {
+    0%, 100% { opacity: 0.8; }
+    50% { opacity: 1.1; }
+}
+
+#screen-debate.arena-tier-3 .tier-decor-badge {
+    background: linear-gradient(135deg, #1f2937, #111827);
+    color: #f3f4f6;
+    border: 1px solid #ef4444;
+}
+
+.on-air-pulse {
+    width: 10px;
+    height: 10px;
+    background: #ef4444;
+    border-radius: 50%;
+    box-shadow: 0 0 10px rgba(239, 68, 68, 0.8);
+    animation: pulseRadio 1.2s ease-in-out infinite;
+    display: inline-block;
+    margin-right: 6px;
+}
+
+@keyframes pulseRadio {
+    0%, 100% { 
+        box-shadow: 0 0 10px rgba(239, 68, 68, 0.8), 0 0 20px rgba(239, 68, 68, 0.4);
+        transform: scale(1);
     }
-    .card-blue:hover {
-        border-color: #3b82f6;
-        box-shadow: 0 0 16px rgba(59, 130, 246, 0.75), 0 4px 0px #1e3a8a;
-        transform: translateY(-4px);
-    }
-    .card-gold:hover {
-        border-color: #f59e0b;
-        box-shadow: 0 0 16px rgba(245, 158, 11, 0.75), 0 4px 0px #78350f;
-        transform: translateY(-4px);
+    50% { 
+        box-shadow: 0 0 6px rgba(239, 68, 68, 0.5);
+        transform: scale(1.15);
     }
 }
 
-.action-skill-card:active {
-    transform: translateY(2px);
-    box-shadow: 0 1px 0px #000;
-}
-
-/* Panneau de fin de combat */
-.arcade-victory-panel {
-    grid-column: 1 / -1;
+.audio-vumeter-bars {
     display: flex;
-    flex-direction: column;
-    gap: 10px;
+    align-items: flex-end;
+    gap: 3px;
+    height: 16px;
+    margin-left: auto;
+}
+
+.vubar {
+    flex: 1;
+    min-width: 4px;
+    background: linear-gradient(to top, #22c55e, #86efac);
+    border-radius: 2px;
+    box-shadow: 0 0 6px rgba(34, 197, 94, 0.5);
+    animation: vumeterDance 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) infinite;
+}
+
+.vubar.b2 { animation-delay: 0.08s; background: linear-gradient(to top, #eab308, #facc15); }
+.vubar.b3 { animation-delay: 0.12s; background: linear-gradient(to top, #ef4444, #fca5a5); }
+.vubar.b4 { animation-delay: 0.04s; }
+.vubar.b5 { animation-delay: 0.16s; background: linear-gradient(to top, #eab308, #facc15); }
+
+@keyframes vumeterDance {
+    0% { height: 20%; opacity: 0.6; }
+    50% { height: 90%; opacity: 1; }
+    100% { height: 35%; opacity: 0.7; }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   PALIER 4 & 5 : PLATEAU TV (Prime Time, spectacle)
+   ═══════════════════════════════════════════════════════════════ */
+
+#screen-debate.arena-tier-4,
+#screen-debate.arena-tier-5 {
+    background: 
+        linear-gradient(135deg,
+            rgba(15, 23, 74, 0.85) 0%,
+            rgba(7, 10, 40, 0.94) 50%,
+            rgba(2, 6, 23, 0.98) 100%),
+        url('https://images.unsplash.com/photo-1603525545700-1c05d09e3e3b?auto=format&fit=crop&q=80&w=1920')
+        center/cover no-repeat fixed !important;
+    border: 1px solid #1e40af;
+    box-shadow: inset 0 0 60px rgba(59, 130, 246, 0.12);
+}
+
+#screen-debate.arena-tier-4::before,
+#screen-debate.arena-tier-5::before {
+    background: 
+        radial-gradient(circle at 30% 35%, rgba(59, 130, 246, 0.12) 0%, transparent 40%),
+        radial-gradient(circle at 70% 65%, rgba(59, 130, 246, 0.08) 0%, transparent 40%);
+    animation: tvSpotlight 8s ease-in-out infinite;
+}
+
+@keyframes tvSpotlight {
+    0%, 100% { transform: translate(0, 0); opacity: 0.7; }
+    50% { transform: translate(50px, -40px); opacity: 0.9; }
+}
+
+#screen-debate.arena-tier-4 .tier-decor-badge,
+#screen-debate.arena-tier-5 .tier-decor-badge {
+    background: linear-gradient(135deg, #1e3a8a, #1e40af);
+    color: #fff;
+    font-weight: 800;
+    border: 1px solid #3b82f6;
+    box-shadow: 0 0 16px rgba(59, 130, 246, 0.4);
+}
+
+.tv-breaking-chiron {
+    display: flex;
     align-items: center;
-    width: 100%;
+    background: rgba(0, 0, 0, 0.85);
+    border: 1px solid rgba(59, 130, 246, 0.5);
+    border-radius: 3px;
+    overflow: hidden;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.5);
 }
 
-.btn-arcade-continue {
-    width: 100%;
-    padding: 12px;
-    background: #22c55e;
-    color: #FFF;
-    font-size: 1rem;
+.chiron-flash {
+    background: linear-gradient(90deg, #dc2626, #991b1b);
+    color: #fff;
+    font-size: 0.65rem;
     font-weight: 900;
-    border: 2px solid #FFF;
-    border-radius: 10px;
-    cursor: pointer;
-    box-shadow: 0 4px 12px rgba(34, 197, 94, 0.4);
+    padding: 5px 10px;
+    letter-spacing: 0.8px;
     text-transform: uppercase;
+    animation: chironBlink 0.8s ease-in-out infinite;
 }
 
-/* =========================================================
-   ADAPTATION MOBILE RIGOUREUSE (ZÉRO DÉBORDEMENT)
-   ========================================================= */
-@media (max-width: 650px) {
+@keyframes chironBlink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   7. ÉTATS & ANIMATIONS
+   ───────────────────────────────────────────────────────────── */
+
+.stage-center-fx.victory {
+    animation: victoryExplosion 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes victoryExplosion {
+    0% {
+        transform: translate(-50%, -50%) scale(0.3);
+        opacity: 1;
+    }
+    100% {
+        transform: translate(-50%, -50%) scale(2);
+        opacity: 0;
+    }
+}
+
+.stage-center-fx.defeat {
+    animation: defeatShake 0.6s cubic-bezier(0.36, 0, 0.66, -0.56);
+}
+
+@keyframes defeatShake {
+    0%, 100% { transform: translate(-50%, -50%) translateX(0); }
+    25% { transform: translate(-50%, -50%) translateX(-8px); }
+    75% { transform: translate(-50%, -50%) translateX(8px); }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   8. MOBILE RESPONSIVE
+   ───────────────────────────────────────────────────────────── */
+
+@media (max-width: 768px) {
+    .arcade-arena {
+        min-height: auto;
+    }
+
     .arena-top-hud {
-        gap: 6px;
-        padding: 6px 8px;
-    }
-
-    .hud-name {
-        font-size: 0.68rem;
-        line-height: 1.15;
-    }
-
-    .health-bar-frame {
-        max-width: 100%;
-        height: 7px;
-    }
-
-    .health-val-tag {
-        font-size: 0.58rem;
+        grid-template-columns: 1fr;
+        gap: 10px;
+        padding: 12px 14px;
     }
 
     .arena-versus-badge {
-        font-size: 0.65rem;
-        padding: 2px 5px;
-    }
-
-    .arena-stage {
-        padding: 8px 10px;
-    }
-
-    .stage-center-icon {
-        font-size: 1.6rem;
-        margin-bottom: 2px;
-    }
-
-    .comic-attack-bubble {
-        padding: 8px 10px;
-    }
-
-    .bubble-speaker-tag {
-        font-size: 0.58rem;
-    }
-
-    .bubble-text {
-        font-size: 0.76rem;
+        width: 40px;
+        height: 40px;
+        font-size: 0.75rem;
     }
 
     .arena-deck-zone {
         grid-template-columns: 1fr;
-        gap: 6px;
+        gap: 10px;
+        padding: 14px;
     }
 
     .action-skill-card {
-        padding: 8px 10px;
-        gap: 4px;
+        min-height: 100px;
+        padding: 12px;
     }
 
-    .skill-card-desc {
-        font-size: 0.74rem;
+    .comic-attack-bubble {
+        max-width: 90%;
+        padding: 14px 16px;
+    }
+
+    .bubble-text {
+        font-size: 0.90rem;
+    }
+
+    .health-bar-frame {
+        max-width: 100%;
+    }
+
+    .tier-ambiance-wrapper {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+
+    .chalk-doodle {
+        margin-left: 0;
+    }
+
+    .arena-stage {
+        padding: 20px 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    .tier-decor-badge {
+        font-size: 0.65rem;
+        padding: 6px 12px;
+    }
+
+    .hud-name {
+        font-size: 0.80rem;
+    }
+
+    .bubble-speaker-tag {
+        font-size: 0.60rem;
+    }
+
+    .bubble-text {
+        font-size: 0.85rem;
+    }
+
+    .arena-deck-zone {
+        padding: 10px;
+    }
+
+    .action-skill-card {
+        padding: 10px;
+        gap: 8px;
     }
 }
 /* =========================================================
