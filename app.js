@@ -2722,13 +2722,13 @@ function openCharacterLoreModal(characterId, characterName) {
         const modal = document.getElementById('character-lore-modal');
         const titleEl = document.getElementById('lore-modal-title');
         // ... suite normale de la fonction
-        const modal = document.getElementById('character-lore-modal');
-        const titleEl = document.getElementById('lore-modal-title');
         const tagEl = document.getElementById('lore-modal-tag');
         const bodyEl = document.getElementById('lore-modal-body');
         const sourcesList = document.getElementById('lore-modal-sources-list');
 
+
         if (!modal) return;
+
 
         // Récupère les données depuis loredata.js ou applique un modèle par défaut
         const data = (typeof LORE_DATABASE !== 'undefined' && LORE_DATABASE[characterId])
@@ -2739,6 +2739,7 @@ function openCharacterLoreModal(characterId, characterName) {
                 sources: []
             };
 
+
         if (titleEl) titleEl.textContent = characterName || "Dossier Intervenant";
         if (tagEl) {
             tagEl.textContent = data.category || "Information";
@@ -2747,12 +2748,13 @@ function openCharacterLoreModal(characterId, characterName) {
         }
         if (bodyEl) bodyEl.textContent = data.bio;
 
+
         if (sourcesList) {
             sourcesList.innerHTML = '';
             if (data.sources && data.sources.length > 0) {
                 data.sources.forEach(s => {
                     const li = document.createElement('li');
-                    li.innerHTML = s.url 
+                    li.innerHTML = s.url
                         ? `<a href="${s.url}" target="_blank" rel="noopener noreferrer" style="color: #2563eb; text-decoration: underline;">${s.label} ↗</a>`
                         : `<span>${s.label}</span>`;
                     sourcesList.appendChild(li);
@@ -2762,8 +2764,10 @@ function openCharacterLoreModal(characterId, characterName) {
             }
         }
 
+
         modal.style.display = 'flex';
     }
+
 
     // Fermeture universelle et inratable de la fiche profil / lore
     function closeCharacterLoreModal() {
@@ -2774,10 +2778,12 @@ function openCharacterLoreModal(characterId, characterName) {
     }
     window.closeCharacterLoreModal = closeCharacterLoreModal;
 
+
     // Détection globale des clics sur la croix ou sur l'arrière-plan sombre
     document.addEventListener('click', (e) => {
         const modal = document.getElementById('character-lore-modal');
         if (!modal || modal.style.display === 'none') return;
+
 
         // 1. Clic direct sur la croix (bouton ou texte ✕)
         if (e.target.id === 'btn-close-lore-modal' || e.target.closest('#btn-close-lore-modal')) {
@@ -2786,6 +2792,7 @@ function openCharacterLoreModal(characterId, characterName) {
             closeCharacterLoreModal();
             return;
         }
+
 
         // 2. Clic sur le fond sombre (en dehors de la carte blanche)
         if (e.target === modal) {
