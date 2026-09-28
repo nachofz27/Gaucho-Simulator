@@ -22,7 +22,7 @@ window.DEBATES_DATABASE = {
                 <div class="chalk-doodle">📝 TD de Droit • Fin de séance agitée</div>
             `,
             opponentAttack: "« Le féminisme d'État a détruit le marché de la séduction ! Les femmes ne veulent que des mecs blindés et vos théories wokes ruinent nos facs ! »",
-            bgImage: "https://images.unsplash.com/photo-1516280440614-37939bbacd81?auto=format&fit=crop&q=80&w=1920",
+            bgImage: "https://images.unsplash.com/photo-1708033899077-2ec198506aab?auto=format&fit=crop&q=80&w=1600",
             choix: [
                 {
                     texte: "Démonter posément ses arguments avec les statistiques de l'INSEE sur les violences et inégalités réelles.",

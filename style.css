@@ -2848,6 +2848,9 @@ html, body, button, .char-card, .btn-choice {
     padding: 30px 20px;
     z-index: 2;
     overflow: hidden;
+    min-height: 280px !important; /* Force une hauteur pour que l'image existe */
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
 }
 
 .stage-spotlight {
