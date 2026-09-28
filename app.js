@@ -254,6 +254,7 @@ function getDynamicTier() {
     window.showScreen = showScreen;
     window.playTurn = playTurn;
     window.updateStatsUI = updateStatsUI;
+    window.setupDebateScreen = setupDebateScreen;
 
     // ==========================================
     // 4. FORMATAGE ET UTILITAIRES
