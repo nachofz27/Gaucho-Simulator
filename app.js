@@ -2713,6 +2713,15 @@ function displayPackResult(drawResult) {
         `;
     } 
 function openCharacterLoreModal(characterId, characterName) {
+        console.log("ID cliqué :", characterId);
+        console.log("LORE_DATABASE chargée ?", typeof LORE_DATABASE !== 'undefined');
+        if (typeof LORE_DATABASE !== 'undefined') {
+            console.log("Données trouvées pour cet ID :", LORE_DATABASE[characterId]);
+        }
+
+        const modal = document.getElementById('character-lore-modal');
+        const titleEl = document.getElementById('lore-modal-title');
+        // ... suite normale de la fonction
         const modal = document.getElementById('character-lore-modal');
         const titleEl = document.getElementById('lore-modal-title');
         const tagEl = document.getElementById('lore-modal-tag');
