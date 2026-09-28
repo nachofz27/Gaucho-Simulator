@@ -5361,3 +5361,48 @@ button,
         z-index: 20 !important;
     }
 }
+/* Alignement strict des boutons en bas sur smartphone */
+@media (max-width: 600px) {
+    /* Boîte à idées verrouillée en bas à gauche de l'écran */
+    #btn-open-feedback,
+    button[id*="feedback"],
+    .btn-feedback {
+        position: fixed !important;
+        bottom: 14px !important;
+        left: 12px !important;
+        right: auto !important;
+        top: auto !important;
+        transform: none !important;
+        margin: 0 !important;
+        width: auto !important;
+        min-width: 0 !important;
+        max-width: 44vw !important;
+        font-size: 0.72rem !important;
+        padding: 6px 10px !important;
+        white-space: nowrap !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+        z-index: 9999 !important;
+    }
+
+    /* Soutenir le jeu verrouillé en bas à droite de l'écran */
+    #btn-support-corner,
+    .btn-support-corner {
+        position: fixed !important;
+        bottom: 14px !important;
+        right: 12px !important;
+        left: auto !important;
+        top: auto !important;
+        transform: none !important;
+        margin: 0 !important;
+        width: auto !important;
+        min-width: 0 !important;
+        max-width: 44vw !important;
+        font-size: 0.72rem !important;
+        padding: 6px 10px !important;
+        white-space: nowrap !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+        z-index: 9999 !important;
+    }
+}
