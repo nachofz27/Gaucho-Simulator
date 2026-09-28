@@ -4984,16 +4984,18 @@ button,
         text-align: center !important;
     }
 
-    /* Plaque la boîte à idées au ras du bas et la centre */
+    /* Boîte à idées calée en bas à gauche */
     #screen-menu #btn-open-feedback {
         position: absolute !important;
-        bottom: 20px !important;
-        left: 50% !important;
-        transform: translateX(-50%) !important;
+        bottom: 15px !important;
+        left: 15px !important;
+        right: auto !important;
+        transform: none !important;
         margin: 0 !important;
         display: inline-flex !important;
         justify-content: center !important;
         align-items: center !important;
+        z-index: 50 !important;
     }
 }
 @media (max-width: 640px) {
