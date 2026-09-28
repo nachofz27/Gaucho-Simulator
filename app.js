@@ -709,7 +709,7 @@ function setupDebateScreen(debateObj, tier) {
                 </div>
             </div>
 
-           <div class="arena-stage" style="background-image: linear-gradient(rgba(10, 15, 25, 0.55), rgba(5, 8, 15, 0.75)), url('${debateObj.bgImage || ''}') !important; background-size: cover !important; background-position: center !important;">
+          <div class="arena-stage" style="background: linear-gradient(rgba(10, 15, 25, 0.65), rgba(5, 8, 15, 0.85)), url('${debateObj.bgImage || ''}') center/cover no-repeat !important;">
                 <div class="stage-spotlight"></div>
                 <div class="stage-center-icon">🎙️</div>
                 <div class="stage-center-fx" id="stage-fx"></div>

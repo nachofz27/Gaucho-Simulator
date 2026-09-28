@@ -3688,14 +3688,18 @@ html, body, button, .char-card, .btn-choice {
 
 /* Conteneur de débat avec effet de profondeur */
 .arena-stage {
-    background: rgba(15, 15, 20, 0.75) !important;
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
+    background-color: rgba(15, 15, 20, 0.6) !important;
+    background-size: cover !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
     border: 2px solid rgba(255, 255, 255, 0.2) !important;
     box-shadow: 
         0 20px 60px rgba(0, 0, 0, 0.6),
         inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
     border-radius: 8px;
+    min-height: 280px;
 }
 
 /* Badge du palier */
