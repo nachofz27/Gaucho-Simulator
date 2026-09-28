@@ -1393,7 +1393,7 @@ const gameEvents = [
                     consequenceText: "Ton tweet explose et force les médias nationaux à questionner le député sur ses propos. Acculé, son groupe parlementaire tente maladroitement d'évoquer une 'maladresse de citation'.",
                     tweets: [
                         { author: "Nassim", handle: "@Nassim_QG", text: "Rappeler d'où vient 'le travail rend libre' mot pour mot, ils n'assument déjà plus leur propre provocation 💀📉" },
-                        { author: "Mémoire Ouvrière", handle: "@ArchivesLutte", text: "Utiliser la devise des camps de la mort dans l'hémicycle en toute détente... Bravo pour le rappel sans filtre." },
+                        { author: "Mémoire Ouvrière", handle: "@ArchivesLutte", text: "Utiliser la devise des camps de la mort en toute détente... Bravo pour le rappel sans filtre." },
                         { author: "Samy", handle: "@Samy_off", text: "Le RN qui tente de faire passer un slogan nazi pour un éloge du mérite, le masque est tombé en direct." },
                         { author: "Camarade Antifa", handle: "@AlerteVigilance", text: "Ne jamais laisser passer une seule tentative de réhabilitation ou de banalisation de ces horreurs." }
                     ]
