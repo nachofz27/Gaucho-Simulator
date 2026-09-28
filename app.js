@@ -657,17 +657,27 @@ function getDynamicTier() {
             gameState.highestOpponentName = debateObj.characterName;
         }
 
-        // 3. Décor dédié au personnage s'il existe dans debatesdata.js, sinon bandeau par défaut
+        // 3. Décor immersif automatisé selon le palier (écrase les anciennes données)
         let decorElementsHtml = '';
-        if (debateObj.arenaDecorHtml) {
-            decorElementsHtml = debateObj.arenaDecorHtml;
-        } else {
-            const defaultBadgeIcon = { 1: '🎓', 2: '📱', 3: '📺', 4: '👑' }[tier] || '🎙️';
+        if (tier === 1) {
             decorElementsHtml = `
-                <div class="tier-decor-badge">
-                    ${defaultBadgeIcon} ${debateObj.arenaName || 'Débat Contradictoire'}
-                </div>
-                <div class="chalk-doodle">⚡ Face-à-face politique</div>
+                <div class="tier-decor-badge street-badge">🚧 TROTTOIR • Débat public improvisé</div>
+                <div class="street-fx-container"></div>
+            `;
+        } else if (tier === 2) {
+            decorElementsHtml = `
+                <div class="tier-decor-badge academic-badge">🎓 AMPHITHÉÂTRE • Conférence universitaire</div>
+                <div class="chalk-doodle">⚡ Silence demandé dans l'assemblée</div>
+            `;
+        } else if (tier === 3) {
+            decorElementsHtml = `
+                <div class="tier-decor-badge radio-badge"><span class="on-air-pulse">🔴 ON AIR</span> STUDIO RADIO • Matinale</div>
+                <div class="audio-vumeter-bars"><span class="vubar"></span><span class="vubar b2"></span><span class="vubar b3"></span><span class="vubar b4"></span><span class="vubar b5"></span></div>
+            `;
+        } else {
+            decorElementsHtml = `
+                <div class="tier-decor-badge tv-badge">📺 PRIME TIME TV • 20h00 National</div>
+                <div class="tv-breaking-chiron"><span class="chiron-flash">DIRECT</span> LE FACE-À-FACE DÉCISIF</div>
             `;
         }
 
