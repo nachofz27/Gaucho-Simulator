@@ -5936,3 +5936,69 @@ button,
     margin: 0 auto !important;
     text-align: center !important;
 }
+/* =========================================================
+   1. SURLIGNAGE DU SCORE JOUEUR SUR MOBILE ET PC
+   ========================================================= */
+tr.leaderboard-my-row,
+#leaderboard-body tr.leaderboard-my-row {
+  background-color: #fef08a !important;
+  border: 2px solid #ca8a04 !important;
+}
+
+tr.leaderboard-my-row td,
+#leaderboard-body tr.leaderboard-my-row td {
+  background-color: #fef08a !important;
+  color: #854d0e !important;
+  font-weight: 800 !important;
+}
+
+tr.leaderboard-my-row td strong {
+  color: #713f12 !important;
+}
+
+@media (max-width: 768px) {
+  #leaderboard-body tr.leaderboard-my-row {
+    background-color: #fde047 !important;
+    outline: 2px solid #ca8a04 !important;
+  }
+  #leaderboard-body tr.leaderboard-my-row td {
+    background-color: #fde047 !important;
+  }
+}
+
+/* =========================================================
+   2. FORÇAGE VISUEL DU DÉCOR DU DÉBAT
+   ========================================================= */
+#screen-debate .arena-stage {
+  position: relative !important;
+  display: block !important;
+  width: 100% !important;
+  height: 380px !important;
+  min-height: 380px !important;
+  background-size: cover !important;
+  background-position: center center !important;
+  background-repeat: no-repeat !important;
+  overflow: hidden !important;
+}
+
+#screen-debate .arena-stage-bg {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  z-index: 1 !important;
+  display: block !important;
+}
+
+#screen-debate .arena-stage-overlay {
+  position: absolute !important;
+  inset: 0 !important;
+  background: rgba(10, 15, 25, 0.45) !important;
+  z-index: 2 !important;
+}
+
+#screen-debate .comic-attack-bubble {
+  position: relative !important;
+  z-index: 10 !important;
+}

@@ -1570,20 +1570,23 @@ const bgAvatar = avatarColors[Math.abs(hash) % avatarColors.length];
                 if (isMe) playerInTop50 = true;
 
                 const tr = document.createElement('tr');
-                if (isMe) tr.className = 'leaderboard-my-row';
+                if (isMe) {
+                    tr.className = 'leaderboard-my-row';
+                    tr.style.cssText = 'background-color: #fef08a !important; border: 2px solid #ca8a04 !important; font-weight: bold;';
+                }
 
                 tr.innerHTML = `
-                    <td><strong>#${idx + 1}</strong></td>
-                    <td><strong>${entry.pseudo || 'Camarade Anonyme'}${isMe ? ' ⭐ (Toi)' : ''}</strong></td>
-                    <td>${entry.character || 'Militant'}</td>
-                    <td><span style="color:#d97706; font-weight:700;">${entry.ally || '—'}</span></td>
-                    <td><span style="color:#dc2626; font-weight:700;">${entry.nemesis || '—'}</span></td>
-                    <td><strong>${Number(entry.score || 0).toLocaleString('fr-FR')}</strong></td>
+                    <td ${isMe ? 'style="background-color: #fef08a !important; color: #713f12 !important;"' : ''}><strong>#${idx + 1}</strong></td>
+                    <td ${isMe ? 'style="background-color: #fef08a !important; color: #713f12 !important;"' : ''}><strong>${entry.pseudo || 'Camarade Anonyme'}${isMe ? ' ⭐ (Toi)' : ''}</strong></td>
+                    <td ${isMe ? 'style="background-color: #fef08a !important;"' : ''}>${entry.character || 'Militant'}</td>
+                    <td ${isMe ? 'style="background-color: #fef08a !important;"' : ''}><span style="color:#d97706; font-weight:700;">${entry.ally || '—'}</span></td>
+                    <td ${isMe ? 'style="background-color: #fef08a !important;"' : ''}><span style="color:#dc2626; font-weight:700;">${entry.nemesis || '—'}</span></td>
+                    <td ${isMe ? 'style="background-color: #fef08a !important; color: #713f12 !important;"' : ''}><strong>${Number(entry.score || 0).toLocaleString('fr-FR')}</strong></td>
                 `;
                 body.appendChild(tr);
             });
 
-            // 2. Si le joueur a déjà joué mais est hors du Top 50, calcul du rang exact
+            // 2. Si le joueur a déjà joué mais est hors du Top 50
             if (!playerInTop50 && deviceId) {
                 const { data: myEntry } = await supabaseClient
                     .from('national_leaderboard')
@@ -1605,13 +1608,14 @@ const bgAvatar = avatarColors[Math.abs(hash) % avatarColors.length];
 
                     const trMe = document.createElement('tr');
                     trMe.className = 'leaderboard-my-row';
+                    trMe.style.cssText = 'background-color: #fef08a !important; border: 2px solid #ca8a04 !important; font-weight: bold;';
                     trMe.innerHTML = `
-                        <td><strong>#${exactRank}</strong></td>
-                        <td><strong>${myEntry.pseudo || 'Camarade Anonyme'} ⭐ (Toi)</strong></td>
-                        <td>${myEntry.character || 'Militant'}</td>
-                        <td><span style="color:#d97706; font-weight:700;">${myEntry.ally || '—'}</span></td>
-                        <td><span style="color:#dc2626; font-weight:700;">${myEntry.nemesis || '—'}</span></td>
-                        <td><strong>${Number(myEntry.score || 0).toLocaleString('fr-FR')}</strong></td>
+                        <td style="background-color: #fef08a !important; color: #713f12 !important;"><strong>#${exactRank}</strong></td>
+                        <td style="background-color: #fef08a !important; color: #713f12 !important;"><strong>${myEntry.pseudo || 'Camarade Anonyme'} ⭐ (Toi)</strong></td>
+                        <td style="background-color: #fef08a !important;">${myEntry.character || 'Militant'}</td>
+                        <td style="background-color: #fef08a !important;"><span style="color:#d97706; font-weight:700;">${myEntry.ally || '—'}</span></td>
+                        <td style="background-color: #fef08a !important;"><span style="color:#dc2626; font-weight:700;">${myEntry.nemesis || '—'}</span></td>
+                        <td style="background-color: #fef08a !important; color: #713f12 !important;"><strong>${Number(myEntry.score || 0).toLocaleString('fr-FR')}</strong></td>
                     `;
                     body.appendChild(trMe);
                 }
