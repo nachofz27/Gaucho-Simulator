@@ -640,113 +640,113 @@ function getDynamicTier() {
     }
 
 function setupDebateScreen(debateObj, tier) {
-  const screenDebate = document.getElementById('screen-debate');
-  if (!screenDebate || !debateObj) return;
+    const screenDebate = document.getElementById('screen-debate');
+    if (!screenDebate || !debateObj) return;
 
-  showScreen('screen-debate');
+    showScreen('screen-debate');
 
-  const characterTheme = debateObj.arenaThemeClass || `arena-char-${debateObj.id || 'standard'}`;
-  screenDebate.className = `screen active arena-tier-${tier} ${characterTheme}`;
+    const characterTheme = debateObj.arenaThemeClass || `arena-char-${debateObj.id || 'standard'}`;
+    screenDebate.className = `screen active arena-tier-${tier} ${characterTheme}`;
 
-  const playerArchName = (typeof getSelectedArchetypeName === 'function') 
-      ? getSelectedArchetypeName() 
-      : 'Militant';
-      
-  const cred = Math.max(5, Math.min(95, Math.round(gameState?.stats?.credibility || 50)));
+    const playerArchName = (typeof getSelectedArchetypeName === 'function') 
+        ? getSelectedArchetypeName() 
+        : 'Militant';
+        
+    const cred = Math.max(5, Math.min(95, Math.round(gameState?.stats?.credibility || 50)));
 
-  if (gameState && tier >= gameState.highestOpponentScore) {
-      gameState.highestOpponentScore = tier;
-      gameState.highestOpponentName = debateObj.characterName;
-  }
+    if (gameState && tier >= gameState.highestOpponentScore) {
+        gameState.highestOpponentScore = tier;
+        gameState.highestOpponentName = debateObj.characterName;
+    }
 
-  let decorElementsHtml = '';
-  if (debateObj.arenaDecorHtml) {
-      decorElementsHtml = debateObj.arenaDecorHtml;
-  } else {
-      const tierBadges = {
-          1: { icon: '🚨', label: 'Débat de Rue' },
-          2: { icon: '📚', label: 'Face-à-Face Académique' },
-          3: { icon: '🎙️', label: 'Direct Radio' },
-          4: { icon: '📺', label: 'Plateau Télé' },
-          5: { icon: '👑', label: 'Prime Time' }
-      };
-      const tierInfo = tierBadges[tier] || { icon: '⚡', label: 'Débat Contradictoire' };
-      decorElementsHtml = `
-          <div class="tier-decor-badge">
-              ${tierInfo.icon} ${tierInfo.label}
-          </div>
-          <div class="chalk-doodle">• ${debateObj.arenaName || 'Confrontation'}</div>
-      `;
-  }
+    let decorElementsHtml = '';
+    if (debateObj.arenaDecorHtml) {
+        decorElementsHtml = debateObj.arenaDecorHtml;
+    } else {
+        const tierBadges = {
+            1: { icon: '🚨', label: 'Débat de Rue' },
+            2: { icon: '📚', label: 'Face-à-Face Académique' },
+            3: { icon: '🎙️', label: 'Direct Radio' },
+            4: { icon: '📺', label: 'Plateau Télé' },
+            5: { icon: '👑', label: 'Prime Time' }
+        };
+        const tierInfo = tierBadges[tier] || { icon: '⚡', label: 'Débat Contradictoire' };
+        decorElementsHtml = `
+            <div class="tier-decor-badge">
+                ${tierInfo.icon} ${tierInfo.label}
+            </div>
+            <div class="chalk-doodle">• ${debateObj.arenaName || 'Confrontation'}</div>
+        `;
+    }
 
-  const attackText = (debateObj.opponentAttack || '').replace(/«|»/g, '');
-  const targetImg = debateObj.bgImage 
-      || "https://images.unsplash.com/photo-1708033899077-2ec198506aab?auto=format&fit=crop&q=80&w=1600";
+    const attackText = (debateObj.opponentAttack || '').replace(/«|»/g, '');
 
-  screenDebate.innerHTML = `
-      <div class="arcade-arena">
-          <div class="tier-ambiance-wrapper">
-              ${decorElementsHtml}
-          </div>
+    // Récupération de l'image de fond du débat
+    const targetImg = debateObj.bgImage || "https://images.unsplash.com/photo-1708033899077-2ec198506aab?auto=format&fit=crop&q=80&w=1600";
 
-          <div class="arena-top-hud">
-              <div class="fighter-hud player-hud">
-                  <div class="hud-name">${playerArchName}</div>
-                  <div class="health-bar-frame">
-                      <div class="health-fill player-health-fill" style="width: ${cred}%;"></div>
-                  </div>
-                  <span class="health-val-tag">${cred}% CRÉDIBILITÉ</span>
-              </div>
+    screenDebate.innerHTML = `
+        <div class="arcade-arena">
+            <div class="tier-ambiance-wrapper">
+                ${decorElementsHtml}
+            </div>
 
-              <div class="arena-versus-badge">
-                  <span>VS</span>
-              </div>
+            <div class="arena-top-hud">
+                <div class="fighter-hud player-hud">
+                    <div class="hud-name">${playerArchName}</div>
+                    <div class="health-bar-frame">
+                        <div class="health-fill player-health-fill" style="width: ${cred}%;"></div>
+                    </div>
+                    <span class="health-val-tag">${cred}% CRÉDIBILITÉ</span>
+                </div>
 
-              <div class="fighter-hud opp-hud">
-                  <div class="hud-name">${debateObj.characterName}</div>
-                  <div class="health-bar-frame">
-                      <div class="health-fill opp-health-fill" id="opp-hp-bar" style="width: 100%;"></div>
-                  </div>
-                  <span class="health-val-tag" id="opp-hp-text">100% ASSURANCE</span>
-              </div>
-          </div>
+                <div class="arena-versus-badge">
+                    <span>VS</span>
+                </div>
 
-          <div class="arena-stage" style="position:relative !important; min-height:360px !important; overflow:hidden !important;">
-              <img src="${targetImg}" class="arena-stage-bg" alt="Décor" style="position:absolute !important; inset:0 !important; width:100% !important; height:100% !important; object-fit:cover !important; z-index:1 !important; display:block !important;" />
-              <div class="arena-stage-overlay" style="position:absolute !important; inset:0 !important; background:rgba(10,15,25,0.55) !important; z-index:2 !important;"></div>
-              <div class="stage-spotlight"></div>
-              <div class="stage-center-icon">🎙️</div>
-              <div class="stage-center-fx" id="stage-fx"></div>
+                <div class="fighter-hud opp-hud">
+                    <div class="hud-name">${debateObj.characterName}</div>
+                    <div class="health-bar-frame">
+                        <div class="health-fill opp-health-fill" id="opp-hp-bar" style="width: 100%;"></div>
+                    </div>
+                    <span class="health-val-tag" id="opp-hp-text">100% ASSURANCE</span>
+                </div>
+            </div>
 
-              <div class="comic-attack-bubble" id="comic-bubble" style="position:relative !important; z-index:10 !important;">
-                  <div class="bubble-speaker-tag">ATTAQUE DE ${(debateObj.characterName || 'ADVERSAIRE').toUpperCase()}</div>
-                  <p class="bubble-text">« ${attackText} »</p>
-              </div>
-          </div>
+            <div class="arena-stage" style="position:relative !important; min-height:360px !important; overflow:hidden !important; background-image: url('${targetImg}') !important; background-size: cover !important; background-position: center !important;">
+                <div class="arena-stage-overlay" style="position:absolute !important; inset:0 !important; background:rgba(10,15,25,0.45) !important; z-index:2 !important;"></div>
+                <div class="stage-spotlight"></div>
+                <div class="stage-center-icon">🎙️</div>
+                <div class="stage-center-fx" id="stage-fx"></div>
 
-          <div class="arena-deck-zone" id="debate-deck"></div>
-      </div>
-  `;
+                <div class="comic-attack-bubble" id="comic-bubble" style="position:relative !important; z-index:10 !important;">
+                    <div class="bubble-speaker-tag">ATTAQUE DE ${(debateObj.characterName || 'ADVERSAIRE').toUpperCase()}</div>
+                    <p class="bubble-text">« ${attackText} »</p>
+                </div>
+            </div>
 
-  const deckContainer = document.getElementById('debate-deck');
-  const cardThemes = ['card-red', 'card-blue', 'card-gold'];
+            <div class="arena-deck-zone" id="debate-deck"></div>
+        </div>
+    `;
 
-  (debateObj.choix || []).forEach((choix, idx) => {
-      const finalOdds = Math.max(5, Math.min(95, cred + (choix.successOddsBonus || 0)));
-      const cardEl = document.createElement('div');
-      cardEl.className = `action-skill-card ${cardThemes[idx % 3]}`;
+    const deckContainer = document.getElementById('debate-deck');
+    const cardThemes = ['card-red', 'card-blue', 'card-gold'];
 
-      cardEl.innerHTML = `
-          <div class="skill-card-top">
-              <span class="skill-badge-type">${choix.strategyName || 'RIPOSTE'}</span>
-              <span class="skill-odds-tag">🎲 ${finalOdds}% succès</span>
-          </div>
-          <div class="skill-card-desc">${choix.texte}</div>
-      `;
+    (debateObj.choix || []).forEach((choix, idx) => {
+        const finalOdds = Math.max(5, Math.min(95, cred + (choix.successOddsBonus || 0)));
+        const cardEl = document.createElement('div');
+        cardEl.className = `action-skill-card ${cardThemes[idx % 3]}`;
 
-      cardEl.onclick = () => resolveArcadeDebateRound(choix, finalOdds, debateObj);
-      deckContainer.appendChild(cardEl);
-  });
+        cardEl.innerHTML = `
+            <div class="skill-card-top">
+                <span class="skill-badge-type">${choix.strategyName || 'RIPOSTE'}</span>
+                <span class="skill-odds-tag">🎲 ${finalOdds}% succès</span>
+            </div>
+            <div class="skill-card-desc">${choix.texte}</div>
+        `;
+
+        cardEl.onclick = () => resolveArcadeDebateRound(choix, finalOdds, debateObj);
+        deckContainer.appendChild(cardEl);
+    });
 }
 window.setupDebateScreen = setupDebateScreen;
 
