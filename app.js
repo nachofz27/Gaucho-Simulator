@@ -196,25 +196,30 @@ window.supabaseClient = supabaseClient;
 
 
 // ==========================================
-// SYSTÈME DE PALIERS & TITRES DYNAMIQUES
+// PALIERS VERROUILLÉS PAR LES DÉBATS & LES ABONNÉS
 // ==========================================
 function getCurrentTierNumber() {
-    const followers = Math.max(0, (gameState && gameState.stats) ? (gameState.stats.followers || 0) : 0);
+    if (!gameState || !gameState.stats) return 1;
+    const followers = Math.max(0, gameState.stats.followers || 0);
+    const completed = gameState.completedDebates || [];
+
     let tier = 1;
 
-    if (followers >= 200000) tier = 4;
-    else if (followers >= 60000) tier = 3;
-    else if (followers >= 15000) tier = 2;
-    else tier = 1;
-
-    if (gameState) {
-        if (!gameState.highestTierReached || tier > gameState.highestTierReached) {
-            gameState.highestTierReached = tier;
-        }
-        return gameState.highestTierReached;
+    // Conditions cumulatives : Abonnés suffisants ET débat précédent remporté
+    if (followers >= 350000 && completed.includes(3)) {
+        tier = 4;
+    } else if (followers >= 100000 && completed.includes(2)) {
+        tier = 3;
+    } else if (followers >= 25000 && completed.includes(1)) {
+        tier = 2;
+    } else {
+        tier = 1;  
     }
 
-    return tier;
+    if (!gameState.highestTierReached || tier > gameState.highestTierReached) {
+        gameState.highestTierReached = tier;
+    }
+    return gameState.highestTierReached;
 }
 // ==========================================
 // COMPATIBILITÉ SCORE / PIVOT PREMIER TOUR
@@ -2092,17 +2097,21 @@ const bgAvatar = avatarColors[Math.abs(hash) % avatarColors.length];
                 credMultiplierImpact = 2.0;
             }
         });
-
-        // 2. Calcul du cortège de base
+// 2. Calcul du cortège de base (Taux de conversion réaliste des réseaux)
         const baseFollowers = Math.max(1000, gameState.stats.followers || 0);
-        const credFactor = Math.max(0.3, ((gameState.stats.credibility || 50) / 50) * credMultiplierImpact);
+        // Seule une fraction des followers se transforme en manifestants réels
+        const followersMobilises = Math.round(baseFollowers * 0.15);
+
+        const credFactor = Math.max(0.4, ((gameState.stats.credibility || 50) / 50) * credMultiplierImpact);
         const finalTier = getCurrentTierNumber();
-        const tierMultiplierMap = { 1: 1.0, 2: 1.3, 3: 1.7, 4: 2.2 };
+        
+        // Multiplicateur de palier resserré
+        const tierMultiplierMap = { 1: 1.0, 2: 1.25, 3: 1.6, 4: 2.0 };
         const tierBonus = tierMultiplierMap[finalTier] || 1.0;
 
-        let finalScore = (baseFollowers * 1.5 * credFactor * tierBonus) + bonusFlatCortege;
+        let finalScore = (followersMobilises * credFactor * tierBonus) + bonusFlatCortege;
 
-        // 3. Bonus Allié & Super-Synergie
+        // 3. Bonus Allié & Synergie
         const currentAlly = gameState.selectedAlly;
         if (currentAlly) {
             const synMult = (gameState.allySynergy && gameState.allySynergy.active) 
@@ -2112,16 +2121,16 @@ const bgAvatar = avatarColors[Math.abs(hash) % avatarColors.length];
             if (currentAlly.bonusType === 'flat') {
                 finalScore += (currentAlly.bonusValue * synMult * allyMult);
             } else {
-                finalScore *= (1 + (currentAlly.bonusValue * synMult * allyMult));
+                finalScore *= (1 + (currentAlly.bonusValue * synMult * allyMult * 0.5));
             }
         }
 
-        // 4. Répression
+        // 4. Répression policière si tension trop haute sans protection
         if (!ignoreHighTensionRepression && (gameState.stats.tension || 0) > 75) {
             finalScore *= 0.85;
         }
 
-        // 5. Score final
+        // 5. Score final borné
         finalScore = Math.max(500, Math.round(finalScore * overallMult));
         gameState.finalCalculatedScore = finalScore;
 
