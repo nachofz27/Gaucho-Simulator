@@ -5862,39 +5862,57 @@ button,
         z-index: 9999 !important;
     }
 }
-/* Image d'ambiance intégrée au rectangle central */
+/* Centrage rigoureux de l'arène */
 .arena-stage {
     position: relative !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;     /* Centre strictement sur l'axe horizontal */
+    justify-content: center !important;  /* Centre strictement sur l'axe vertical */
+    text-align: center !important;
+    min-height: 320px !important;
+    width: 100% !important;
+    max-width: 800px !important;
+    margin: 0 auto !important;          /* Centrage dans la colonne */
     overflow: hidden !important;
-    min-height: 280px !important;
+    border-radius: 12px !important;
 }
 
+/* Image plein écran dans son cadre */
 .arena-stage-bg {
     position: absolute !important;
-    top: 0 !important;
-    left: 0 !important;
+    inset: 0 !important;
     width: 100% !important;
     height: 100% !important;
     object-fit: cover !important;
     object-position: center !important;
-    z-index: 0 !important;
-    pointer-events: none !important;
-}
-
-.arena-stage-overlay {
-    position: absolute !important;
-    top: 0 !important;
-    left: 0 !important;
-    width: 100% !important;
-    height: 100% !important;
-    background: linear-gradient(180deg, rgba(10, 15, 25, 0.45) 0%, rgba(5, 8, 15, 0.85) 100%) !important;
     z-index: 1 !important;
     pointer-events: none !important;
+    display: block !important;
 }
 
-.arena-stage .comic-attack-bubble,
-.arena-stage .stage-center-fx,
-.arena-stage .stage-center-icon {
+/* Voile d'assombrissement pour garder le texte lisible */
+.arena-stage-overlay {
+    position: absolute !important;
+    inset: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    background: rgba(10, 15, 25, 0.65) !important;
+    z-index: 2 !important;
+    pointer-events: none !important;
+}
+
+/* Bulle de réplique recentrée au premier plan */
+.comic-attack-bubble {
     position: relative !important;
-    z-index: 5 !important;
+    z-index: 10 !important;
+    width: 90% !important;
+    max-width: 540px !important;
+    margin: 0 auto !important;
+    text-align: center !important;
+}
+
+.comic-attack-bubble .bubble-speaker-tag,
+.comic-attack-bubble .bubble-text {
+    text-align: center !important;
 }
