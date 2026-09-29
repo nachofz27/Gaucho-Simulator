@@ -5862,7 +5862,24 @@ button,
         z-index: 9999 !important;
     }
 }
-/* Arène centrale : recentrage strict */
+/* =========================================================
+   ARÈNE CENTRALE : FOND DYNAMIQUE STRICT & APPARENT
+   ========================================================= */
+
+/* Neutralise les fonds globaux forcés qui écrasent le décor */
+#screen-debate.arena-tier-1,
+#screen-debate.arena-tier-2,
+#screen-debate.arena-tier-3,
+#screen-debate.arena-tier-4,
+#screen-debate.arena-tier-5 {
+    background: #0f1117 !important;
+}
+
+#screen-debate::before {
+    display: none !important;
+}
+
+/* Le cadre du face-à-face */
 .arena-stage {
     position: relative !important;
     display: flex !important;
@@ -5870,54 +5887,52 @@ button,
     align-items: center !important;
     justify-content: center !important;
     text-align: center !important;
-    min-height: 320px !important;
+    min-height: 360px !important;
     width: 100% !important;
-    max-width: 800px !important;
-    margin: 0 auto !important;
+    max-width: 820px !important;
+    margin: 12px auto !important;
     padding: 24px !important;
     overflow: hidden !important;
-    border-radius: 12px !important;
+    border-radius: 14px !important;
     box-sizing: border-box !important;
+    background: #111827 !important;
+    border: 2px solid rgba(255, 255, 255, 0.2) !important;
 }
 
-/* Image en arrière-plan sous les textes */
+/* L'image de l'adversaire (au premier plan derrière le texte) */
 .arena-stage-bg {
     position: absolute !important;
-    inset: 0 !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
     width: 100% !important;
     height: 100% !important;
     object-fit: cover !important;
     object-position: center !important;
     z-index: 1 !important;
-    pointer-events: none !important;
     display: block !important;
+    opacity: 1 !important;
+    pointer-events: none !important;
 }
 
-/* Voile sombre pour détacher la bulle */
+/* Filtre assombrissant léger pour lire la réplique */
 .arena-stage-overlay {
     position: absolute !important;
     inset: 0 !important;
     width: 100% !important;
     height: 100% !important;
-    background: rgba(10, 15, 25, 0.65) !important;
+    background: rgba(10, 15, 25, 0.55) !important;
     z-index: 2 !important;
     pointer-events: none !important;
 }
 
-/* Bulle de dialogue centrée au premier plan */
+/* La bulle de dialogue au-dessus de l'image */
 .comic-attack-bubble {
     position: relative !important;
     z-index: 10 !important;
     width: 90% !important;
-    max-width: 540px !important;
+    max-width: 560px !important;
     margin: 0 auto !important;
-    text-align: center !important;
-    left: auto !important;
-    right: auto !important;
-    transform: none !important;
-}
-
-.comic-attack-bubble .bubble-speaker-tag,
-.comic-attack-bubble .bubble-text {
     text-align: center !important;
 }
