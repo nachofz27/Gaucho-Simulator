@@ -1367,6 +1367,81 @@ const gameEvents = [
             }
         ]
     },
+    // -------------------------------------------------------------
+    // PERSONNAGE : JORDAN BARDELLA & LES RÉVÉLATIONS MEDIAPART (Palier 2 — Score : 40 / 100)
+    // Rareté : Terrain / Médias | Alignement : Opposant
+    // Thème : Contre-Pouvoir, Médias & Antifascisme (theme-antifa)
+    // -------------------------------------------------------------
+    {
+        id: "mediapart_revelations_bardella_soral",
+        characterId: "opp_jordan_bardella_revelations",
+        characterName: "Jordan Bardella",
+        tier: 2,
+        scoreIndex: 40,
+        theme: "theme-antifa",
+        titre: "L'ombre de Soral derrière le costard",
+        description: "Enquête au vitriol de Mediapart : derrière le discours policé de façade, des écrits et boucles privées de Jordan Bardella refont surface. Textes d'Alain Soral, poncifs sur la finance et obsessions complotistes. En panique, les communicants du RN tentent de verrouiller les antennes.",
+        choix: [
+            // =========================================================
+            // CHOIX 1 : LA DÉNONCIATION DU DOUBLE DISCOURS (Pari 50/50 — Focus Abonnés & Tension)
+            // =========================================================
+            {
+                texte: "🔥 « Des sourires lissés sur les plateaux, mais en coulisses ça recycle les bouquins de Soral et la vieille tambouille de Jean-Marie. La dédiabolisation n'a jamais été qu'un ravalement de façade ! »",
+                isClash: true,
+                fixedCost: { energy: -14, tension: 5 },
+                outcomeSuccess: {
+                    impact: { followers: 6000, budget: 250, energy: -14, credibility: 5, tension: 5 },
+                    consequenceText: "La formule fait mouche et tourne partout. Les extraits de Mediapart inondent les réseaux et les porte-paroles du parti annulent leurs passages télé pour esquiver les questions.",
+                    tweets: [
+                        { author: "Nassim", handle: "@Nassim_QG", text: "Le vernis du gendre idéal qui saute après l'enquête Mediapart... Les vieilles obsessions du parti ressortent direct 💀📰" },
+                        { author: "Samy", handle: "@Samy_off", text: "Lire du Soral en scred tout en jouant les républicains irréprochables à l'antenne, le masque tombe." },
+                        { author: "Observatoire Médias", handle: "@Acrimed_Like", text: "La prétendue dédiabolisation mise à nu par les propres écrits et références du président du RN." },
+                        { author: "Inès", handle: "@Ines_Etu", text: "Mettre le doigt sur la supercherie sans détour, le recadrage nécessaire." }
+                    ]
+                },
+                outcomeFailure: {
+                    impact: { followers: -1500, budget: -250, energy: -14, credibility: -5, tension: 5 },
+                    consequenceText: "Les armées de trolls et les juristes du parti répliquent en meute. Menaces de poursuites en diffamation : tu lâches 250 € pour faire blinder tes publications par un juriste.",
+                    tweets: [
+                        { author: "Militant Poissé", handle: "@FraisDeTribunal", text: "Menaces de poursuites dès qu'on cite l'enquête Mediapart, 250 balles de frais de juriste..." },
+                        { author: "Team Bardella", handle: "@PatriotesEnLigne", text: "Diffamation caractérisée contre notre président, riposte judiciaire immédiate !" },
+                        { author: "Léo", handle: "@Leo_Mlt", text: "Sortir les menaces de procès dès que leurs contradictions sont documentées, la méthode habituelle." },
+                        { author: "Claire", handle: "@Claire_V", text: "Solidarité : l'intimidation juridique pour faire taire les révélations embarrassantes." }
+                    ]
+                }
+            },
+
+            // =========================================================
+            // CHOIX 2 : DÉCRYPTAGE ET RECUL COLLECTIF AU LOCAL (Focus Énergie)
+            // =========================================================
+            {
+                texte: "📚 « Posons-nous au local avec l'équipe : prenons le temps de comparer les archives de Jean-Marie et la com' d'aujourd'hui pour affûter nos arguments sans s'épuiser sur les réseaux. »",
+                impact: { followers: 1000, budget: 100, energy: 18, credibility: 3, tension: -4 },
+                consequenceText: "La discussion est dense et constructive. Poser les faits et prendre du recul en équipe permet de souffler, de consolider la ligne politique et de recharger les batteries.",
+                tweets: [
+                    { author: "Camarade Local", handle: "@SectionEnLutte", text: "Prendre le temps d'analyser les textes au lieu de réagir à chaud : le travail de fond qui paye ☕✊" },
+                    { author: "Sarah", handle: "@Sarah_K", text: "Démonter la mécanique de leur communication en équipe, ça donne des bases solides pour la suite." },
+                    { author: "Mehdi", handle: "@Mehdi_L", text: "Prendre de la hauteur loin du bruit des réseaux sociaux, ça fait un bien fou au moral." },
+                    { author: "Fatou", handle: "@Fatou_L", text: "La lucidité collective plutôt que l'agitation stérile, on en ressort bien plus armés." }
+                ]
+            },
+
+            // =========================================================
+            // CHOIX 3 : LE COMPARATIF HISTORIQUE DES ARCHIVES (Focus Crédibilité)
+            // =========================================================
+            {
+                texte: "🎓 « Balance un thread clinique : mets en miroir les thèses de Soral, les dérapages historiques de Jean-Marie et les révélations de Mediapart. Zéro slogan, juste la continuité textuelle documentée. »",
+                impact: { followers: 2000, budget: 450, energy: -7, credibility: 9, tension: 1 },
+                consequenceText: "Le fil comparatif est d'une rigueur implacable. Repris par des universitaires et des journalistes politiques, il expose la continuité idéologique et cloue le bec aux communicants du parti.",
+                tweets: [
+                    { author: "Revue Critique", handle: "@HistoireEtFascisme", text: "Le comparatif textuel entre les citations révélées et la filiation historique du parti : travail rigoureux et documenté 📑🔍" },
+                    { author: "Youssef", handle: "@Youssef_T", text: "Poser les textes sans invective : la meilleure manière de démonter l'illusion de renouveau." },
+                    { author: "Tariq", handle: "@Tariq_Campus", text: "Une démonstration archivée qui oblige les éditorialistes à regarder les faits en face." },
+                    { author: "Diane", handle: "@Diane_Eco", text: "Un dossier carré qui désamorce d'emblée la victimisation des communicants du RN." }
+                ]
+            }
+        ]
+    },
     {
         id: "visibilite_solidarite_etudiante_cop1",
         characterId: "allie_benevole_cop1",

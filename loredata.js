@@ -192,6 +192,13 @@ const LORE_DATABASE = {
             { label: "Mediapart — Aux sources du masculinisme", url: "https://www.mediapart.fr/journal/culture-et-idees/210219/aux-sources-du-masculinisme" }
         ]
     },
+    "opp_jordan_bardella_revelations": {
+        category: "Extrême droite & Filiation idéologique",
+        bio: "Malgré l'opération de « dédiabolisation » et la tentative de respectabilité républicaine affichée par le Rassemblement national, les révélations de Mediapart sur les écrits et messages privés passés de Jordan Bardella rappellent la persistance des racines doctrinales du parti. Fondé en 1972 avec d'anciens collaborateurs, d'ex-membres de la Waffen-SS (Pierre Bousquet) et des théoriciens nationalistes-révolutionnaires, le Front national a historiquement articulé sa vision du monde autour de l'antisémitisme et du complotisme contre la finance internationale, régulièrement réactivés par les provocations de Jean-Marie Le Pen sur les chambres à gaz. L'intérêt documenté de son actuel président pour les thèses d'Alain Soral et les poncifs sur la domination bancaire démontre que, sous le vernis marketing et le costume ajusté, les obsessions fondatrices de l'extrême droite demeurent ancrées dans son logiciel politique.",
+        sources: [
+            { label: "Enquête Mediapart : les révélations sur les écrits et réseaux de Jordan Bardella", url: "https://www.mediapart.fr/journal/politique/280926/les-banques-sont-toutes-detenues-par-des-juifs-jordan-bardella-face-ses-ecrits-antisemites" },
+        ]
+    },
     "allie_benevole_cop1": {
         category: "Solidarité & Précarité étudiante",
         bio: "Fondée en 2020 par des étudiants pour les étudiants, l'association Cop1 - Solidarités Étudiantes lutte contre la précarité croissante qui frappe la jeunesse universitaire à travers toute la France. Entièrement gratuite et apartisane, la structure organise des distributions massives et hebdomadaires de paniers de denrées alimentaires, de produits d'hygiène et de matériel de première nécessité, sans distinction de nationalité ou de statut.",
