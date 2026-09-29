@@ -639,9 +639,6 @@ function getDynamicTier() {
         }
     }
 
-// ===============================================================
-// FONCTION SETUP DU DÉBAT (VERSION UNIQUE ET DÉFINITIVE)
-// ===============================================================
 function setupDebateScreen(debateObj, tier) {
     const screenDebate = document.getElementById('screen-debate');
     if (!screenDebate || !debateObj) return;
@@ -651,7 +648,11 @@ function setupDebateScreen(debateObj, tier) {
     const characterTheme = debateObj.arenaThemeClass || `arena-char-${debateObj.id || 'standard'}`;
     screenDebate.className = `screen active arena-tier-${tier} ${characterTheme}`;
 
-    const playerArchName = getSelectedArchetypeName();
+    // Sécurisation au cas où getSelectedArchetypeName n'est pas accessible
+    const playerArchName = (typeof getSelectedArchetypeName === 'function') 
+        ? getSelectedArchetypeName() 
+        : 'Militant';
+        
     const cred = Math.max(5, Math.min(95, Math.round(gameState.stats.credibility)));
 
     if (tier >= gameState.highestOpponentScore) {
@@ -681,7 +682,7 @@ function setupDebateScreen(debateObj, tier) {
 
     const attackText = (debateObj.opponentAttack || '').replace(/«|»/g, '');
 
-    // Dictionnaire direct liant chaque adversaire à son image
+    // Dictionnaire officiel garantissant l'image propre à chaque adversaire
     const imagesParAdversaire = {
         "debat_1_kevin": "https://images.unsplash.com/photo-1708033899077-2ec198506aab?auto=format&fit=crop&q=80&w=1600",
         "debat_1_vigile": "https://images.unsplash.com/photo-1542883339-f2680a3e3996?auto=format&fit=crop&q=80&w=1600",
@@ -693,9 +694,9 @@ function setupDebateScreen(debateObj, tier) {
         "debat_4_trump": "https://images.unsplash.com/photo-1742413628282-b8b3ff1b7557?auto=format&fit=crop&q=80&w=1600"
     };
 
-    const targetImg = debateObj.bgImage 
-        || imagesParAdversaire[debateObj.id] 
-        || "https://images.unsplash.com/photo-1708033899077-2ec198506aab?auto=format&fit=crop&q=80&w=1600";
+    const targetImg = imagesParAdversaire[debateObj.id] 
+        || debateObj.bgImage 
+        || imagesParAdversaire["debat_1_kevin"];
 
     screenDebate.innerHTML = `
         <div class="arcade-arena">
@@ -725,14 +726,14 @@ function setupDebateScreen(debateObj, tier) {
                 </div>
             </div>
 
-            <div class="arena-stage">
-                <img src="${targetImg}" class="arena-stage-bg" alt="Décor" />
-                <div class="arena-stage-overlay"></div>
+            <div class="arena-stage" style="position:relative !important; min-height:360px !important; overflow:hidden !important;">
+                <img src="${targetImg}" class="arena-stage-bg" alt="Décor" style="position:absolute !important; inset:0 !important; width:100% !important; height:100% !important; object-fit:cover !important; z-index:1 !important; display:block !important;" />
+                <div class="arena-stage-overlay" style="position:absolute !important; inset:0 !important; background:rgba(10,15,25,0.55) !important; z-index:2 !important;"></div>
                 <div class="stage-spotlight"></div>
                 <div class="stage-center-icon">🎙️</div>
                 <div class="stage-center-fx" id="stage-fx"></div>
 
-                <div class="comic-attack-bubble" id="comic-bubble">
+                <div class="comic-attack-bubble" id="comic-bubble" style="position:relative !important; z-index:10 !important;">
                     <div class="bubble-speaker-tag">ATTAQUE DE ${(debateObj.characterName || 'ADVERSAIRE').toUpperCase()}</div>
                     <p class="bubble-text">« ${attackText} »</p>
                 </div>
