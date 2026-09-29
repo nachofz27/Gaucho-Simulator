@@ -639,9 +639,9 @@ function getDynamicTier() {
         }
     }
 
-  // ═══════════════════════════════════════════════════════════════
-// FONCTION 1 : SETUP DE L'ÉCRAN DE DÉBAT (REFONTE)
-// ═══════════════════════════════════════════════════════════════
+// ===============================================================
+// FONCTION SETUP DU DÉBAT (VERSION UNIQUE ET DÉFINITIVE)
+// ===============================================================
 function setupDebateScreen(debateObj, tier) {
     const screenDebate = document.getElementById('screen-debate');
     if (!screenDebate || !debateObj) return;
