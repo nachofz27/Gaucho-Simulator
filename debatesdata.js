@@ -95,8 +95,8 @@ window.DEBATES_DATABASE = {
                 <div class="tier-decor-badge">🛒 Galerie Commerciale • Devant les escaliers</div>
                 <div class="chalk-doodle">📹 Vidéosurveillance active • Talkie-walkie qui grésille</div>
             `,
-            opponentAttack: "« Circulez avec vos autocollants et vos tracts ! Ici c'est une propriété privée, la politique et la mendicité militante sont strictement interdites par la direction ! »",
-            choix: [
+           opponentAttack: "« Circulez avec vos autocollants et vos tracts ! Ici c'est une propriété privée, la politique et la mendicité militante sont strictement interdites par la direction ! »",
+            bgImage: "https://images.unsplash.com/photo-1542883339-f2680a3e3996?auto=format&fit=crop&q=80&w=1600",
                 {
                     texte: "Lui rappeler qu'en tant que travailleur de la sécurité sous-payé, ses droits sont défendus par la convention collective que tu distribues.",
                     strategyName: "Conscience de classe",
@@ -175,7 +175,7 @@ window.DEBATES_DATABASE = {
                 <div class="chalk-doodle">📱 Live TikTok hostile en cours • 200 étudiants en cercle</div>
             `,
             opponentAttack: "« Vous prétendez défendre les femmes, mais votre gauche refuse de voir que l'insécurité et les agressions sexuelles sont importées par l'immigration massive ! »",
-            bgImage: "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&q=80&w=1920",
+            bgImage: "https://images.unsplash.com/photo-1606761568499-6d2451b23c66?auto=format&fit=crop&q=80&w=1600",
             choix: [
                 {
                     texte: "« Posons les statistiques du ministère de la Justice : 85% des violences sexistes et sexuelles ont lieu dans le cercle familial ou par des proches, quelle que soit leur nationalité. »",
@@ -327,8 +327,8 @@ window.DEBATES_DATABASE = {
                 <div class="tier-decor-badge tv-badge">📺 ÉDITION SPÉCIALE • Face-à-Face en Direct</div>
                 <div class="tv-breaking-chiron"><span class="chiron-flash">DIRECT</span> TENSIONS SUR LES VALEURS DE LA RÉPUBLIQUE</div>
             `,
-            opponentAttack: "« Vous, l'extrême gauche, vous êtes les fossoyeurs de notre nation ! Vous encouragez le chaos, la haine de la police et la submersion pour détruire la France ! »",
-            bgImage: "https://images.unsplash.com/photo-1590602847861-f357a9332bbc?auto=format&fit=crop&q=80&w=1920",
+           opponentAttack: "« Vous, l'extrême gauche, vous êtes les fossoyeurs de notre nation ! Vous encouragez le chaos, la haine de la police et la submersion pour détruire la France ! »",
+            bgImage: "https://images.unsplash.com/photo-1688039763592-19d77744322e?auto=format&fit=crop&q=80&w=1600",
             choix: [
                 {
                     texte: "« Jean, hurler sur tous les plateaux pour faire oublier que ton seul fait d'armes c'est d'avoir gratté ta com' sur une cagnotte de la division, c'est ridicule. »",
@@ -401,7 +401,8 @@ window.DEBATES_DATABASE = {
                 <div class="tier-decor-badge radio-badge"><span class="on-air-pulse">🔴 EN DIRECT</span> ÉDITION SPÉCIALE • ORDRE RÉGALIEN</div>
                 <div class="audio-vumeter-bars"><span class="vubar"></span><span class="vubar"></span><span class="vubar"></span></div>
             `,
-            opponentAttack: "« L'État de droit n'est ni intangible ni sacré lorsqu'il empêche de protéger nos concitoyens ! Votre laxisme désarme nos forces face à l'ensauvagement ! »",
+           opponentAttack: "« L'État de droit n'est ni intangible ni sacré lorsqu'il empêche de protéger nos concitoyens ! Votre laxisme désarme nos forces face à l'ensauvagement ! »",
+            bgImage: "https://plus.unsplash.com/premium_photo-1723928476878-9fbc9002bc5d?auto=format&fit=crop&q=80&w=1600",
             choix: [
                 {
                     texte: "« Déclarer que l'État de droit n'est pas sacré quand on est ministre de l'Intérieur, c'est déchirer la Constitution pour paver la voie au fascisme. »",
@@ -481,7 +482,7 @@ window.DEBATES_DATABASE = {
                 <div class="tv-breaking-chiron"><span class="chiron-flash">DIRECT 2027</span> LE CHOIX DE NATION • 48H DU VOTE FINAL</div>
             `,
             opponentAttack: "« Vous incarnez le chaos, la ruine fiscale et la submersion de notre patrie. Les Français doivent choisir entre la fierté retrouvée et votre tyrannie woke désordonnée ! »",
-            bgImage: "https://images.unsplash.com/photo-1585829365295-ab7cd400c167?auto=format&fit=crop&q=80&w=1920",
+            bgImage: "https://images.unsplash.com/photo-1606920669741-c8ba74262a94?auto=format&fit=crop&q=80&w=1600",
             choix: [
                 {
                     texte: "« Jordan, ta fierté nationale c'est de servir la soupe aux milliardaires comme Bolloré tout en votant contre le SMIC et la retraite à 60 ans des ouvriers ! »",
@@ -554,8 +555,8 @@ window.DEBATES_DATABASE = {
                 <div class="tier-decor-badge us-badge">🦅 LIVE CNN WORLDWIDE • 45M Viewers • Sommet de Crise</div>
                 <div class="tv-breaking-chiron"><span class="chiron-flash">WORLD ALERT</span> DIPLOMATIC STANDOFF AT THE OVAL OFFICE</div>
             `,
-            opponentAttack: "« Your socialist movement is a disaster! You want to destroy business, ban oil and bring communism to Europe. We made deals with real leaders, not radicals! »",
-            bgImage: "https://images.unsplash.com/photo-1585829365295-ab7cd400c167?auto=format&fit=crop&q=80&w=1920",
+           opponentAttack: "« Your socialist movement is a disaster! You want to destroy business, ban oil and bring communism to Europe. We made deals with real leaders, not radicals! »",
+            bgImage: "https://images.unsplash.com/photo-1742413628282-b8b3ff1b7557?auto=format&fit=crop&q=80&w=1600",
             choix: [
                 {
                     texte: "« Le monde n'est pas un casino de promoteur en faillite, Donald : tes forages et tes guerres pour le pétrole détruisent la seule planète qu'on a. »",
