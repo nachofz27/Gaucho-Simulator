@@ -1147,19 +1147,21 @@ const bgAvatar = avatarColors[Math.abs(hash) % avatarColors.length];
 
         const rawImpact = resultData.impact || {};
         
-        // --- MULTIPLICATEUR DE COMPATIBILITÉ ---
+       // --- MULTIPLICATEUR DE COMPATIBILITÉ ---
         const tier = gameState.currentEvent ? (gameState.currentEvent.tier || 1) : 1;
         const theme = gameState.currentEvent ? gameState.currentEvent.theme : '';
         const multiplier = getCompatibilityMultiplier(theme, tier);
 
-        // On applique le multiplicateur sur les gains et pertes de ressources
+        // Abonnés, Budget et Crédibilité profitent du bonus de synergie
+        // L'énergie et la tension restent stables pour préserver la mécanique de survie
         const impact = {
             followers: rawImpact.followers ? Math.round(rawImpact.followers * multiplier) : 0,
             budget: rawImpact.budget ? Math.round(rawImpact.budget * multiplier) : 0,
-            energy: rawImpact.energy ? Math.round(rawImpact.energy * multiplier) : 0,
             credibility: rawImpact.credibility ? Math.round(rawImpact.credibility * multiplier) : 0,
-            tension: rawImpact.tension || 0 // La tension ne subit généralement pas le boost, ou tu peux le multiplier aussi
+            energy: rawImpact.energy || 0,
+            tension: rawImpact.tension || 0
         };
+        // ---------------------------------------
         // ---------------------------------------
 
         // Application des stats dans le gameState...
