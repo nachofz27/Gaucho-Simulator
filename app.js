@@ -642,7 +642,6 @@ function getDynamicTier() {
   // ═══════════════════════════════════════════════════════════════
 // FONCTION 1 : SETUP DE L'ÉCRAN DE DÉBAT (REFONTE)
 // ═══════════════════════════════════════════════════════════════
-
 function setupDebateScreen(debateObj, tier) {
     const screenDebate = document.getElementById('screen-debate');
     if (!screenDebate || !debateObj) return;
@@ -682,6 +681,22 @@ function setupDebateScreen(debateObj, tier) {
 
     const attackText = (debateObj.opponentAttack || '').replace(/«|»/g, '');
 
+    // Dictionnaire direct liant chaque adversaire à son image
+    const imagesParAdversaire = {
+        "debat_1_kevin": "https://images.unsplash.com/photo-1708033899077-2ec198506aab?auto=format&fit=crop&q=80&w=1600",
+        "debat_1_vigile": "https://images.unsplash.com/photo-1542883339-f2680a3e3996?auto=format&fit=crop&q=80&w=1600",
+        "debat_2_nemesis": "https://images.unsplash.com/photo-1606761568499-6d2451b23c66?auto=format&fit=crop&q=80&w=1600",
+        "debat_2_crypto": "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&q=80&w=1600",
+        "debat_3_messiha": "https://images.unsplash.com/photo-1688039763592-19d77744322e?auto=format&fit=crop&q=80&w=1600",
+        "debat_3_retailleau": "https://plus.unsplash.com/premium_photo-1723928476878-9fbc9002bc5d?auto=format&fit=crop&q=80&w=1600",
+        "debat_4_bardella": "https://images.unsplash.com/photo-1606920669741-c8ba74262a94?auto=format&fit=crop&q=80&w=1600",
+        "debat_4_trump": "https://images.unsplash.com/photo-1742413628282-b8b3ff1b7557?auto=format&fit=crop&q=80&w=1600"
+    };
+
+    const targetImg = debateObj.bgImage 
+        || imagesParAdversaire[debateObj.id] 
+        || "https://images.unsplash.com/photo-1708033899077-2ec198506aab?auto=format&fit=crop&q=80&w=1600";
+
     screenDebate.innerHTML = `
         <div class="arcade-arena">
             <div class="tier-ambiance-wrapper">
@@ -710,8 +725,8 @@ function setupDebateScreen(debateObj, tier) {
                 </div>
             </div>
 
-          <div class="arena-stage">
-                <img src="${debateObj.bgImage || 'https://images.unsplash.com/photo-1708033899077-2ec198506aab?auto=format&fit=crop&q=80&w=1600'}" class="arena-stage-bg" alt="Décor" />
+            <div class="arena-stage">
+                <img src="${targetImg}" class="arena-stage-bg" alt="Décor" />
                 <div class="arena-stage-overlay"></div>
                 <div class="stage-spotlight"></div>
                 <div class="stage-center-icon">🎙️</div>
