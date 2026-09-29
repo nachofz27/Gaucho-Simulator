@@ -5862,23 +5862,25 @@ button,
         z-index: 9999 !important;
     }
 }
-/* Centrage rigoureux de l'arène */
+/* Arène centrale : recentrage strict */
 .arena-stage {
     position: relative !important;
     display: flex !important;
     flex-direction: column !important;
-    align-items: center !important;     /* Centre strictement sur l'axe horizontal */
-    justify-content: center !important;  /* Centre strictement sur l'axe vertical */
+    align-items: center !important;
+    justify-content: center !important;
     text-align: center !important;
     min-height: 320px !important;
     width: 100% !important;
     max-width: 800px !important;
-    margin: 0 auto !important;          /* Centrage dans la colonne */
+    margin: 0 auto !important;
+    padding: 24px !important;
     overflow: hidden !important;
     border-radius: 12px !important;
+    box-sizing: border-box !important;
 }
 
-/* Image plein écran dans son cadre */
+/* Image en arrière-plan sous les textes */
 .arena-stage-bg {
     position: absolute !important;
     inset: 0 !important;
@@ -5891,7 +5893,7 @@ button,
     display: block !important;
 }
 
-/* Voile d'assombrissement pour garder le texte lisible */
+/* Voile sombre pour détacher la bulle */
 .arena-stage-overlay {
     position: absolute !important;
     inset: 0 !important;
@@ -5902,7 +5904,7 @@ button,
     pointer-events: none !important;
 }
 
-/* Bulle de réplique recentrée au premier plan */
+/* Bulle de dialogue centrée au premier plan */
 .comic-attack-bubble {
     position: relative !important;
     z-index: 10 !important;
@@ -5910,6 +5912,9 @@ button,
     max-width: 540px !important;
     margin: 0 auto !important;
     text-align: center !important;
+    left: auto !important;
+    right: auto !important;
+    transform: none !important;
 }
 
 .comic-attack-bubble .bubble-speaker-tag,

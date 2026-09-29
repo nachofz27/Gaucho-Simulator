@@ -711,7 +711,7 @@ function setupDebateScreen(debateObj, tier) {
             </div>
 
           <div class="arena-stage">
-                ${debateObj.bgImage ? `<img src="${debateObj.bgImage}" class="arena-stage-bg" alt="Décor" />` : ''}
+                <img src="${debateObj.bgImage || 'https://images.unsplash.com/photo-1708033899077-2ec198506aab?auto=format&fit=crop&q=80&w=1600'}" class="arena-stage-bg" alt="Décor" />
                 <div class="arena-stage-overlay"></div>
                 <div class="stage-spotlight"></div>
                 <div class="stage-center-icon">🎙️</div>
