@@ -254,7 +254,7 @@ function getDynamicTier() {
     window.showScreen = showScreen;
     window.playTurn = playTurn;
     window.updateStatsUI = updateStatsUI;
-    window.setupDebateScreen = setupDebateScreen;
+
 
     // ==========================================
     // 4. FORMATAGE ET UTILITAIRES
@@ -640,6 +640,7 @@ function getDynamicTier() {
     }
 
 function setupDebateScreen(debateObj, tier) {
+    window.setupDebateScreen = function(debateObj, tier) {
     const screenDebate = document.getElementById('screen-debate');
     if (!screenDebate || !debateObj) return;
 
@@ -648,14 +649,13 @@ function setupDebateScreen(debateObj, tier) {
     const characterTheme = debateObj.arenaThemeClass || `arena-char-${debateObj.id || 'standard'}`;
     screenDebate.className = `screen active arena-tier-${tier} ${characterTheme}`;
 
-    // Sécurisation au cas où getSelectedArchetypeName n'est pas accessible
     const playerArchName = (typeof getSelectedArchetypeName === 'function') 
         ? getSelectedArchetypeName() 
         : 'Militant';
         
-    const cred = Math.max(5, Math.min(95, Math.round(gameState.stats.credibility)));
+    const cred = Math.max(5, Math.min(95, Math.round(gameState?.stats?.credibility || 50)));
 
-    if (tier >= gameState.highestOpponentScore) {
+    if (gameState && tier >= gameState.highestOpponentScore) {
         gameState.highestOpponentScore = tier;
         gameState.highestOpponentName = debateObj.characterName;
     }
@@ -682,7 +682,6 @@ function setupDebateScreen(debateObj, tier) {
 
     const attackText = (debateObj.opponentAttack || '').replace(/«|»/g, '');
 
-    // Dictionnaire officiel garantissant l'image propre à chaque adversaire
     const imagesParAdversaire = {
         "debat_1_kevin": "https://images.unsplash.com/photo-1708033899077-2ec198506aab?auto=format&fit=crop&q=80&w=1600",
         "debat_1_vigile": "https://images.unsplash.com/photo-1542883339-f2680a3e3996?auto=format&fit=crop&q=80&w=1600",
@@ -762,7 +761,7 @@ function setupDebateScreen(debateObj, tier) {
         cardEl.onclick = () => resolveArcadeDebateRound(choix, finalOdds, debateObj);
         deckContainer.appendChild(cardEl);
     });
-}
+};
 
 // ═══════════════════════════════════════════════════════════════
 // FONCTION 2 : RÉSOLUTION DU DÉBAT
