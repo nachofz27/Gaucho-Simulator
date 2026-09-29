@@ -83,7 +83,7 @@ window.DEBATES_DATABASE = {
                 }
             ]
         },
-        {
+       {
             id: "debat_1_vigile",
             tier: 1,
             weight: 35, // Fréquent (35% de chance)
@@ -95,8 +95,9 @@ window.DEBATES_DATABASE = {
                 <div class="tier-decor-badge">🛒 Galerie Commerciale • Devant les escaliers</div>
                 <div class="chalk-doodle">📹 Vidéosurveillance active • Talkie-walkie qui grésille</div>
             `,
-           opponentAttack: "« Circulez avec vos autocollants et vos tracts ! Ici c'est une propriété privée, la politique et la mendicité militante sont strictement interdites par la direction ! »",
+            opponentAttack: "« Circulez avec vos autocollants et vos tracts ! Ici c'est une propriété privée, la politique et la mendicité militante sont strictement interdites par la direction ! »",
             bgImage: "https://images.unsplash.com/photo-1542883339-f2680a3e3996?auto=format&fit=crop&q=80&w=1600",
+            choix: [
                 {
                     texte: "Lui rappeler qu'en tant que travailleur de la sécurité sous-payé, ses droits sont défendus par la convention collective que tu distribues.",
                     strategyName: "Conscience de classe",
